@@ -1,0 +1,25 @@
+TESTE DE INDEXAÇÃO - RITA
+
+Este é um documento de teste, sem relação com o tema real do trabalho. Serve
+apenas para verificar se o sistema de busca (RAG) está funcionando e se a
+Rita consegue encontrar informações específicas dentro dos documentos.
+
+O planeta fictício Zorvath-9 tem uma lua chamada Ktenilla. A capital de
+Zorvath-9 se chama Bruminak, e a população estimada é de 4.827.391
+habitantes segundo o último censo interplanetário.
+
+A cor oficial da bandeira de Zorvath-9 é o roxo-magenta, escolhida em
+homenagem ao mineral local chamado Fluorita Zorvana, encontrado apenas nas
+montanhas de Kethrion.
+
+O prato típico mais famoso de Zorvath-9 se chama "Pudim de Glinthorn" e leva
+sete ingredientes secretos, sendo o principal deles a fruta chamada Melvora
+Azul.
+
+O animal símbolo do planeta é o Quirospoto, um mamífero alado de porte médio
+que só aparece durante o "Ciclo das Três Luas", evento que ocorre a cada
+142 dias no calendário local.
+
+Se a Rita conseguir responder corretamente perguntas como "qual a capital de
+Zorvath-9?" ou "qual o prato típico do planeta?", significa que a indexação
+e a busca estão funcionando corretamente.
