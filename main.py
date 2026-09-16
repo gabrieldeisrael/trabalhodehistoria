@@ -12,7 +12,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 # ---------- Config ----------
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
-MODEL = "llama-3.3-70b-versatile"
+MODEL = "openai/gpt-oss-120b"
 DOCS_FOLDER = "docs"
 CHUNK_SIZE = 200  # palavras por chunk
 CHUNK_OVERLAP = 30
