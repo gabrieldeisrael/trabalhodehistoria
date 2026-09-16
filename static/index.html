@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Chatbot Escola</title>
+<style>
+  body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; }
+  #chat { border: 1px solid #ccc; border-radius: 8px; padding: 16px; height: 400px; overflow-y: auto; margin-bottom: 12px; }
+  .msg { margin: 8px 0; }
+  .user { text-align: right; color: #333; }
+  .bot { text-align: left; color: #0a5; }
+  form { display: flex; gap: 8px; }
+  input { flex: 1; padding: 10px; font-size: 16px; }
+  button { padding: 10px 16px; font-size: 16px; cursor: pointer; }
+</style>
+</head>
+<body>
+  <h1>Pergunte aos documentos</h1>
+  <div id="chat"></div>
+  <form id="form">
+    <input id="pergunta" placeholder="Digite sua pergunta..." autocomplete="off" required>
+    <button type="submit">Enviar</button>
+  </form>
+
+<script>
+const chat = document.getElementById("chat");
+const form = document.getElementById("form");
+const input = document.getElementById("pergunta");
+
+function addMsg(texto, classe) {
+  const div = document.createElement("div");
+  div.className = "msg " + classe;
+  div.textContent = texto;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const pergunta = input.value.trim();
+  if (!pergunta) return;
+  addMsg(pergunta, "user");
+  input.value = "";
+  addMsg("...", "bot");
+
+  try {
+    const resp = await fetch("/perguntar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pergunta })
+    });
+    const data = await resp.json();
+    chat.lastChild.textContent = data.resposta;
+  } catch (err) {
+    chat.lastChild.textContent = "Erro ao buscar resposta.";
+  }
+});
+</script>
+</body>
+</html>
