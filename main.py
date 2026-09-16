@@ -10,14 +10,18 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # ---------- Config ----------
-OPENCODE_API_KEY = os.environ.get("OPENCODE_API_KEY", "")
-OPENCODE_URL = "https://opencode.ai/zen/v1/chat/completions"
-MODEL = "big-pickle"
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
+MODEL = "llama-3.3-70b-versatile"
 DOCS_FOLDER = "docs"
-CHUNK_SIZE = 300  # palavras por chunk
-CHUNK_OVERLAP = 50
-TOP_K = 4  # quantos trechos relevantes buscar por pergunta
+CHUNK_SIZE = 200  # palavras por chunk
+CHUNK_OVERLAP = 30
+TOP_K = 3  # quantos trechos relevantes buscar por pergunta
+MAX_TOKENS_RESPOSTA = 300  # limite de tamanho da resposta gerada
 INDEX_FILE = "indice.pkl"
+
+# cache simples em memória: pergunta normalizada -> resposta
+cache_respostas = {}
 
 # ---------- App ----------
 app = FastAPI()
@@ -105,22 +109,22 @@ def buscar_contexto(pergunta: str) -> str:
     return "\n\n---\n\n".join(trechos)
 
 
-def perguntar_big_pickle(pergunta: str, contexto: str) -> str:
+def perguntar_groq(pergunta: str, contexto: str) -> str:
     prompt_sistema = (
-        "Você é um assistente que responde perguntas com base apenas nos "
-        "documentos fornecidos abaixo. Se a resposta não estiver nos "
-        "documentos, diga que não sabe.\n\n"
+        "Responda com base apenas nos documentos abaixo. "
+        "Se não souber, diga que não sabe. Seja direto e breve.\n\n"
         f"DOCUMENTOS:\n{contexto}"
     )
 
     resposta = requests.post(
-        OPENCODE_URL,
+        GROQ_URL,
         headers={
-            "Authorization": f"Bearer {OPENCODE_API_KEY}",
+            "Authorization": f"Bearer {GROQ_API_KEY}",
             "Content-Type": "application/json",
         },
         json={
             "model": MODEL,
+            "max_tokens": MAX_TOKENS_RESPOSTA,
             "messages": [
                 {"role": "system", "content": prompt_sistema},
                 {"role": "user", "content": pergunta},
@@ -128,6 +132,8 @@ def perguntar_big_pickle(pergunta: str, contexto: str) -> str:
         },
         timeout=60,
     )
+    if not resposta.ok:
+        print(f"[ERRO Groq] Status {resposta.status_code}: {resposta.text}")
     resposta.raise_for_status()
     data = resposta.json()
     return data["choices"][0]["message"]["content"]
@@ -145,9 +151,14 @@ def startup_event():
 
 @app.post("/perguntar")
 def perguntar(req: PerguntaRequest):
+    chave_cache = req.pergunta.strip().lower()
+    if chave_cache in cache_respostas:
+        return {"resposta": cache_respostas[chave_cache], "cache": True}
+
     contexto = buscar_contexto(req.pergunta)
-    resposta = perguntar_big_pickle(req.pergunta, contexto)
-    return {"resposta": resposta}
+    resposta = perguntar_groq(req.pergunta, contexto)
+    cache_respostas[chave_cache] = resposta
+    return {"resposta": resposta, "cache": False}
 
 
 @app.get("/health")
