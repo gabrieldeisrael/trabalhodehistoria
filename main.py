@@ -109,10 +109,14 @@ def buscar_contexto(pergunta: str) -> str:
     return "\n\n---\n\n".join(trechos)
 
 
-def perguntar_groq(pergunta: str, contexto: str) -> str:
+def perguntar_groq(pergunta, contexto):
     prompt_sistema = (
+        "Você é a Rita, assistente virtual de um trabalho escolar sobre o "
+        "Paraguai. Tenha um tom leve, simpático e um pouco descontraído, "
+        "mas sem exagerar — nada de emojis ou piadas fora de hora. "
         "Responda com base apenas nos documentos abaixo. "
-        "Se não souber, diga que não sabe. Seja direto e breve.\n\n"
+        "Se não souber, diga que não sabe (pode ser de um jeito gentil, "
+        "tipo sugerindo que a pessoa pergunte outra coisa). Seja direto e breve.\n\n"
         f"DOCUMENTOS:\n{contexto}"
     )
 
