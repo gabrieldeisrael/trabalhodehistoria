@@ -1,25 +1,24 @@
-TESTE DE INDEXAÇÃO - RITA
+ História do Paraguai 
 
-Este é um documento de teste, sem relação com o tema real do trabalho. Serve
-apenas para verificar se o sistema de busca (RAG) está funcionando e se a
-Rita consegue encontrar informações específicas dentro dos documentos.
+O território que atualmente corresponde ao Paraguai foi habitado primeiramente por indígenas Guaranis, Guaicurus e Paiaguás. Em 1530, teve início a colonização espanhola, criando o forte de Nossa Senhora da Assunção (atual Assunção) como a base da colônia no século XVI. A população nativa foi escravizada durante o século XVII, e esse fato impulsionou a realização de missões jesuítas com o intuito de proteger os índios. No entanto, essas missões foram reprimidas com violência por parte dos colonizadores portugueses e espanhóis, que massacraram as comunidades indígenas.
+   
+Potência regional
+         
+O Paraguai obteve sua independência no dia 15 de maio de 1811, e iniciou um processo de isolamento das demais nações sul-americanas. Em setembro de 1840, com a morte do ditador José Gaspar Rodríguez Francia, no poder desde 1814, o país passou a ser governado por Carlos Antonio López, que promoveu um intenso processo de industrialização e investimentos em infraestrutura, um exemplo foi a construção da primeira ferrovia na América do Sul.
+Em 1862, Francisco Solano López, filho de Carlos Antonio López, assumiu a presidência do Paraguai. A nação conseguiu, então, um alto grau de desenvolvimento econômico, atingindo status de potência regional no continente. Visando expandir seu comércio, o país entrou em guerra contra o Brasil, Argentina e Uruguai na busca de obtenção de territórios que possuíam saída para o mar.
 
-O planeta fictício Zorvath-9 tem uma lua chamada Ktenilla. A capital de
-Zorvath-9 se chama Bruminak, e a população estimada é de 4.827.391
-habitantes segundo o último censo interplanetário.
+Esse conflito ficou conhecido como Guerra do Paraguai e estendeu-se durante os anos de 1865 a 1870. As consequências desse conflito para os paraguaios foram extremamente negativas, pois o país foi derrotado e teve aproximadamente 50% da sua população morta, além de sofrido a destruição de sua infraestrutura e perdas territoriais, fatos que prejudicaram – e ainda prejudicam – o desenvolvimento econômico do país.
 
-A cor oficial da bandeira de Zorvath-9 é o roxo-magenta, escolhida em
-homenagem ao mineral local chamado Fluorita Zorvana, encontrado apenas nas
-montanhas de Kethrion.
+Outro conflito que envolveu o Paraguai foi a Guerra do Chaco (1932–1935), que foi travada contra a Bolívia por disputa territorial da região do Chaco Boreal, pois foi descoberto petróleo nessa área. Nessa ocasião, o Paraguai saiu vencedor e conquistou cerca de 75% da região disputada.
 
-O prato típico mais famoso de Zorvath-9 se chama "Pudim de Glinthorn" e leva
-sete ingredientes secretos, sendo o principal deles a fruta chamada Melvora
-Azul.
+Ditadura e golpes políticos
 
-O animal símbolo do planeta é o Quirospoto, um mamífero alado de porte médio
-que só aparece durante o "Ciclo das Três Luas", evento que ocorre a cada
-142 dias no calendário local.
+Em 1936, oficiais liderados por Rafael Franco iniciaram a Revolução Febrerista, que realizou a reforma agrária e nacionalizou parte da economia, promovendo uma política populista. Porém, em 1937, Franco foi deposto pelos liberais.
 
-Se a Rita conseguir responder corretamente perguntas como "qual a capital de
-Zorvath-9?" ou "qual o prato típico do planeta?", significa que a indexação
-e a busca estão funcionando corretamente.
+Em seguida, o Paraguai passou por vários golpes políticos, os quais foram interrompidos em 1954, com a queda do presidente Frederico Chávez e a posse do general Alfredo Stroessner. Com o apoio do Partido Colorado, instalou-se uma ditadura no Paraguai, com repressão a manifestações. Somente em fevereiro de 1989, um golpe militar tirou do poder Stroessner, que se refugiou no Brasil. O líder do golpe, Andrés Rodríguez, elegeu-se presidente.
+
+O ex-bispo Fernando Lugo, em abril de 2008, tornou-se presidente do Paraguai com 42,2% dos votos. A partir da coalizão partidária Aliança Patriótica para a Mudança (APC), que reúne partidos de extrema esquerda e de centro-direita, findou-se a hegemonia do Partido Colorado, que governou o país durante 61 anos. Em abril de 2009, o envolvimento de Lugo em um escândalo de paternidade gerou uma grande crise política no país.
+
+Fonte: https://brasilescola.uol.com.br/historia-da-america/historia-paraguai.htm
+
+
