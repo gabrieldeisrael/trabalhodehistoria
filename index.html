@@ -1,1 +1,366 @@
-*esse e o ui do site por favor nao apaga
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Independência do Paraguai - História Interativa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            border-radius: 8px;
+        }
+        
+        .section h2 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        
+        .section p {
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .editable {
+            background: #fffacd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-style: italic;
+            min-height: 20px;
+            display: inline-block;
+        }
+        
+        .interactive-box {
+            background: white;
+            border: 2px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .interactive-box h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .quiz {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .quiz label {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        
+        .quiz input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #764ba2;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline-item {
+            margin-left: 30px;
+            margin-bottom: 25px;
+            padding-left: 20px;
+            border-left: 3px solid #667eea;
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+        
+        .timeline-year {
+            font-weight: bold;
+            color: #1e3c72;
+            font-size: 1.2em;
+        }
+        
+        .timeline-description {
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        footer {
+            background: #f0f0f0;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🇵🇾 Independência do Paraguai</h1>
+            <p>Uma história de luta pela liberdade e autodeterminação</p>
+        </header>
+        
+        <div class="content">
+            <!-- SEÇÃO 1: CONTEXTO HISTÓRICO -->
+            <div class="section">
+                <h2>📖 Contexto Histórico</h2>
+                <p>
+                    O Paraguai, durante o período colonial, estava sob domínio da coroa espanhola. 
+                    A colônia foi inicialmente colonizada por <span class="editable">[COMPLETE: qual país europeu?]</span> 
+                    no século XVI. A região era importante por suas riquezas naturais, especialmente 
+                    <span class="editable">[COMPLETE: cite 2 riquezas naturais do Paraguai]</span>.
+                </p>
+                <p>
+                    No final do século XVIII, o Paraguai era uma colônia relativamente isolada. 
+                    A administração colonial era exercida por <span class="editable">[COMPLETE: quem era o vice-rei?]</span>, 
+                    que governava a região de Assunção.
+                </p>
+            </div>
+            
+            <!-- SEÇÃO 2: CAUSAS DA INDEPENDÊNCIA -->
+            <div class="section">
+                <h2>⚡ Causas da Independência</h2>
+                <p>
+                    Vários fatores levaram o Paraguai a buscar sua independência:
+                </p>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li><strong>Isolamento Geográfico:</strong> <span class="editable">[COMPLETE: como o isolamento influenciou?]</span></li>
+                    <li><strong>Exploração Econômica:</strong> <span class="editable">[COMPLETE: de que forma a Espanha explorava economicamente?]</span></li>
+                    <li><strong>Influência das Independências Vizinhas:</strong> <span class="editable">[COMPLETE: quais países se independentizaram antes?]</span></li>
+                    <li><strong>Sentimento Nacionalista:</strong> <span class="editable">[COMPLETE: como cresceu o sentimento nacional?]</span></li>
+                </ul>
+            </div>
+            
+            <!-- SEÇÃO 3: TIMELINE DOS EVENTOS -->
+            <div class="section">
+                <h2>📅 Linha do Tempo</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">1776</div>
+                        <div class="timeline-description">
+                            <span class="editable">[COMPLETE: que evento importante ocorreu?]</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">1809</div>
+                        <div class="timeline-description">
+                            Primeira tentativa de independência. 
+                            <span class="editable">[COMPLETE: quem liderou este movimento?]</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">14 de Maio de 1811</div>
+                        <div class="timeline-description">
+                            <strong>Independência Oficial do Paraguai!</strong> 
+                            O Paraguai se declara independente sob liderança de 
+                            <span class="editable">[COMPLETE: nome do líder?]</span>.
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-year">1811-1840</div>
+                        <div class="timeline-description">
+                            Período de consolidação da independência sob o governo de 
+                            <span class="editable">[COMPLETE: qual foi o primeiro líder?]</span>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SEÇÃO 4: PERSONAGENS PRINCIPAIS -->
+            <div class="section">
+                <h2>👥 Personagens Principais</h2>
+                
+                <div class="interactive-box">
+                    <h3>1. Primeiro Líder do Paraguai Independente</h3>
+                    <p><strong>Nome:</strong> <span class="editable">[COMPLETE]</span></p>
+                    <p><strong>Período de Governo:</strong> <span class="editable">[COMPLETE]</span></p>
+                    <p><strong>Principais Ações:</strong> <span class="editable">[COMPLETE]</span></p>
+                </div>
+                
+                <div class="interactive-box">
+                    <h3>2. Outros Líderes Importantes</h3>
+                    <p><strong>Nome 1:</strong> <span class="editable">[COMPLETE]</span></p>
+                    <p><strong>Contribuição:</strong> <span class="editable">[COMPLETE]</span></p>
+                    <p><strong>Nome 2:</strong> <span class="editable">[COMPLETE]</span></p>
+                    <p><strong>Contribuição:</strong> <span class="editable">[COMPLETE]</span></p>
+                </div>
+            </div>
+            
+            <!-- SEÇÃO 5: QUIZ INTERATIVO -->
+            <div class="section">
+                <h2>🎯 Teste Seus Conhecimentos</h2>
+                
+                <div class="quiz">
+                    <p><strong>Pergunta 1:</strong> Em que data o Paraguai se tornou independente?</p>
+                    <label>
+                        <input type="radio" name="q1" value="a"> 
+                        <span class="editable">[COMPLETE: opção A]</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="q1" value="b"> 
+                        <span class="editable">[COMPLETE: opção B]</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="q1" value="c"> 
+                        <span class="editable">[COMPLETE: opção C]</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="q1" value="d"> 
+                        <span class="editable">[COMPLETE: opção D]</span>
+                    </label>
+                </div>
+                
+                <div class="quiz">
+                    <p><strong>Pergunta 2:</strong> <span class="editable">[COMPLETE: escreva uma pergunta importante]</span></p>
+                    <label>
+                        <input type="radio" name="q2" value="a"> 
+                        <span class="editable">[COMPLETE: opção A]</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="q2" value="b"> 
+                        <span class="editable">[COMPLETE: opção B]</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="q2" value="c"> 
+                        <span class="editable">[COMPLETE: opção C]</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="q2" value="d"> 
+                        <span class="editable">[COMPLETE: opção D]</span>
+                    </label>
+                </div>
+                
+                <button onclick="verificarRespostas()">Verificar Respostas</button>
+            </div>
+            
+            <!-- SEÇÃO 6: CURIOSIDADES -->
+            <div class="section">
+                <h2>💡 Curiosidades</h2>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li>📍 <span class="editable">[COMPLETE: curiosidade 1 sobre o Paraguai]</span></li>
+                    <li>📍 <span class="editable">[COMPLETE: curiosidade 2 sobre a independência]</span></li>
+                    <li>📍 <span class="editable">[COMPLETE: curiosidade 3 sobre a história do país]</span></li>
+                    <li>📍 <span class="editable">[COMPLETE: curiosidade 4]</span></li>
+                </ul>
+            </div>
+            
+            <!-- SEÇÃO 7: LEGADO -->
+            <div class="section">
+                <h2>🏛️ Legado da Independência</h2>
+                <p>
+                    A independência do Paraguai em 1811 foi fundamental para 
+                    <span class="editable">[COMPLETE: qual foi o impacto principal?]</span>. 
+                    O país pôde estabelecer suas próprias políticas e 
+                    <span class="editable">[COMPLETE: quais foram as primeiras medidas?]</span>.
+                </p>
+                <p>
+                    Hoje, o 14 de maio é celebrado como o 
+                    <span class="editable">[COMPLETE: como é conhecido este dia?]</span> 
+                    no Paraguai, em homenagem à independência e à libertação do país.
+                </p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>📚 Site educativo sobre a Independência do Paraguai</p>
+            <p>Desenvolvido como trabalho de história - 2024</p>
+        </footer>
+    </div>
+    
+    <script>
+        function verificarRespostas() {
+            alert('Verifique se selecionou as respostas corretas!\n\nDica: Complete o conteúdo do site com as informações pesquisadas para criar as alternativas corretas.');
+        }
+        
+        // Destaque os campos editáveis ao passar o mouse
+        document.querySelectorAll('.editable').forEach(el => {
+            el.addEventListener('mouseenter', function() {
+                this.style.background = '#ffeb3b';
+                this.style.fontWeight = 'bold';
+            });
+            el.addEventListener('mouseleave', function() {
+                this.style.background = '#fffacd';
+                this.style.fontWeight = 'normal';
+            });
+        });
+    </script>
+</body>
+</html>
