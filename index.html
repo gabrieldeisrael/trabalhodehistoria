@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Independência do Paraguai - 1811</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Crimson+Text:ital@0;1&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Text:ital@0;1&family=Garamond&display=swap');
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        html, body { width: 100%; height: 100%; }
+        
         body {
             position: relative;
-            font-family: 'Crimson Text', serif;
-            background: linear-gradient(135deg, #3d2817 0%, #5a4033 100%);
+            font-family: 'Crimson Text', 'Garamond', serif;
+            background: linear-gradient(135deg, #1a1410 0%, #2d2419 50%, #1a1410 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 40px 20px;
             overflow-x: hidden;
         }
 
@@ -23,11 +25,12 @@
             position: fixed;
             inset: 0;
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/2/27/Flag_of_Paraguay.svg');
-            background-size: cover;
-            background-position: center top;
+            background-size: 150%;
+            background-position: center;
             background-repeat: no-repeat;
-            opacity: 0.14;
-            filter: saturate(0.9) brightness(1.05) contrast(1.2);
+            background-attachment: fixed;
+            opacity: 0.08;
+            filter: saturate(0.7) brightness(0.95) contrast(1.1);
             pointer-events: none;
             z-index: 0;
         }
@@ -36,7 +39,7 @@
             content: "";
             position: fixed;
             inset: 0;
-            background: rgba(24, 18, 11, 0.12);
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.15) 100%);
             pointer-events: none;
             z-index: 0;
         }
@@ -44,154 +47,235 @@
         .container {
             position: relative;
             z-index: 1;
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
-            background: linear-gradient(135deg, #f4e8d8 0%, #e8dcc8 100%);
-            border-radius: 8px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -2px 5px rgba(0,0,0,0.1);
+            background: linear-gradient(to bottom, #f9f3e6 0%, #ece5d6 50%, #e8dcc8 100%);
+            border-radius: 2px;
+            box-shadow: 
+                0 40px 80px rgba(0,0,0,0.7),
+                0 0 100px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.1),
+                inset 0 -1px 3px rgba(0,0,0,0.15);
             overflow: hidden;
-            border: 3px solid #8b6f47;
+            border: 2px solid #7a6c5f;
+            position: relative;
         }
         
         .container::before {
             content: '';
             position: absolute;
             inset: 0;
-            background-image: repeating-linear-gradient(90deg, transparent 0 2px, rgba(0,0,0,.03) 2px 4px), repeating-linear-gradient(0deg, transparent 0 2px, rgba(0,0,0,.03) 2px 4px);
+            background-image: 
+                repeating-linear-gradient(90deg, transparent 0 1px, rgba(0,0,0,.008) 1px 2px),
+                repeating-linear-gradient(0deg, transparent 0 1px, rgba(0,0,0,.008) 1px 2px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at top left, rgba(255,200,100,0.05) 0%, transparent 50%),
+                        radial-gradient(ellipse at bottom right, rgba(139,80,40,0.03) 0%, transparent 50%);
             pointer-events: none;
             z-index: 1;
         }
         
-        .content-wrapper { position: relative; z-index: 2; }
+        .content-wrapper { 
+            position: relative; 
+            z-index: 2; 
+        }
         
         header {
-            background: linear-gradient(135deg, rgba(90,64,51,0.96) 0%, rgba(61,40,23,0.96) 100%);
-            color: #f4e8d8;
-            padding: 50px 30px;
+            background: linear-gradient(180deg, rgba(45,36,25,0.97) 0%, rgba(30,23,16,0.98) 100%);
+            color: #f5ede3;
+            padding: 70px 40px;
             text-align: center;
-            border-bottom: 4px solid #8b6f47;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+            border-bottom: 3px solid #a89968;
+            box-shadow: 
+                inset 0 1px 0 rgba(255,255,255,0.05),
+                inset 0 -1px 3px rgba(0,0,0,0.3),
+                0 10px 30px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                linear-gradient(90deg, transparent 0%, rgba(168,153,104,0.03) 50%, transparent 100%);
+            pointer-events: none;
+        }
+        
+        header .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-separator {
+            display: block;
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #a89968, transparent);
+            margin: 25px auto;
         }
         
         header h1 {
             font-family: 'Cinzel', serif;
-            font-size: 3.5em;
-            margin-bottom: 5px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            letter-spacing: 3px;
+            font-size: 3.8em;
+            font-weight: 900;
+            margin: 0;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.6);
+            letter-spacing: 4px;
+            word-spacing: 20px;
+            line-height: 1.2;
         }
         
         header .date {
             font-family: 'Cinzel', serif;
-            font-size: 1.8em;
-            color: #d4a574;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
+            font-size: 1.6em;
+            color: #c9a55d;
+            margin: 20px 0 15px 0;
+            letter-spacing: 3px;
+            font-weight: 400;
         }
         
         header p {
-            font-size: 1.3em;
+            font-size: 1.2em;
             font-style: italic;
-            color: #e8dcc8;
-            letter-spacing: 1px;
+            color: #d4c4b0;
+            letter-spacing: 1.5px;
+            font-weight: 400;
+            margin: 0;
         }
         
-        .ornament {
-            text-align: center;
-            font-size: 1.5em;
-            color: #8b6f47;
-            margin: 15px 0;
-            letter-spacing: 8px;
+        .content { 
+            padding: 60px 50px; 
+            position: relative;
+            z-index: 2;
         }
-        
-        .content { padding: 50px 40px; }
         
         .section {
-            margin-bottom: 50px;
-            padding: 30px;
-            background: linear-gradient(135deg, rgba(249,243,233,0.92) 0%, rgba(245,237,227,0.94) 100%);
-            border: 2px solid #8b6f47;
-            border-radius: 4px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.3);
+            margin-bottom: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(249,243,233,0.94) 0%, rgba(242,233,220,0.96) 100%);
+            border: 1px solid #a89968;
+            border-radius: 1px;
+            box-shadow: 
+                0 8px 20px rgba(0,0,0,0.12),
+                inset 0 1px 0 rgba(255,255,255,0.2),
+                inset 0 -1px 3px rgba(0,0,0,0.08);
             position: relative;
         }
-        
+
         .section::before {
             content: '';
             position: absolute;
             inset: 0;
-            background-image: repeating-linear-gradient(0deg, transparent 0 1px, rgba(139,111,71,.05) 1px 2px);
+            background-image: repeating-linear-gradient(0deg, transparent 0 1px, rgba(139,111,71,.02) 1px 2px);
+            pointer-events: none;
+        }
+
+        .section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at top, rgba(255,200,100,0.02) 0%, transparent 50%);
             pointer-events: none;
         }
         
-        .section-content { position: relative; z-index: 2; }
+        .section-content { 
+            position: relative; 
+            z-index: 2; 
+        }
         
         .section h2 {
             font-family: 'Cinzel', serif;
-            color: #3d2817;
-            margin-bottom: 20px;
-            font-size: 2.2em;
+            color: #2a2015;
+            margin-bottom: 25px;
+            font-size: 2.4em;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            border-bottom: 2px solid #8b6f47;
-            padding-bottom: 12px;
+            letter-spacing: 3px;
+            font-weight: 700;
+            border-bottom: 2px solid #a89968;
+            padding-bottom: 15px;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 80px;
+            height: 2px;
+            background: #c9a55d;
         }
         
         .section h3 {
             font-family: 'Cinzel', serif;
-            color: #5a4033;
-            margin-top: 25px;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-            letter-spacing: 1px;
+            color: #4a3f35;
+            margin-top: 35px;
+            margin-bottom: 18px;
+            font-size: 1.6em;
+            letter-spacing: 1.5px;
+            font-weight: 700;
         }
         
         .section p {
-            line-height: 1.9;
-            color: #2a2520;
-            margin-bottom: 15px;
-            font-size: 1.1em;
+            line-height: 2;
+            color: #3a3430;
+            margin-bottom: 18px;
+            font-size: 1.15em;
             text-align: justify;
+            letter-spacing: 0.5px;
         }
         
         .blank-space {
-            background: rgba(255,253,247,0.85);
-            border: 2px dashed #8b6f47;
-            border-radius: 3px;
-            padding: 20px;
-            margin: 15px 0;
-            min-height: 80px;
+            background: linear-gradient(135deg, rgba(255,253,247,0.9) 0%, rgba(255,251,245,0.95) 100%);
+            border: 2px dashed #a89968;
+            border-radius: 2px;
+            padding: 25px;
+            margin: 20px 0;
+            min-height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #8b6f47;
+            color: #a89968;
             font-style: italic;
-            font-size: 0.95em;
+            font-size: 0.98em;
+            letter-spacing: 0.5px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
         }
         
         .image-container {
-            margin: 30px 0;
+            margin: 40px 0;
             text-align: center;
-            padding: 20px;
-            background: rgba(255,253,247,0.9);
-            border: 2px solid #8b6f47;
-            border-radius: 4px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255,253,247,0.95) 0%, rgba(255,251,245,0.98) 100%);
+            border: 1px solid #a89968;
+            border-radius: 2px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.3);
         }
         
         .image-container img {
             max-width: 100%;
             height: auto;
-            filter: sepia(0.3) grayscale(0.5);
-            border: 2px solid #8b6f47;
+            filter: sepia(0.25) grayscale(0.4) contrast(1.05);
+            border: 1px solid #a89968;
         }
         
         .image-caption {
             font-family: 'Cinzel', serif;
-            color: #5a4033;
-            margin-top: 10px;
+            color: #4a3f35;
+            margin-top: 15px;
             font-size: 0.95em;
             font-style: italic;
             letter-spacing: 1px;
+            font-weight: 400;
         }
         
         .timeline {
@@ -200,127 +284,173 @@
             margin: 30px 0;
         }
         
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #a89968, transparent);
+        }
+        
         .timeline-item {
-            margin-bottom: 35px;
-            padding-left: 60px;
+            margin-bottom: 40px;
+            padding-left: 70px;
             position: relative;
-            background: rgba(255,253,247,0.88);
-            padding: 20px 20px 20px 80px;
-            border-left: 3px solid #8b6f47;
-            border-radius: 3px;
+            background: linear-gradient(135deg, rgba(255,253,247,0.85) 0%, rgba(255,251,245,0.9) 100%);
+            padding: 25px 25px 25px 70px;
+            border-left: 2px solid #a89968;
+            border-radius: 1px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.07);
         }
         
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -11px;
-            top: 28px;
-            width: 20px;
-            height: 20px;
-            background: #8b6f47;
+            left: -10px;
+            top: 30px;
+            width: 18px;
+            height: 18px;
+            background: #a89968;
             border-radius: 50%;
             border: 3px solid #f9f3e9;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
         
         .timeline-year {
             font-family: 'Cinzel', serif;
-            font-weight: bold;
-            color: #3d2817;
-            font-size: 1.4em;
-            letter-spacing: 1px;
+            font-weight: 700;
+            color: #2a2015;
+            font-size: 1.5em;
+            letter-spacing: 1.5px;
         }
         
         .timeline-description {
-            color: #2a2520;
-            margin-top: 8px;
-            font-size: 1.05em;
-            line-height: 1.6;
+            color: #3a3430;
+            margin-top: 10px;
+            font-size: 1.08em;
+            line-height: 1.8;
+            letter-spacing: 0.3px;
         }
 
         .blank-timeline {
-            background: rgba(255,253,247,0.82);
-            border: 2px dashed #8b6f47;
-            border-radius: 3px;
-            padding: 15px;
-            margin: 10px 0;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #8b6f47;
-            font-style: italic;
-        }
-
-        .personagem-card {
-            background: rgba(255,253,247,0.88);
-            border: 2px solid #8b6f47;
-            padding: 25px;
-            margin: 20px 0;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .personagem-card h4 {
-            font-family: 'Cinzel', serif;
-            color: #3d2817;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-            letter-spacing: 1px;
-        }
-        
-        .blank-fact {
-            background: rgba(255,250,242,0.9);
-            border-left: 4px solid #d4a574;
-            padding: 15px;
+            background: linear-gradient(135deg, rgba(255,253,247,0.88) 0%, rgba(255,251,245,0.92) 100%);
+            border: 2px dashed #a89968;
+            border-radius: 2px;
+            padding: 18px;
             margin: 15px 0;
             min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #8b6f47;
+            color: #a89968;
             font-style: italic;
-            font-size: 0.95em;
-            border-radius: 2px;
+            font-size: 0.96em;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .personagem-card {
+            background: linear-gradient(135deg, rgba(255,253,247,0.92) 0%, rgba(255,251,245,0.95) 100%);
+            border: 1px solid #a89968;
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 1px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .personagem-card h4 {
+            font-family: 'Cinzel', serif;
+            color: #2a2015;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+        }
+        
+        .blank-fact {
+            background: linear-gradient(135deg, rgba(255,253,247,0.92) 0%, rgba(255,251,245,0.96) 100%);
+            border-left: 3px solid #c9a55d;
+            padding: 18px;
+            margin: 15px 0;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a89968;
+            font-style: italic;
+            font-size: 0.96em;
+            border-radius: 1px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
+            letter-spacing: 0.3px;
         }
 
         .list-item {
-            margin: 12px 0;
-            padding-left: 25px;
+            margin: 15px 0;
+            padding-left: 30px;
             position: relative;
-            line-height: 1.6;
+            line-height: 1.8;
+            color: #3a3430;
         }
 
         .list-item::before {
-            content: '❖';
+            content: '—';
             position: absolute;
             left: 0;
-            color: #8b6f47;
+            color: #a89968;
+            font-weight: bold;
+        }
+
+        .list-item strong {
+            color: #2a2015;
+            font-weight: 700;
         }
 
         footer {
-            background: rgba(90,64,51,0.96);
-            padding: 30px;
+            background: linear-gradient(180deg, rgba(45,36,25,0.97) 0%, rgba(30,23,16,0.98) 100%);
+            padding: 40px;
             text-align: center;
-            color: #e8dcc8;
-            border-top: 4px solid #8b6f47;
+            color: #d4c4b0;
+            border-top: 3px solid #a89968;
             font-family: 'Cinzel', serif;
             letter-spacing: 2px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
-        footer p { margin: 5px 0; font-size: 0.95em; }
+        footer p { 
+            margin: 8px 0; 
+            font-size: 0.96em;
+            letter-spacing: 1px;
+        }
 
         .decorative-line {
             text-align: center;
-            color: #8b6f47;
-            font-size: 1.2em;
-            margin: 30px 0;
-            letter-spacing: 6px;
+            color: #a89968;
+            font-size: 1.3em;
+            margin: 35px 0;
+            letter-spacing: 10px;
+        }
+
+        .divider {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #a89968, transparent);
+            margin: 40px auto;
         }
 
         @media (max-width: 768px) {
-            header h1 { font-size: 2.5em; }
-            .section { padding: 20px; }
-            .content { padding: 30px 20px; }
+            header h1 { font-size: 2.8em; }
+            header .date { font-size: 1.4em; }
+            .section { 
+                padding: 25px;
+                margin-bottom: 40px;
+            }
+            .content { 
+                padding: 30px 20px; 
+            }
+            .section h2 {
+                font-size: 1.9em;
+            }
         }
     </style>
 </head>
@@ -328,163 +458,169 @@
     <div class="container">
         <div class="content-wrapper">
             <header>
-                <div class="ornament">✦ ✦ ✦</div>
-                <div class="date">14 de Mayo de 1811</div>
-                <h1>INDEPENDENCIA DEL PARAGUAY</h1>
-                <p>Un Acto de Libertad y Soberanía Nacional</p>
-                <div class="ornament">✦ ✦ ✦</div>
+                <div class="header-content">
+                    <div class="header-separator"></div>
+                    <div class="date">14 de Mayo de 1811</div>
+                    <h1>INDEPENDENCIA<br>DEL PARAGUAY</h1>
+                    <div class="header-separator"></div>
+                    <p>Un Acto de Libertad y Soberanía Nacional</p>
+                </div>
             </header>
             
             <div class="content">
                 <div class="section">
                     <div class="section-content">
-                        <h2>📜 Contexto Histórico</h2>
+                        <h2>Contexto Histórico</h2>
                         <h3>A Colônia do Paraguai</h3>
-                        <p>O território do Paraguai, durante o período colonial, estava sob domínio da coroa espanhola desde o século XVI.</p>
-                        <div class="blank-space">[COMPLETE: Descreva quem colonizou o Paraguai e em que século]</div>
-                        <p>A região era importante por suas riquezas naturais e recursos econômicos que alimentavam o império espanhol.</p>
-                        <div class="blank-space">[COMPLETE: Cite quais eram as principais riquezas naturais exploradas]</div>
+                        <p>O território do Paraguai, durante o período colonial, estava sob domínio da coroa espanhola desde o século XVI. A região permaneceu como colônia durante mais de dois séculos, desenvolvendo uma estrutura própria de governo e sociedade.</p>
+                        <div class="blank-space">[Descreva quem colonizou o Paraguai e em que século]</div>
+                        <p>A região era estrategicamente importante por suas riquezas naturais e recursos econômicos que alimentavam o império espanhol, além de sua localização geográfica privilegiada na América do Sul.</p>
+                        <div class="blank-space">[Cite quais eram as principais riquezas naturais exploradas]</div>
                         <h3>Administração Colonial</h3>
-                        <p>A administração colonial era centralizada em Assunção, a capital da provincia.</p>
-                        <div class="blank-space">[COMPLETE: Nomeie o vice-rei ou governador responsável pela região]</div>
+                        <p>A administração colonial era centralizada em Assunção, que se tornaria o coração político e cultural do Paraguai. A estrutura governamental refletia a autoridade da Coroa Espanhola.</p>
+                        <div class="blank-space">[Nomeie o vice-rei ou governador responsável pela região]</div>
                         <div class="image-container">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23d4a574' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Cinzel' font-size='24' fill='%235a4033'%3E[INSIRA AQUI IMAGEM: Mapa do Paraguai Colonial]%3C/text%3E%3C/svg%3E" alt="Mapa do Paraguai Colonial">
-                            <div class="image-caption">Mapa da Região do Paraguai - Período Colonial</div>
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23c9a55d' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Cinzel' font-size='18' fill='%234a3f35'%3EMapa da Região do Paraguai — Período Colonial%3C/text%3E%3C/svg%3E" alt="Mapa do Paraguai Colonial">
+                            <div class="image-caption">Mapa da Região do Paraguai durante o Período Colonial</div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="decorative-line">❖ ❖ ❖</div>
+                <div class="divider"></div>
                 
                 <div class="section">
                     <div class="section-content">
-                        <h2>⚔️ Causas da Independência</h2>
-                        <p>Diversos fatores contribuíram para o surgimento do movimento independentista no Paraguai:</p>
-                        <h3>1. Isolamento Geográfico</h3>
-                        <p>A situação geográfica do Paraguai, cercado por terras, proporcionou um certo isolamento que facilitou o desenvolvimento de uma identidade própria.</p>
-                        <div class="blank-fact">[COMPLETE: Explique como o isolamento geográfico influenciou o desejo de independência]</div>
-                        <h3>2. Exploração Econômica</h3>
-                        <p>A Coroa Espanhola exercia controle absoluto sobre a economia da colônia.</p>
-                        <div class="blank-fact">[COMPLETE: Descreva as formas de exploração econômica impostas pela Espanha]</div>
-                        <h3>3. Influência das Independências Vizinhas</h3>
-                        <p>Os movimentos de independência em outras colônias sul-americanas inspiraram os paraguaios.</p>
-                        <div class="blank-fact">[COMPLETE: Liste quais países sul-americanos se tornaram independentes antes do Paraguai]</div>
-                        <h3>4. Sentimento Nacionalista</h3>
-                        <p>Crescia entre os paraguaios a consciência de sua identidade e capacidade de auto-governo.</p>
-                        <div class="blank-fact">[COMPLETE: Descreva como o sentimento nacionalista se manifestava]</div>
+                        <h2>Causas da Independência</h2>
+                        <p>O movimento independentista do Paraguai surgiu de uma confluência de fatores políticos, econômicos e sociais que moldaram a consciência nacional. Diversos elementos contribuíram para o surgimento dessa determinação pela liberdade.</p>
+                        <h3>Isolamento Geográfico</h3>
+                        <p>A situação geográfica do Paraguai, cercado por terras e distante dos grandes centros coloniais, proporcionou um isolamento que facilitou o desenvolvimento de uma identidade própria e distinta dos demais territórios coloniais.</p>
+                        <div class="blank-fact">[Explique como o isolamento geográfico influenciou o desejo de independência]</div>
+                        <h3>Exploração Econômica</h3>
+                        <p>A Coroa Espanhola exercia controle absoluto sobre a economia da colônia, impondo monopólios e regulações que prejudicavam os interesses locais e criavam ressentimento entre os colonos.</p>
+                        <div class="blank-fact">[Descreva as formas de exploração econômica impostas pela Espanha]</div>
+                        <h3>Influência das Independências Vizinhas</h3>
+                        <p>Os movimentos de independência que varreram a América Latina no início do século XIX forneceram inspiração e precedentes para os paraguaios, demonstrando que a liberdade era possível.</p>
+                        <div class="blank-fact">[Liste quais países sul-americanos se tornaram independentes antes do Paraguai]</div>
+                        <h3>Sentimento Nacionalista</h3>
+                        <p>Crescia entre os paraguaios a consciência de sua identidade coletiva e a convicção de sua capacidade de auto-governo, formando uma nação consciente de seu potencial.</p>
+                        <div class="blank-fact">[Descreva como o sentimento nacionalista se manifestava na sociedade]</div>
                     </div>
                 </div>
                 
-                <div class="decorative-line">❖ ❖ ❖</div>
+                <div class="divider"></div>
                 
                 <div class="section">
                     <div class="section-content">
-                        <h2>📅 Linha do Tempo - Caminho para a Independência</h2>
+                        <h2>Linha do Tempo</h2>
+                        <p>Os acontecimentos que moldaram o caminho para a independência do Paraguai se desenrolaram ao longo de décadas, refletindo as transformações políticas da época.</p>
                         <div class="timeline">
                             <div class="timeline-item">
                                 <div class="timeline-year">1776</div>
-                                <div class="timeline-description">Período de transformações políticas na América Latina</div>
-                                <div class="blank-timeline">[COMPLETE: Qual evento importante ocorreu este ano na América?]</div>
+                                <div class="timeline-description">Período de transformações políticas revolucionárias na América Latina e no mundo</div>
+                                <div class="blank-timeline">[Qual evento importante ocorreu este ano na América?]</div>
                             </div>
                             <div class="timeline-item">
-                                <div class="timeline-year">1807-1808</div>
-                                <div class="timeline-description">Crisis na Monarquia Espanhola</div>
-                                <div class="blank-timeline">[COMPLETE: Explique a crise na Espanha]</div>
+                                <div class="timeline-year">1807–1808</div>
+                                <div class="timeline-description">Crise profunda na Monarquia Espanhola com consequências globais</div>
+                                <div class="blank-timeline">[Explique a crise na Espanha e seus desdobramentos]</div>
                             </div>
                             <div class="timeline-item">
                                 <div class="timeline-year">1809</div>
                                 <div class="timeline-description">Primeira tentativa de independência no Paraguai</div>
-                                <div class="blank-timeline">[COMPLETE: Quem liderou o movimento? Qual foi o resultado?]</div>
+                                <div class="blank-timeline">[Quem liderou o movimento? Qual foi o resultado?]</div>
                             </div>
                             <div class="timeline-item">
                                 <div class="timeline-year">10 de Março de 1811</div>
-                                <div class="timeline-description">Conspiração patriótica se intensifica</div>
-                                <div class="blank-timeline">[COMPLETE: Descreva os eventos de março de 1811]</div>
+                                <div class="timeline-description">A conspiração patriótica se intensifica com força renovada</div>
+                                <div class="blank-timeline">[Descreva os eventos decisivos de março de 1811]</div>
                             </div>
                             <div class="timeline-item">
                                 <div class="timeline-year">14 de Maio de 1811</div>
-                                <div class="timeline-description"><strong>INDEPENDÊNCIA DECLARADA!</strong></div>
-                                <div class="blank-timeline">[COMPLETE: Como a independência foi proclamada? Quem foram os principais líderes?]</div>
+                                <div class="timeline-description">A Independência é Proclamada</div>
+                                <div class="blank-timeline">[Como a independência foi proclamada? Quem foram os principais líderes?]</div>
                             </div>
                             <div class="timeline-item">
-                                <div class="timeline-year">1811-1840</div>
-                                <div class="timeline-description">Consolidação da Independência</div>
-                                <div class="blank-timeline">[COMPLETE: Como se consolidou a independência? Quem governou neste período?]</div>
+                                <div class="timeline-year">1811–1840</div>
+                                <div class="timeline-description">Período de consolidação da independência e formação do Estado Paraguaio</div>
+                                <div class="blank-timeline">[Como se consolidou a independência? Quem governou neste período?]</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="decorative-line">❖ ❖ ❖</div>
+                <div class="divider"></div>
                 
                 <div class="section">
                     <div class="section-content">
-                        <h2>👨 Personagens Principais</h2>
+                        <h2>Personagens Principais</h2>
+                        <p>A história da independência do Paraguai foi construída por homens e mulheres de coragem que dedicaram suas vidas pela liberdade da nação.</p>
                         <h3>Líderes da Independência</h3>
                         <div class="personagem-card">
                             <h4>Primeiro Líder do Paraguai Independente</h4>
-                            <div class="blank-fact">[COMPLETE: Nome do líder]</div>
-                            <div class="blank-fact">[COMPLETE: Data de nascimento e morte]</div>
-                            <div class="blank-fact">[COMPLETE: Principais realizações e políticas]</div>
+                            <div class="blank-fact">[Nome do grande líder da independência]</div>
+                            <div class="blank-fact">[Data de nascimento e morte]</div>
+                            <div class="blank-fact">[Principais realizações e políticas implementadas]</div>
                             <div class="image-container">
-                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='300'%3E%3Crect fill='%23d4a574' width='250' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Cinzel' font-size='18' fill='%235a4033'%3E[RETRATO]%3C/text%3E%3C/svg%3E" alt="Retrato do Líder">
-                                <div class="image-caption">Retrato do Primeiro Líder</div>
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='320'%3E%3Crect fill='%23c9a55d' width='250' height='320'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Cinzel' font-size='16' fill='%234a3f35'%3ERetrato do Primeiro Líder%3C/text%3E%3C/svg%3E" alt="Retrato do Líder">
+                                <div class="image-caption">Retrato do Primeiro Líder da Nação Paraguaia</div>
                             </div>
                         </div>
                         <div class="personagem-card">
                             <h4>Outros Personagens Importantes</h4>
-                            <p><strong>Nome:</strong></p>
-                            <div class="blank-fact">[COMPLETE: Primeiro nome e contribuição]</div>
-                            <p><strong>Nome:</strong></p>
-                            <div class="blank-fact">[COMPLETE: Segundo nome e contribuição]</div>
-                            <p><strong>Nome:</strong></p>
-                            <div class="blank-fact">[COMPLETE: Terceiro nome e contribuição]</div>
+                            <p><strong>Primeiro Nome Histórico:</strong></p>
+                            <div class="blank-fact">[Nome e contribuição significativa para a independência]</div>
+                            <p><strong>Segundo Nome Histórico:</strong></p>
+                            <div class="blank-fact">[Nome e papel fundamental no processo de libertação]</div>
+                            <p><strong>Terceiro Nome Histórico:</strong></p>
+                            <div class="blank-fact">[Nome e legado deixado para a história do país]</div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="decorative-line">❖ ❖ ❖</div>
+                <div class="divider"></div>
                 
                 <div class="section">
                     <div class="section-content">
-                        <h2>📝 Fatos Históricos Importantes</h2>
+                        <h2>Fatos Históricos Importantes</h2>
+                        <p>Os eventos que marcaram o caminho para a independência revelam a determinação e o sacrifício do povo paraguaio em busca da liberdade.</p>
                         <h3>Os Eventos Decisivos</h3>
-                        <div class="list-item"><strong>Proclamação da Independência</strong><div class="blank-fact">[COMPLETE: Como e onde foi proclamada? Quem estava presente?]</div></div>
-                        <div class="list-item"><strong>Documentos Fundacionais</strong><div class="blank-fact">[COMPLETE: Quais foram os primeiros documentos ou leis criadas?]</div></div>
-                        <div class="list-item"><strong>Reconhecimento Internacional</strong><div class="blank-fact">[COMPLETE: Quais países reconheceram a independência do Paraguai?]</div></div>
-                        <div class="list-item"><strong>Primeiras Medidas do Governo</strong><div class="blank-fact">[COMPLETE: Quais foram as primeiras ações políticas e econômicas?]</div></div>
+                        <div class="list-item"><strong>Proclamação da Independência</strong><div class="blank-fact">[Como e onde foi proclamada? Quem estava presente nos momentos finais?]</div></div>
+                        <div class="list-item"><strong>Documentos Fundacionais</strong><div class="blank-fact">[Quais foram os primeiros documentos ou leis criadas para a nação?]</div></div>
+                        <div class="list-item"><strong>Reconhecimento Internacional</strong><div class="blank-fact">[Quais países reconheceram a independência do Paraguai?]</div></div>
+                        <div class="list-item"><strong>Primeiras Medidas do Governo</strong><div class="blank-fact">[Quais foram as primeiras ações políticas e econômicas do novo Estado?]</div></div>
                     </div>
                 </div>
                 
-                <div class="decorative-line">❖ ❖ ❖</div>
+                <div class="divider"></div>
                 
                 <div class="section">
                     <div class="section-content">
-                        <h2>💎 Curiosidades Históricas</h2>
-                        <div class="list-item"><strong>Curiosidade 1:</strong><div class="blank-fact">[COMPLETE: Fato interessante sobre o Paraguai colonial]</div></div>
-                        <div class="list-item"><strong>Curiosidade 2:</strong><div class="blank-fact">[COMPLETE: Fato interessante sobre a independência]</div></div>
-                        <div class="list-item"><strong>Curiosidade 3:</strong><div class="blank-fact">[COMPLETE: Fato interessante sobre a história do país]</div></div>
-                        <div class="list-item"><strong>Curiosidade 4:</strong><div class="blank-fact">[COMPLETE: Outro fato curioso]</div></div>
+                        <h2>Curiosidades Históricas</h2>
+                        <p>A história do Paraguai guarda detalhes fascinantes que ilustram a riqueza e complexidade de sua formação como nação independente.</p>
+                        <div class="list-item"><strong>Primeira Curiosidade:</strong><div class="blank-fact">[Fato interessante sobre o Paraguai colonial e sua sociedade]</div></div>
+                        <div class="list-item"><strong>Segunda Curiosidade:</strong><div class="blank-fact">[Fato intrigante sobre o movimento de independência]</div></div>
+                        <div class="list-item"><strong>Terceira Curiosidade:</strong><div class="blank-fact">[Aspecto pouco conhecido da história contemporânea do país]</div></div>
+                        <div class="list-item"><strong>Quarta Curiosidade:</strong><div class="blank-fact">[Outro detalhe histórico relevante ou surpreendente]</div></div>
                     </div>
                 </div>
                 
-                <div class="decorative-line">❖ ❖ ❖</div>
+                <div class="divider"></div>
                 
                 <div class="section">
                     <div class="section-content">
-                        <h2>🏛️ Legado da Independência</h2>
-                        <p>A independência do Paraguai em 1811 marcou um ponto de virada fundamental na história do país.</p>
+                        <h2>Legado da Independência</h2>
+                        <p>A independência do Paraguai em 1811 marcou um ponto de virada fundamental na história do país, estabelecendo as bases para uma nação soberana e autônoma.</p>
                         <h3>Impacto Político e Social</h3>
-                        <div class="blank-fact">[COMPLETE: Como a independência transformou a sociedade paraguaia?]</div>
+                        <div class="blank-fact">[Como a independência transformou completamente a sociedade paraguaia?]</div>
                         <h3>Desenvolvimento Nacional</h3>
-                        <div class="blank-fact">[COMPLETE: Quais foram as primeiras instituições criadas?]</div>
+                        <div class="blank-fact">[Quais foram as primeiras instituições criadas para governar a nação?]</div>
                         <h3>A Celebração Moderna</h3>
-                        <p>Hoje, o 14 de maio é celebrado no Paraguai como dia nacional.</p>
-                        <div class="blank-fact">[COMPLETE: Como é celebrado este dia atualmente?]</div>
+                        <p>Hoje, o 14 de maio é celebrado no Paraguai como o dia nacional de maior significado, honrando a coragem e determinação de seus ancestrais.</p>
+                        <div class="blank-fact">[Como é celebrado este dia memorável na atualidade?]</div>
                         <h3>Influência Duradoura</h3>
-                        <div class="blank-fact">[COMPLETE: Qual foi o impacto duradouro da independência para a América Latina?]</div>
+                        <div class="blank-fact">[Qual foi o impacto duradouro da independência para toda a América Latina?]</div>
                         <div class="image-container">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23d4a574' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Cinzel' font-size='24' fill='%235a4033'%3E[INSIRA AQUI IMAGEM: Bandeira ou Símbolos Nacionais]%3C/text%3E%3C/svg%3E" alt="Símbolos Nacionais">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23c9a55d' width='400' height='300'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Cinzel' font-size='18' fill='%234a3f35'%3EBandeira e Símbolos Nacionais do Paraguai%3C/text%3E%3C/svg%3E" alt="Símbolos Nacionais">
                             <div class="image-caption">Símbolos da Identidade Nacional Paraguaia</div>
                         </div>
                     </div>
@@ -492,11 +628,11 @@
             </div>
             
             <footer>
-                <div class="decorative-line">✦ ✦ ✦</div>
-                <p>TRABALHO HISTÓRICO INTERATIVO</p>
-                <p>INDEPENDÊNCIA DO PARAGUAI - 1811</p>
-                <p>Com Espaços para Pesquisa e Complementação</p>
-                <div class="decorative-line">✦ ✦ ✦</div>
+                <div class="decorative-line">— — —</div>
+                <p>TRABALHO HISTÓRICO ACADÊMICO</p>
+                <p>INDEPENDÊNCIA DO PARAGUAI — 1811</p>
+                <p>Pesquisa e Complementação Educativa</p>
+                <div class="decorative-line">— — —</div>
             </footer>
         </div>
     </div>
