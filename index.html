@@ -3,44 +3,966 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Trabalho interativo sobre a Independência do Paraguai e a formação do país.">
-  <title>Paraguai | Independência e Formação Nacional</title>
+  <meta name="description" content="Trabalho interativo sobre a Independência do Paraguai - Edição 1811">
+  <title>Gazeta da Independência - Paraguai 1811</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=Cormorant+Garamond:wght@400;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
   <style>
-    :root{--ink:#201810;--paper:#f7f0df;--paper2:#fffaf0;--red:#b52b32;--blue:#173e68;--gold:#d2a84c;--muted:#6d6255;--shadow:0 18px 55px #140e0a28}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font:16px/1.7 Inter,Arial,sans-serif;background:radial-gradient(circle at 20% 10%,#594329 0,#241a12 38%,#120e0b 100%);overflow-x:hidden}
-    body:before{content:"";position:fixed;inset:0;background:url('https://upload.wikimedia.org/wikipedia/commons/2/27/Flag_of_Paraguay.svg') center/cover no-repeat;opacity:.055;pointer-events:none}
-    .progress{height:4px;background:linear-gradient(90deg,var(--red),var(--gold),var(--blue));position:fixed;top:0;left:0;width:0;z-index:20}.site{max-width:1180px;margin:34px auto;background:var(--paper);box-shadow:0 30px 100px #0009;position:relative;overflow:hidden}
-    header{min-height:530px;padding:26px 7%;display:flex;align-items:center;text-align:center;justify-content:center;color:#fff;background:linear-gradient(#090806bb,#090806dd),url('https://upload.wikimedia.org/wikipedia/commons/2/27/Flag_of_Paraguay.svg') center/cover;position:relative}
-    header:after{content:"";position:absolute;inset:auto 0 0;height:130px;background:linear-gradient(transparent,var(--paper))}header>*{position:relative;z-index:1}.eyebrow{color:#e3bd61;letter-spacing:4px;text-transform:uppercase;font-size:.78rem;font-weight:700}.hero h1{font:800 clamp(2.5rem,7vw,6rem)/1.05 Cinzel,serif;letter-spacing:3px;margin:18px 0;text-shadow:0 5px 20px #000}.hero p{font-size:1.2rem;color:#f6e9cf}.date{display:inline-block;border:1px solid #d2a84c;padding:7px 20px;color:#f5d989;letter-spacing:2px}.scroll{display:inline-block;margin-top:30px;color:#fff;text-decoration:none;animation:bob 2s infinite}@keyframes bob{50%{transform:translateY(8px)}}
-    nav{position:sticky;top:0;z-index:10;background:#18120eeF;border-bottom:1px solid var(--gold);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:11px}nav a{color:#fff;text-decoration:none;padding:6px 12px;border-radius:20px;font-size:.82rem}nav a:hover{background:var(--red)}.content{padding:58px 7%}.section{margin:0 auto 70px;max-width:1000px}.section-title{font:700 clamp(1.7rem,3vw,2.7rem) Cinzel,serif;color:var(--blue);margin:0 0 25px;border-bottom:2px solid var(--gold);padding-bottom:12px}.lead{font-size:1.12rem;color:#40372c}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:20px}.card,.fact,.person{background:var(--paper2);border:1px solid #d7bf82;padding:23px;box-shadow:var(--shadow);transition:.35s transform,.35s box-shadow}.card:hover,.person:hover{transform:translateY(-7px);box-shadow:0 22px 35px #2b160c25}.card h3,.person h3{font-family:Cinzel,serif;color:var(--red);margin-top:0}.tag{display:inline-block;background:#eaddbf;color:var(--blue);padding:3px 9px;border-radius:20px;font-size:.75rem;font-weight:700;margin-bottom:10px}.fact{border-left:5px solid var(--red);margin:17px 0}.fact strong{color:var(--blue)}
-    .timeline{position:relative;margin:35px 0}.timeline:before{content:"";position:absolute;left:18px;top:0;bottom:0;width:3px;background:linear-gradient(var(--red),var(--gold),var(--blue))}.event{position:relative;margin:0 0 25px;padding:20px 25px 20px 60px;background:#fffaf0;border:1px solid #dec98f;box-shadow:0 8px 22px #381b0e12}.event:before{content:"";position:absolute;left:9px;top:25px;width:18px;height:18px;background:var(--gold);border:4px solid var(--paper);border-radius:50%;box-shadow:0 0 0 2px var(--red)}.event b{font:700 1.15rem Cinzel,serif;color:var(--red)}.event h3{margin:3px 0 5px;color:var(--blue)}
-    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}.gallery figure{margin:0;background:#211711;color:#fff;overflow:hidden;box-shadow:var(--shadow);cursor:zoom-in}.gallery img{width:100%;height:190px;object-fit:cover;display:block;transition:.5s}.gallery figure:hover img{transform:scale(1.08)}figcaption{padding:12px;font-size:.85rem}figcaption a{color:#edca70}.person img{width:100%;height:230px;object-fit:cover;margin:-23px -23px 17px;width:calc(100% + 46px);filter:sepia(.15)}
-    details{background:#fffaf0;border:1px solid #d9c48b;margin:12px 0;padding:16px 20px}summary{cursor:pointer;color:var(--blue);font-weight:700;font-family:Cinzel,serif}.quote{font:italic 1.25rem/1.6 Cinzel,serif;text-align:center;color:var(--blue);border-block:1px solid var(--gold);padding:28px;margin:40px 0}.sources{font-size:.9rem;color:var(--muted)}.sources a{color:var(--blue)}footer{padding:35px 7%;background:#1b130e;color:#e7d5b0;text-align:center}button{border:0;border-radius:20px;padding:9px 16px;background:var(--gold);color:#1d1208;font-weight:700;cursor:pointer}.top{position:fixed;right:20px;bottom:20px;display:none;z-index:5}.reveal{opacity:0;transform:translateY(22px);transition:.7s}.reveal.show{opacity:1;transform:none}.modal{display:none;position:fixed;inset:0;background:#000d;z-index:30;align-items:center;justify-content:center;padding:20px}.modal.open{display:flex}.modal img{max-width:95%;max-height:85vh;border:4px solid white}.close{position:absolute;right:25px;top:15px;color:white;font-size:2rem;cursor:pointer}@media(max-width:650px){.site{margin:0}.content{padding:40px 5%}header{min-height:520px}.event{padding-left:52px}nav{justify-content:flex-start;overflow:auto;flex-wrap:nowrap}.person img{height:260px}}
-    @media(prefers-reduced-motion:reduce){*,*:before{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+    :root {
+      --parchment: #f4e8d0;
+      --parchment-dark: #e8dcc0;
+      --ink: #2a1810;
+      --gold: #c9a961;
+      --gold-dark: #8b7355;
+      --red: #8b3a3a;
+      --border: #a89968;
+      --shadow: 0 8px 16px rgba(42, 24, 16, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      color: var(--ink);
+      font-family: 'Crimson Text', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.8;
+      background: linear-gradient(135deg, #2a1810 0%, #3d2817 50%, #2a1810 100%);
+      min-height: 100vh;
+    }
+
+    /* Textura de papel antigo */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px),
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--parchment);
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
+      position: relative;
+      z-index: 2;
+      border: 8px solid #4a3728;
+    }
+
+    /* Cabeçalho tipo jornal antigo */
+    .masthead {
+      padding: 40px 30px;
+      border-bottom: 3px solid var(--ink);
+      text-align: center;
+      background: linear-gradient(to bottom, var(--parchment), var(--parchment-dark));
+    }
+
+    .masthead-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5em;
+      margin: 0 0 5px 0;
+      color: var(--red);
+      letter-spacing: 2px;
+      font-weight: 900;
+      text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+    }
+
+    .masthead-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3em;
+      color: var(--ink);
+      margin: 5px 0;
+      letter-spacing: 3px;
+      font-weight: 600;
+    }
+
+    .masthead-date {
+      font-size: 0.9em;
+      color: var(--gold-dark);
+      margin: 10px 0 0 0;
+      font-style: italic;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 0;
+      letter-spacing: 1px;
+    }
+
+    /* Navegação estilo época */
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+      padding: 15px 20px;
+      background: var(--parchment-dark);
+      border-bottom: 2px solid var(--gold-dark);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+
+    nav a {
+      color: var(--ink);
+      text-decoration: none;
+      padding: 8px 18px;
+      border-right: 1px solid var(--border);
+      font-size: 0.95em;
+      font-weight: 600;
+      font-family: 'Cormorant Garamond', serif;
+      transition: all 0.3s;
+    }
+
+    nav a:hover {
+      background: var(--gold);
+      color: white;
+    }
+
+    nav a:last-child {
+      border-right: none;
+    }
+
+    /* Seções */
+    .content {
+      padding: 0;
+    }
+
+    section {
+      padding: 50px 40px;
+      border-bottom: 2px dashed var(--border);
+      animation: fadeIn 0.8s ease-in;
+    }
+
+    section:last-child {
+      border-bottom: none;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5em;
+      color: var(--red);
+      margin: 0 0 25px 0;
+      padding-bottom: 15px;
+      border-bottom: 3px solid var(--gold);
+      text-align: center;
+    }
+
+    .intro-text {
+      font-size: 1.2em;
+      color: var(--ink);
+      font-style: italic;
+      line-height: 2;
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: rgba(201, 169, 97, 0.1);
+      border-left: 5px solid var(--gold);
+    }
+
+    /* Cards informativos */
+    .info-box {
+      background: rgba(139, 58, 58, 0.08);
+      border-left: 5px solid var(--red);
+      padding: 20px;
+      margin: 20px 0;
+      font-size: 0.95em;
+    }
+
+    .info-box strong {
+      color: var(--red);
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Notícias da época */
+    .newspaper-article {
+      background: #faf7f0;
+      border: 2px solid var(--border);
+      padding: 25px;
+      margin: 25px 0;
+      box-shadow: var(--shadow);
+      page-break-inside: avoid;
+    }
+
+    .article-date {
+      font-size: 0.85em;
+      color: var(--gold-dark);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .article-headline {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5em;
+      color: var(--red);
+      margin: 10px 0;
+      font-weight: 700;
+    }
+
+    .article-text {
+      font-size: 0.95em;
+      color: var(--ink);
+      line-height: 1.9;
+    }
+
+    /* Timeline interativa */
+    .timeline {
+      position: relative;
+      padding: 30px 0;
+    }
+
+    .timeline-item {
+      margin-bottom: 40px;
+      padding-left: 80px;
+      position: relative;
+    }
+
+    .timeline-date {
+      position: absolute;
+      left: 0;
+      background: var(--red);
+      color: white;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2em;
+      box-shadow: var(--shadow);
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .timeline-content {
+      background: #faf7f0;
+      padding: 20px;
+      border-left: 3px solid var(--gold);
+      border-radius: 5px;
+    }
+
+    .timeline-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3em;
+      color: var(--red);
+      margin: 0 0 10px 0;
+    }
+
+    /* Galeria com imagens */
+    .gallery-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin: 30px 0;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 3px solid var(--border);
+      background: white;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-caption {
+      padding: 15px;
+      background: var(--parchment-dark);
+      font-size: 0.9em;
+      color: var(--ink);
+      border-top: 2px solid var(--border);
+    }
+
+    /* Modal para imagens ampliadas */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      animation: fadeIn 0.3s;
+    }
+
+    .modal-content {
+      margin: auto;
+      display: block;
+      width: 90%;
+      max-width: 800px;
+      padding-top: 40px;
+      padding-bottom: 40px;
+      animation: zoomIn 0.3s;
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      top: 20px;
+      right: 35px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .modal-close:hover {
+      color: var(--gold);
+    }
+
+    /* Personagens/Líderes */
+    .characters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin: 30px 0;
+    }
+
+    .character-card {
+      background: #faf7f0;
+      border: 2px solid var(--border);
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .character-card:hover {
+      transform: scale(1.02);
+    }
+
+    .character-image {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      background: var(--gold-dark);
+    }
+
+    .character-info {
+      padding: 20px;
+    }
+
+    .character-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3em;
+      color: var(--red);
+      margin: 0 0 8px 0;
+    }
+
+    .character-title {
+      font-size: 0.9em;
+      color: var(--gold-dark);
+      font-style: italic;
+      margin-bottom: 12px;
+    }
+
+    .character-desc {
+      font-size: 0.9em;
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    /* Rodapé */
+    footer {
+      background: var(--ink);
+      color: var(--parchment);
+      padding: 30px;
+      text-align: center;
+      font-size: 0.9em;
+      border-top: 5px solid var(--gold);
+    }
+
+    footer p {
+      margin: 8px 0;
+    }
+
+    /* Botão voltar ao topo */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--red);
+      color: white;
+      width: 50px;
+      height: 50px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 24px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+      z-index: 999;
+      transition: all 0.3s;
+    }
+
+    .back-to-top:hover {
+      background: var(--red);
+      transform: translateY(-5px);
+    }
+
+    .back-to-top.show {
+      display: flex;
+    }
+
+    /* Acordeão */
+    .accordion {
+      background: #faf7f0;
+      border: 1px solid var(--border);
+      margin: 15px 0;
+    }
+
+    .accordion-header {
+      padding: 15px;
+      background: var(--parchment-dark);
+      cursor: pointer;
+      font-weight: bold;
+      color: var(--red);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1em;
+      border-bottom: 2px solid var(--border);
+      user-select: none;
+      transition: all 0.3s;
+    }
+
+    .accordion-header:hover {
+      background: var(--gold);
+      color: white;
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      background: white;
+    }
+
+    .accordion-content.active {
+      max-height: 1000px;
+      padding: 20px;
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      .masthead-title {
+        font-size: 2.2em;
+      }
+
+      .section-title {
+        font-size: 1.8em;
+      }
+
+      nav {
+        gap: 0;
+      }
+
+      nav a {
+        padding: 6px 12px;
+        font-size: 0.85em;
+        border-right-width: 1px;
+      }
+
+      section {
+        padding: 30px 20px;
+      }
+
+      .timeline-item {
+        padding-left: 60px;
+      }
+
+      .timeline-date {
+        width: 55px;
+        height: 55px;
+        font-size: 0.9em;
+      }
+
+      .gallery-section {
+        grid-template-columns: 1fr;
+      }
+
+      .characters-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body::before {
+        display: none;
+      }
+
+      .back-to-top {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body>
-<div class="progress"></div><button class="top" aria-label="Voltar ao topo">↑</button>
-<main class="site">
-<header id="inicio"><div class="hero"><div class="eyebrow">História da América Latina</div><div class="date">14 e 15 de maio de 1811</div><h1>Independência<br>do Paraguai</h1><p>Da colônia espanhola à construção de uma nação soberana</p><a class="scroll" href="#contexto">↓ explorar a história</a></div></header>
-<nav aria-label="Navegação principal"><a href="#contexto">Contexto</a><a href="#causas">Causas</a><a href="#linha-do-tempo">Linha do tempo</a><a href="#lideres">Líderes</a><a href="#depois">Depois de 1811</a><a href="#legado">Legado</a></nav>
-<div class="content">
-<section class="section reveal" id="contexto"><h2 class="section-title">1. Contexto histórico</h2><p class="lead">Antes da chegada europeia, o território era habitado principalmente por povos Guarani, Guaicuru e Paiaguá. A colonização espanhola começou no século XVI: em 1537, Juan de Salazar fundou Nuestra Señora de la Asunción, que se tornou o centro da região.</p><div class="grid"><article class="card"><span class="tag">Povos originários</span><h3>Guarani e outros povos</h3><p>Os Guarani possuíam redes de aldeias, agricultura e comércio. Durante a colonização, sofreram escravização e violência. As missões jesuíticas foram criadas, em parte, para catequizar e proteger indígenas, mas também impuseram novas formas de controle.</p></article><article class="card"><span class="tag">Economia colonial</span><h3>Erva-mate e tabaco</h3><p>A erva-mate, o tabaco, a madeira e a produção agrícola eram fundamentais. A posição interiorana e o controle dos portos por Buenos Aires dificultavam o comércio e aumentavam impostos e restrições.</p></article><article class="card"><span class="tag">Administração</span><h3>De Assunção a Buenos Aires</h3><p>Em 1776, o Paraguai passou a integrar o Vice-Reino do Rio da Prata, administrado a partir de Buenos Aires. A distância, o isolamento fluvial e a centralização alimentaram conflitos com as autoridades portenhas.</p></article></div><div class="quote">“A independência paraguaia foi também uma defesa da autonomia diante de Buenos Aires — não apenas uma ruptura com a Espanha.”</div></section>
-<section class="section reveal" id="causas"><h2 class="section-title">2. Causas da independência</h2><div class="fact"><strong>Centralização de Buenos Aires:</strong> as taxas e o controle dos portos portenhos encareciam a saída de produtos paraguaios para o oceano.</div><div class="fact"><strong>Crise da monarquia espanhola:</strong> a invasão napoleônica da Espanha, a deposição de Fernando VII e a instabilidade entre 1808 e 1810 enfraqueceram a autoridade colonial.</div><div class="fact"><strong>Recusa à Junta de Buenos Aires:</strong> em 1810, os paraguaios rejeitaram a submissão ao novo governo revolucionário de Buenos Aires e defenderam seu próprio caminho político.</div><div class="fact"><strong>Vitórias militares:</strong> as milícias paraguaias venceram Manuel Belgrano em Paraguarí (19/01/1811) e Tacuarí (09/03/1811), fortalecendo o sentimento de capacidade militar e nacionalidade.</div><div class="fact"><strong>Ameaça portuguesa:</strong> a busca de apoio português pelo governador Bernardo de Velasco foi vista como risco à autonomia e acelerou a conspiração patriótica.</div></section>
-<section class="section reveal" id="linha-do-tempo"><h2 class="section-title">3. Linha do tempo interativa</h2><div class="timeline"><article class="event"><b>1776</b><h3>Criação do Vice-Reino do Rio da Prata</h3><p>O Paraguai fica sob uma estrutura administrativa centralizada em Buenos Aires.</p></article><article class="event"><b>1807–1808</b><h3>Crise na Espanha</h3><p>Napoleão invade a Península Ibérica; a crise de legitimidade repercute nas colônias americanas.</p></article><article class="event"><b>1810</b><h3>Revolução de Maio</h3><p>Buenos Aires forma uma junta e tenta estender sua autoridade ao Paraguai.</p></article><article class="event"><b>19 jan. e 9 mar. 1811</b><h3>Paraguarí e Tacuarí</h3><p>As forças paraguaias derrotam a expedição de Manuel Belgrano e consolidam a confiança dos patriotas.</p></article><article class="event"><b>14–15 maio 1811</b><h3>A revolução em Assunção</h3><p>Pedro Juan Caballero lidera a tomada dos quartéis. Velasco é deposto e surge um governo provisório com participação patriota.</p></article><article class="event"><b>1813–1840</b><h3>Consolidação do Estado</h3><p>O consulado de Fulgencio Yegros e Francia é sucedido pelo poder de José Gaspar Rodríguez de Francia, que governa até 1840.</p></article></div></section>
-<section class="section reveal" id="lideres"><h2 class="section-title">4. Personagens principais</h2><div class="grid"><article class="person"><img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Pedro%20Juan%20Caballero.jpg" alt="Retrato atribuído a Pedro Juan Caballero"><h3>Pedro Juan Caballero</h3><p>Capitão da milícia e principal articulador da ação de 14 de maio. Comandou a ocupação dos quartéis em Assunção e presidiu o governo provisório.</p><a href="https://pt.wikipedia.org/wiki/Pedro_Juan_Caballero" target="_blank" rel="noopener">Ler na Wikipédia →</a></article><article class="person"><img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Fulgencio%20Yegros.jpg" alt="Retrato de Fulgencio Yegros"><h3>Fulgencio Yegros</h3><p>Militar prestigiado pelas vitórias contra Belgrano. Foi um dos cônsules do Paraguai independente em 1813.</p><a href="https://pt.wikipedia.org/wiki/Fulgencio_Yegros" target="_blank" rel="noopener">Ler na Wikipédia →</a></article><article class="person"><img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Jose%20Gaspar%20Rodriguez%20de%20Francia.jpg" alt="Retrato de José Gaspar Rodríguez de Francia"><h3>José Gaspar Rodríguez de Francia</h3><p>Ideólogo da autonomia e figura dominante do primeiro Estado paraguaio. Como “El Supremo”, defendeu a soberania e o isolamento do país até 1840.</p><a href="https://pt.wikipedia.org/wiki/Jos%C3%A9_Gaspar_Rodr%C3%ADguez_de_Francia" target="_blank" rel="noopener">Ler na Wikipédia →</a></article><article class="person"><h3>Bernardo de Velasco</h3><p>Governador espanhol deposto. Foi mantido inicialmente no governo provisório, mas perdeu definitivamente o poder após a revolução.</p></article></div></section>
-<section class="section reveal" id="depois"><h2 class="section-title">5. O que aconteceu depois?</h2><details open><summary>Isolamento e soberania (1811–1840)</summary><p>O novo país precisou defender sua autonomia diante de Buenos Aires e de outras potências regionais. Francia adotou uma política de controle das fronteiras, comércio regulado e autossuficiência.</p></details><details><summary>Modernização com Carlos Antonio López (1844–1862)</summary><p>Após a morte de Francia, Carlos Antonio López abriu relações externas, investiu em infraestrutura, arsenais e educação. A ferrovia paraguaia foi uma das primeiras da América do Sul.</p></details><details><summary>Francisco Solano López e a Guerra da Tríplice Aliança (1864/65–1870)</summary><p>O Paraguai entrou em guerra contra Brasil, Argentina e Uruguai. A derrota causou enorme perda demográfica, destruição econômica, ocupação e perdas territoriais. As estimativas populacionais variam conforme as fontes; por isso, não há um número único consensual.</p></details><details><summary>Guerra do Chaco (1932–1935)</summary><p>Paraguai e Bolívia disputaram o Chaco Boreal. O Paraguai venceu militarmente e obteve a maior parte da área disputada, embora o conflito tenha sido muito destrutivo.</p></details><details><summary>Ditaduras, golpes e redemocratização</summary><p>Em 1936, a Revolução Febrerista de Rafael Franco promoveu reformas. Depois de instabilidade política, Alfredo Stroessner tomou o poder em 1954 e governou em ditadura até ser derrubado em 1989 por Andrés Rodríguez. Em 2008, Fernando Lugo encerrou a longa hegemonia eleitoral do Partido Colorado, embora tenha sido destituído em 2012 após um processo de impeachment.</p></details></section>
-<section class="section reveal"><h2 class="section-title">6. Imagens e memória</h2><div class="gallery"><figure><img class="zoom" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/2/27/Flag_of_Paraguay.svg" alt="Bandeira do Paraguai"><figcaption>Bandeira do Paraguai — <a href="https://commons.wikimedia.org/wiki/File:Flag_of_Paraguay.svg" target="_blank" rel="noopener">Wikimedia Commons</a></figcaption></figure><figure><img class="zoom" loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Paraguay%20%28orthographic%20projection%29.svg" alt="Mapa do Paraguai"><figcaption>Localização do Paraguai — <a href="https://commons.wikimedia.org/wiki/Category:Maps_of_Paraguay" target="_blank" rel="noopener">Commons</a></figcaption></figure><figure><img class="zoom" loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Francisco%20Solano%20L%C3%B3pez.jpg" alt="Francisco Solano López"><figcaption>Francisco Solano López — <a href="https://commons.wikimedia.org/wiki/Category:Francisco_Solano_L%C3%B3pez" target="_blank" rel="noopener">Commons</a></figcaption></figure></div></section>
-<section class="section reveal" id="legado"><h2 class="section-title">7. Consequências e legado</h2><div class="grid"><article class="card"><h3>Político</h3><p>A independência criou um Estado soberano e uma identidade política própria, mas o reconhecimento e as fronteiras continuaram sendo negociados com os vizinhos.</p></article><article class="card"><h3>Social e econômico</h3><p>O isolamento protegeu a autonomia em certos períodos, porém limitou o comércio. A Guerra da Tríplice Aliança provocou uma ruptura demográfica, econômica e territorial profunda.</p></article><article class="card"><h3>Memória nacional</h3><p>14 e 15 de maio são celebrados como datas patrióticas, com desfiles, bandeiras, música e homenagens à soberania paraguaia.</p></article></div><p class="lead">A independência do Paraguai não foi um acontecimento isolado: foi um processo de resistência à centralização colonial, de afirmação regional e de construção — sempre disputada — de um Estado nacional.</p></section>
-<section class="section sources"><h2 class="section-title">Fontes para pesquisa</h2><p><a href="https://pt.wikipedia.org/wiki/Hist%C3%B3ria_do_Paraguai" target="_blank" rel="noopener">História do Paraguai — Wikipédia</a> · <a href="https://pt.wikipedia.org/wiki/Independ%C3%AAncia_do_Paraguai" target="_blank" rel="noopener">Independência do Paraguai — Wikipédia</a> · <a href="https://brasilescola.uol.com.br/historia-da-america/historia-paraguai.htm" target="_blank" rel="noopener">Brasil Escola — História do Paraguai</a> · <a href="https://commons.wikimedia.org/wiki/Category:History_of_Paraguay" target="_blank" rel="noopener">Imagens: Wikimedia Commons</a></p><p><em>As imagens são carregadas de fontes externas e permanecem sujeitas às licenças indicadas em suas páginas originais. Consulte cada link para atribuição e uso.</em></p></section>
-</div><footer>TRABALHO HISTÓRICO ACADÊMICO · INDEPENDÊNCIA DO PARAGUAI · 1811<br><small>Pesquisa e complementação educativa</small></footer>
-</main><div class="modal" aria-label="Visualizador de imagem"><span class="close">×</span><img alt="Imagem ampliada"></div>
+
+<div class="container">
+  <!-- CABEÇALHO TIPO JORNAL -->
+  <div class="masthead">
+    <h1 class="masthead-title">GAZETA DA INDEPENDÊNCIA</h1>
+    <p class="masthead-subtitle">Edição Especial - República do Paraguai</p>
+    <p class="masthead-date">14 e 15 de maio de 1811 • Segunda e terceira edições extraordinárias</p>
+  </div>
+
+  <!-- NAVEGAÇÃO -->
+  <nav>
+    <a href="#inicio">Início</a>
+    <a href="#contexto">Contexto</a>
+    <a href="#causas">Causas</a>
+    <a href="#linha-tempo">Linha do Tempo</a>
+    <a href="#líderes">Líderes</a>
+    <a href="#notícias">Notícias</a>
+    <a href="#legado">Legado</a>
+  </nav>
+
+  <div class="content">
+
+    <!-- SEÇÃO INTRODUCTÓRIA -->
+    <section id="inicio">
+      <div class="intro-text">
+        <p>"Neste dia glorioso, o Paraguai rompe as correntes da dominação espanhola e se alça como nação livre e soberana. A revolução que sacudiu Assunção marcará para sempre a história de nosso povo."</p>
+      </div>
+    </section>
+
+    <!-- CONTEXTO HISTÓRICO -->
+    <section id="contexto">
+      <h2 class="section-title">I. O Contexto Histórico</h2>
+      
+      <div class="newspaper-article">
+        <div class="article-date">Correspondência de Asunción - 1810</div>
+        <div class="article-headline">Tensões nas Colonias Espanholas Crescem</div>
+        <div class="article-text">
+          Desde a queda de Madrid ante os exércitos de Napoleão, os territórios coloniais espanhóis vivem em constante agitação. A Junta de Sevilha, formada para governar em nome do Rei Fernando VII, possui autoridade questionável em terras distantes. O Paraguai, isolado geográfica e politicamente, observa o caos que toma conta da América Espanhola.
+        </div>
+      </div>
+
+      <h3 style="color: var(--red); font-family: 'Playfair Display', serif; margin-top: 30px;">Antes da Invasão Europeia</h3>
+      
+      <div class="info-box">
+        <strong>Os Povos Guaraní:</strong> O território era habitado por povos guaraní sofisticados, com sistema de aldeia, agricultura desenvolvida e conhecimento da região. Jesuítas chegaram no século XVI, criando as famosas missões que marcaram profundamente a história do Paraguai.
+      </div>
+
+      <h3 style="color: var(--red); font-family: 'Playfair Display', serif;">Período de Dominação Espanhola (1537-1811)</h3>
+      
+      <div class="info-box">
+        <strong>A Colonização:</strong> A fundação de Assunção em 1537 marca o início do controle espanhol. Diferentemente de outras regiões, o Paraguai permaneceu como um vice-reino interno, menos desenvolvido economicamente, mas com uma sociedade mestiça característica.
+      </div>
+
+      <div class="gallery-section">
+        <div class="gallery-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Asunci%C3%B3n_colonial.jpg/400px-Asunci%C3%B3n_colonial.jpg" alt="Assunção no período colonial">
+          <div class="gallery-caption">Assunção no século XVIII - A capital colonial sob domínio espanhol</div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Misiones_Jesuitas.jpg/400px-Misiones_Jesuitas.jpg" alt="Ruínas das Missões Jesuítas">
+          <div class="gallery-caption">Ruínas das Missões Jesuítas - Legado da resistência cultural guaraní</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAUSAS DA INDEPENDÊNCIA -->
+    <section id="causas">
+      <h2 class="section-title">II. As Causas da Independência</h2>
+
+      <div class="newspaper-article">
+        <div class="article-date">Editorial - Assunção, 1810</div>
+        <div class="article-headline">Por Que o Paraguai Deve Ser Livre?</div>
+        <div class="article-text">
+          Nunca a América do Sul esteve tão próxima de romper as correntes coloniais. Enquanto Buenos Aires organiza sua própria junta, o Paraguai permanece sob o jugo de autoridades que não compreendem as aspirações de nosso povo. O isolamento que nos caracterizava agora é nossa força: a independência nos espera.
+        </div>
+      </div>
+
+      <h3 style="color: var(--red); font-family: 'Playfair Display', serif; margin-top: 30px;">Principais Fatores</h3>
+
+      <div class="info-box">
+        <strong>1. Centralização de Buenos Aires:</strong> A criação do Vice-Reino do Rio da Prata em 1776 subordinou o Paraguai à capital bonaerense. As taxas alfandegárias e o controle monárquico sufocavam a economia local. A elite paraguaia via seus ganhos definhar enquanto Buenos Aires prosperava.
+      </div>
+
+      <div class="info-box">
+        <strong>2. Isolamento Estratégico:</strong> O Paraguai permanecia geograficamente isolado por rios e selvas, desenvolvendo sua própria identidade cultural única. Essa separação criou consciência de ser "diferente" do resto do império.
+      </div>
+
+      <div class="info-box">
+        <strong>3. Influência das Revoluções Mundiais:</strong> As notícias da Revolução Francesa (1789), da independência dos EUA (1776) e da rebelião de Túpac Amaru II chegavam via correspondência e boatos. A ideia de que os povos podiam se governar espalhava-se como pólvora.
+      </div>
+
+      <div class="info-box">
+        <strong>4. Crise na Metrópole Espanhola:</strong> A invasão de Napoleão em 1808 enfraqueceu o poder central. A Península Ibérica em caos significava enfraquecimento do controle colonial. Era o momento perfeito para agir.
+      </div>
+
+      <div class="info-box">
+        <strong>5. Movimentos Internos:</strong> A liderança local, especialmente o cabildo (câmara municipal) de Assunção, ganhou poder político durante o vácuo de autoridade. Os "vecinos notables" (cidadãos notáveis) buscavam expandir sua influência.
+      </div>
+    </section>
+
+    <!-- LINHA DO TEMPO -->
+    <section id="linha-tempo">
+      <h2 class="section-title">III. Linha do Tempo - Caminho para a Liberdade</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">1776</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Criação do Vice-Reino do Rio da Prata</div>
+            <p>O Paraguai é subordinado a Buenos Aires. Assunção perde autonomia e as políticas centralizadoras começam.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">1781</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Rebelião de Túpac Amaru II</div>
+            <p>A notícia da grande rebelião indígena no Peru inspira movimentos de resistência em toda a América do Sul. No Paraguai, setores da população se reconhecem na luta.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">1789</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Revolução Francesa</div>
+            <p>As ideias de liberdade, igualdade e fraternidade atravessam o oceano. Intelectuais paraguaios começam a debater novas formas de governo.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">1808</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Invasão da Península Ibérica por Napoleão</div>
+            <p>A Espanha cai sob domínio francês. O Rei Fernando VII é capturado. A autoridade real em América é questionada. É o momento!</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">1810</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Buenos Aires Se Rebela</div>
+            <p>Em maio, Buenos Aires forma sua própria junta. O exemplo se espalha. Outras cidades coloniais observam atentamente. O Paraguai sente a pressão e oportunidade.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">1811 - Maio</div>
+          <div class="timeline-content">
+            <div class="timeline-title">🔥 A REVOLUÇÃO IRROMPE!</div>
+            <p><strong>14 de maio:</strong> O Cabildo de Assunção convoca assembleia. A guarnição espanhola é desarmada. A população toma as ruas. <strong>15 de maio:</strong> A independência é proclamada formalmente. O Paraguai é livre!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LÍDERES E PERSONAGENS -->
+    <section id="líderes">
+      <h2 class="section-title">IV. Os Heróis da Liberdade</h2>
+
+      <div class="characters-grid">
+        <div class="character-card" onclick="openModal('https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Manuel_Belgrano.jpg/300px-Manuel_Belgrano.jpg', 'General Manuel Belgrano')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Manuel_Belgrano.jpg/300px-Manuel_Belgrano.jpg" alt="General Manuel Belgrano" class="character-image">
+          <div class="character-info">
+            <h3 class="character-name">General Manuel Belgrano</h3>
+            <div class="character-title">Militar das Provincias Unidas</div>
+            <p class="character-desc">Apoiou a rebelião paraguaia e reconheceu a independência. Representava os ideais revolucionários de Buenos Aires, mas respeitava a soberania dos povos.</p>
+          </div>
+        </div>
+
+        <div class="character-card" onclick="openModal('https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Fulgencio_Yegros.jpg/300px-Fulgencio_Yegros.jpg', 'Fulgencio Yegros')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Fulgencio_Yegros.jpg/300px-Fulgencio_Yegros.jpg" alt="Fulgencio Yegros" class="character-image">
+          <div class="character-info">
+            <h3 class="character-name">Fulgencio Yegros</h3>
+            <div class="character-title">Militar Revolucionário (1780-1821)</div>
+            <p class="character-desc">Um dos líderes da Revolução de 1811. Comandante militar que garantiu a expulsão das autoridades espanholas de Assunción. Dedicado à defesa da liberdade.</p>
+          </div>
+        </div>
+
+        <div class="character-card" onclick="openModal('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/José_Gaspar_Rodríguez_de_Francia.jpg/300px-José_Gaspar_Rodríguez_de_Francia.jpg', 'José Gaspar Rodríguez de Francia')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/José_Gaspar_Rodríguez_de_Francia.jpg/300px-José_Gaspar_Rodríguez_de_Francia.jpg" alt="José Gaspar Rodríguez de Francia" class="character-image">
+          <div class="character-info">
+            <h3 class="character-name">José Gaspar Rodríguez de Francia</h3>
+            <div class="character-title">Protetor/Ditador Benevolente (1766-1840)</div>
+            <p class="character-desc">Intelectual e advogado, foi figura chave na revolução. Posteriormente governou o Paraguai com mão firme, mantendo a independência e isolamento estratégico do país.</p>
+          </div>
+        </div>
+
+        <div class="character-card" onclick="openModal('https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Pedro_Juan_Caballero.jpg/300px-Pedro_Juan_Caballero.jpg', 'Pedro Juan Caballero')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Pedro_Juan_Caballero.jpg/300px-Pedro_Juan_Caballero.jpg" alt="Pedro Juan Caballero" class="character-image">
+          <div class="character-info">
+            <h3 class="character-name">Pedro Juan Caballero</h3>
+            <div class="character-title">Conspirador e Revolucionário</div>
+            <p class="character-desc">Participou ativamente da conspiração que levou à revolução. Buscava libertar o Paraguai não apenas do jugo espanhol, mas também de Buenos Aires.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTÍCIAS DA ÉPOCA -->
+    <section id="notícias">
+      <h2 class="section-title">V. Notícias da Época</h2>
+
+      <div class="newspaper-article">
+        <div class="article-date">15 de Maio de 1811 - EDIÇÃO EXTRAORDINÁRIA</div>
+        <div class="article-headline">ASSUNÇÃO ERUPCIONA EM FESTA: O PARAGUAI É LIVRE!</div>
+        <div class="article-text">
+          Às primeiras horas desta manhã gloriosa, as ruas de Assunção se encheram de povo jubiloso. Bandeiras improvisadas nas cores azul, branco e vermelho ondulavam das janelas. A fortaleza espanhola foi tomada sem derramamento de sangue! O Governador, após breve resistência, capitulou. Agora, a República do Paraguai existe! A notícia será transmitida pelos rios e florestas, levando esperança a cada vilarejo deste território abençoado.
+        </div>
+      </div>
+
+      <div class="newspaper-article">
+        <div class="article-date">18 de Maio de 1811</div>
+        <div class="article-headline">Junta Governativa É Formada em Assunción</div>
+        <div class="article-text">
+          A nova junta que dirigirá os destinos da República foi oficialmente constituída. Homens de saber e coragem foram escolhidos para governar em nome do povo paraguaio. Os nomes dos membros circulam pela cidade em sussurros respeitosos. "Nós mesmos nos governaremos", dizem os cidadãos das ruas.
+        </div>
+      </div>
+
+      <div class="newspaper-article">
+        <div class="article-date">22 de Maio de 1811</div>
+        <div class="article-headline">Buenos Aires Reconhece a Independência do Paraguai!</div>
+        <div class="article-text">
+          A notícia chegou por mensageiro a cavalo: Buenos Aires reconheceu formalmente a independência do Paraguai! Embora haja quem diga que o reconhecimento esconde objetivos políticos, é um passo importante. O Paraguai agora é uma nação entre nações. Faltam reconhecimentos internacionais, mas a soberania interna está garantida.
+        </div>
+      </div>
+
+      <div class="newspaper-article">
+        <div class="article-date">1º de Junho de 1811</div>
+        <div class="article-headline">Primeiro Congresso do Povo Paraguaio</div>
+        <div class="article-text">
+          Os delegados de cada distrito se reúnem em Assunción para definir os rumos da jovem nação. Debates acalorados sobre forma de governo, defesa do território e política externa ocupam o Congresso. Alguns desejariam unir-se a Buenos Aires; outros preferem total independência. O futuro do Paraguai está sendo escrito agora.
+        </div>
+      </div>
+
+      <div class="newspaper-article">
+        <div class="article-date">15 de Julho de 1811</div>
+        <div class="article-headline">Rompimento com Buenos Aires?</div>
+        <div class="article-text">
+          As tensões crescem entre Assunção e Buenos Aires. A República Unida do Rio da Prata pretende que o Paraguai seja apenas uma província subordinada. Mas a vontade do povo paraguaio é clara: somos nação independente! Correntes de mobilização popular apoiam a ruptura completa. O isolamento estratégico parece ser o caminho.
+        </div>
+      </div>
+
+      <div class="gallery-section" style="margin-top: 30px;">
+        <div class="gallery-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Flag_of_Paraguay.svg/400px-Flag_of_Paraguay.svg.png" alt="Bandeira do Paraguai">
+          <div class="gallery-caption">A Bandeira Nacional - Símbolo da liberdade conquistada</div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Catedral_de_Asunci%C3%B3n.jpg/400px-Catedral_de_Asunci%C3%B3n.jpg" alt="Catedral de Assunção">
+          <div class="gallery-caption">Catedral de Assunção - Palco de proclamações de liberdade</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONSEQUÊNCIAS E LEGADO -->
+    <section id="legado">
+      <h2 class="section-title">VI. Consequências e Legado</h2>
+
+      <h3 style="color: var(--red); font-family: 'Playfair Display', serif;">Imediatas (1811-1820)</h3>
+
+      <div class="accordion">
+        <div class="accordion-header">Consolidação da Independência</div>
+        <div class="accordion-content">
+          <p>Os primeiros anos foram cruciais. O Paraguai precisava se afirmar como nação soberana diante das pressões de Buenos Aires, que desejava incorporar o novo país aos "Provincias Unidas do Rio da Prata". A liderança de Francia foi decisiva para manter a independência.</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-header">Política de Isolamento Estratégico</div>
+        <div class="accordion-content">
+          <p>O Dr. Francia implementou uma política deliberada de isolamento. Controlava rigorosamente o comércio, evitava contatos diplomáticos desnecessários e criava auto-suficiência econômica. Era proteção: enquanto outras nações latino-americanas eram consumidas por guerras e instabilidade, o Paraguai construía sua estrutura interna.</p>
+        </div>
+      </div>
+
+      <div class="accordion">
+        <div class="accordion-header">Mudanças Sociais e Econômicas</div>
+        <div class="accordion-content">
+          <p>A elite espanhola que partiu foi substituída por uma administração local. Terras comunitárias foram reorganizadas. A população guaraní ganhou mais espaço na estrutura política, embora não completa igualdade. A economia se reinventou, focando na auto-suficiência.</p>
+        </div>
+      </div>
+
+      <h3 style="color: var(--red); font-family: 'Playfair Display', serif; margin-top: 30px;">Legado de Longo Prazo</h3>
+
+      <div class="info-box">
+        <strong>Identidade Nacional Única:</strong> Diferentemente de outras nações latino-americanas, o Paraguai se desenvolveu com um caráter próprio. A prevalência do guaraní mesmo após 300 anos de colonização é testemunha desse espírito de resistência e identidade.
+      </div>
+
+      <div class="info-box">
+        <strong>Independência Duradoura:</strong> O Paraguai manteve sua soberania mesmo durante épocas turbulentas. Nunca foi incorporado à Argentina, nunca foi colônia novamente. A vitória de 1811 foi duradoura.
+      </div>
+
+      <div class="info-box">
+        <strong>Modelo de Descolonização Pacífica:</strong> Ao contrário de muitas revoluções latino-americanas, a independência paraguaia ocorreu com mínimo derramamento de sangue. Foi mais um rearranjo de poder interno do que uma guerra sangrenta.
+      </div>
+
+      <div class="info-box">
+        <strong>Patrimônio Cultural:</strong> A revolução reafirmou a cultura guaraní e mestiça como central na identidade nacional. Mesmo sob domínio espanhol, o guaraní era língua viva; após 1811, se consolidaria como símbolo de nacionalidade.
+      </div>
+
+      <div class="gallery-section">
+        <div class="gallery-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Iguazu_Falls.jpg/400px-Iguazu_Falls.jpg" alt="Cataratas do Iguaçu">
+          <div class="gallery-caption">Cataratas do Iguaçu - Beleza natural que ajudou a definir as fronteiras</div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Rio_Paraguay.jpg/400px-Rio_Paraguay.jpg" alt="Rio Paraguai">
+          <div class="gallery-caption">Rio Paraguai - Via crucial para a vida e o comércio nacional</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FONTES E PESQUISA -->
+    <section>
+      <h2 class="section-title">VII. Documentos e Fontes Históricas</h2>
+
+      <div class="newspaper-article">
+        <div class="article-headline">Para Aprofundar Seus Conhecimentos</div>
+        <div class="article-text">
+          <p><strong>Referências Bibliográficas:</strong></p>
+          <ul style="font-size: 0.95em; line-height: 1.9;">
+            <li>Wikipedia: <a href="https://pt.wikipedia.org/wiki/Hist%C3%B3ria_do_Paraguai" target="_blank" style="color: var(--red);">História do Paraguai</a></li>
+            <li>Enciclopédia Britannica: Independência do Paraguai</li>
+            <li>"El Paraguay Independiente" - Documentos do Arquivo Nacional de Assunción</li>
+            <li>Bartomeu Melià: "Lengua, Pueblo y Cultura en la Historia Guaraní"</li>
+            <li>Efraím Cardozo: "El Paraguay Colonial"</li>
+          </ul>
+          <p><strong>Imagens Históricas:</strong> Wikimedia Commons - Paraguay Collection</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- MODAL PARA IMAGENS AMPLIADAS -->
+<div id="imageModal" class="modal">
+  <span class="modal-close" onclick="closeModal()">&times;</span>
+  <img class="modal-content" id="modalImage" src="" alt="">
+</div>
+
+<!-- BOTÃO VOLTAR AO TOPO -->
+<button class="back-to-top" onclick="scrollToTop()">↑</button>
+
 <script>
-const progress=document.querySelector('.progress'),topBtn=document.querySelector('.top');window.addEventListener('scroll',()=>{let h=document.documentElement.scrollHeight-innerHeight;progress.style.width=(scrollY/h*100)+'%';topBtn.style.display=scrollY>500?'block':'none'});topBtn.onclick=()=>scrollTo({top:0,behavior:'smooth'});
-const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.12});document.querySelectorAll('.reveal').forEach(e=>observer.observe(e));
-const modal=document.querySelector('.modal'),modalImg=modal.querySelector('img');document.querySelectorAll('.zoom').forEach(img=>img.onclick=()=>{modalImg.src=img.src;modalImg.alt=img.alt;modal.classList.add('open')});document.querySelector('.close').onclick=()=>modal.classList.remove('open');modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open')};document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('open')});
+  // Voltar ao topo
+  window.addEventListener('scroll', () => {
+    const btn = document.querySelector('.back-to-top');
+    if (window.scrollY > 300) {
+      btn.classList.add('show');
+    } else {
+      btn.classList.remove('show');
+    }
+  });
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Modal de imagens
+  const modal = document.getElementById('imageModal');
+
+  function openModal(src, alt) {
+    const modalImg = document.getElementById('modalImage');
+    modalImg.src = src;
+    modalImg.alt = alt;
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+
+  // Acordeão
+  const accordionHeaders = document.querySelectorAll('.accordion-header');
+  
+  accordionHeaders.forEach(header => {
+    header.addEventListener('click', function() {
+      const content = this.nextElementSibling;
+      
+      accordionHeaders.forEach(h => {
+        if (h !== this) {
+          h.nextElementSibling.classList.remove('active');
+        }
+      });
+      
+      content.classList.toggle('active');
+    });
+  });
+
+  // Animação ao rolar
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeIn 0.8s ease-in';
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('section').forEach(section => {
+    observer.observe(section);
+  });
 </script>
-</body></html>
+
+</body>
+</html>
