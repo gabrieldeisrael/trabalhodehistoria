@@ -14,16 +14,20 @@
     body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.13;background:repeating-linear-gradient(0deg,transparent 0 3px,#000 4px),repeating-linear-gradient(90deg,transparent 0 3px,#000 4px)}
     .page{position:relative;z-index:1;max-width:940px;margin:auto;background:var(--paper);border:8px solid #4a3728;box-shadow:0 0 60px #000b}
     header{text-align:center;padding:42px 24px 30px;border-bottom:3px solid var(--ink);background:linear-gradient(var(--paper),#e8dcc0)}
-    h1,h2,h3{font-family:'Playfair Display',Georgia,serif}h1{font-size:clamp(2.2rem,7vw,4.2rem);line-height:1.05;color:var(--red);margin:0 0 8px;text-transform:uppercase;letter-spacing:2px}header p{margin:8px}.date{border-block:1px solid var(--line);padding:8px;color:#765f42;font-style:italic}
-    nav{position:sticky;top:0;z-index:3;display:flex;justify-content:center;flex-wrap:wrap;background:#e8dcc0;border-bottom:2px solid #8b7355;box-shadow:var(--shadow)}nav a{color:var(--ink);text-decoration:none;padding:9px 15px;border-right:1px solid var(--line)}nav a:hover{background:var(--gold);color:white}
-    section{padding:42px clamp(20px,6vw,55px);border-bottom:2px dashed var(--line)}.title{text-align:center;color:var(--red);font-size:2.2rem;border-bottom:3px solid var(--gold);padding-bottom:12px;margin-top:0}.lead{text-align:center;font-style:italic;font-size:1.2rem;background:#c9a9611c;border-left:5px solid var(--gold);padding:20px}
-    .article,.card,.hymn{background:var(--paper2);border:2px solid var(--line);padding:22px;margin:22px 0;box-shadow:var(--shadow)}.article h3,.card h3{color:var(--red);margin-top:0}.label{color:#765f42;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;font-weight:bold}.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}.facts .card{margin:0;border-left:5px solid var(--red)}
-    .timeline{border-left:4px solid var(--red);padding-left:24px}.event{position:relative;margin:26px 0;background:var(--paper2);padding:18px;border-left:3px solid var(--gold);box-shadow:var(--shadow)}.event:before{content:"";position:absolute;left:-38px;top:22px;width:20px;height:20px;border-radius:50%;background:var(--red);border:4px solid var(--paper)}
-    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}.gallery figure{margin:0;background:#3a281b;color:white;box-shadow:var(--shadow);overflow:hidden}.gallery img{display:block;width:100%;height:220px;object-fit:cover}.gallery figcaption{padding:12px;font-size:.95rem}
-    .hymn{text-align:center;background:linear-gradient(135deg,#fffaf0,#eadbb9);border:3px double var(--red)}.hymn h3{font-size:2rem;color:var(--red);margin:0}.hymn .motto{font-style:italic;color:#765f42}.lyrics{white-space:pre-line;text-align:left;max-width:620px;margin:22px auto;padding:25px;border-block:1px solid var(--line);font-size:1.12rem;line-height:1.9}.listen{display:inline-block;background:var(--red);color:#fff;padding:10px 18px;text-decoration:none;border-radius:3px;margin-top:12px}.note{font-size:.9rem;color:#765f42}
-    footer{text-align:center;background:var(--ink);color:var(--paper);padding:28px;border-top:5px solid var(--gold)}.top{position:fixed;right:22px;bottom:22px;border:0;border-radius:50%;background:var(--red);color:white;width:48px;height:48px;font-size:24px;display:none;z-index:5;cursor:pointer}.top.show{display:block}
-    @media(max-width:600px){body{font-size:17px}.page{border-width:4px}nav a{padding:7px 9px;font-size:.9rem}.lyrics{font-size:1rem}}
-    @media print{body{background:white}.top,nav{display:none}.page{border:0;box-shadow:none}}
+    h1,h2,h3{font-family:'Playfair Display',Georgia,serif}h1{font-size:clamp(2.2rem,7vw,4.2rem);line-height:1.05;color:var(--red);margin:0 0 8px;text-transform:uppercase;letter-spacing:2px}header p{margin:6px 0}header .date{font-size:clamp(0.95rem,2vw,1.15rem);color:#765f47;font-style:italic}
+    nav{position:sticky;top:0;z-index:3;display:flex;justify-content:center;flex-wrap:wrap;background:#e8dcc0;border-bottom:2px solid #8b7355;box-shadow:var(--shadow)}nav a{color:var(--ink);text-decoration:none;padding:10px 16px;font-weight:bold;border-right:1px solid #a89968;transition:background 0.3s}nav a:last-child{border-right:none}nav a:hover{background:rgba(139,58,58,0.1)}
+    section{padding:42px clamp(20px,6vw,55px);border-bottom:2px dashed var(--line)}.title{text-align:center;color:var(--red);font-size:2.2rem;border-bottom:3px solid var(--gold);padding-bottom:12px;margin-bottom:32px}
+    .article,.card,.hymn{background:var(--paper2);border:2px solid var(--line);padding:22px;margin:22px 0;box-shadow:var(--shadow)}.article h3,.card h3{color:var(--red);margin-top:0}.label{color:#765f47;font-size:0.9rem;font-weight:bold}
+    .timeline{border-left:4px solid var(--red);padding-left:24px}.event{position:relative;margin:26px 0;background:var(--paper2);padding:18px;border-left:3px solid var(--gold);box-shadow:var(--shadow)}.event strong{color:var(--red);font-size:1.3rem}
+    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}.gallery figure{margin:0;background:#3a281b;color:white;box-shadow:var(--shadow);overflow:hidden;position:relative}.gallery img{display:block;width:100%;height:240px;object-fit:cover;transition:transform 0.4s ease,filter 0.4s ease;filter:brightness(0.85)}
+    .gallery a{text-decoration:none;display:block;height:100%}.gallery figure:hover img{transform:scale(1.08);filter:brightness(1.1)}.gallery figcaption{padding:14px;font-size:0.95rem;background:rgba(0,0,0,0.7);position:absolute;bottom:0;left:0;right:0}.wiki-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s ease;color:white;font-weight:bold;text-align:center;padding:16px}
+    .gallery figure:hover .wiki-overlay{opacity:1}.gallery figure.clickable{cursor:pointer}
+    .hymn{text-align:center;background:linear-gradient(135deg,#fffaf0,#eadbb9);border:3px double var(--red)}.hymn h3{font-size:2rem;color:var(--red);margin:0}.hymn .motto{font-style:italic;color:#765f47;margin:8px 0}.hymn .lyrics{font-size:1.1rem;color:var(--ink);white-space:pre-line;margin:20px 0;line-height:1.8}.listen{display:inline-block;margin-top:16px;padding:10px 20px;background:var(--red);color:white;text-decoration:none;border-radius:4px;font-weight:bold;transition:background 0.3s}
+    .listen:hover{background:var(--gold)}
+    .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+    footer{text-align:center;background:var(--ink);color:var(--paper);padding:28px;border-top:5px solid var(--gold)}.top{position:fixed;right:22px;bottom:22px;border:0;border-radius:50%;background:var(--red);color:white;width:50px;height:50px;font-size:20px;cursor:pointer;box-shadow:var(--shadow);display:none;z-index:2;transition:background 0.3s}.top.show{display:block}.top:hover{background:var(--gold)}
+    @media(max-width:600px){body{font-size:17px}.page{border-width:4px}nav a{padding:7px 9px;font-size:.9rem}.lyrics{font-size:1rem}.wiki-overlay{font-size:0.85rem}}
+    @media print{body{background:white}.top,nav{display:none}.page{border:0;box-shadow:none}.wiki-overlay{display:none}}
   </style>
 </head>
 <body>
@@ -43,35 +47,54 @@
 
     <section id="contexto">
       <h2 class="title">O contexto histórico</h2>
-      <article class="article"><span class="label">Correspondência de Assunción — 1810</span><h3>Tensões nas colônias espanholas crescem</h3><p>Após a invasão napoleônica da Espanha, a autoridade da monarquia entrou em crise. No Paraguai, a distância de Buenos Aires, as restrições comerciais e o desejo de autonomia fortaleceram a identidade local.</p></article>
-      <div class="facts"><article class="card"><h3>Povos guaranis</h3><p>O território possuía uma forte cultura guarani, marcada pela agricultura, pelas comunidades locais e pela preservação da língua.</p></article><article class="card"><h3>Pressão de Buenos Aires</h3><p>A criação do Vice-Reino do Rio da Prata, em 1776, aumentou a centralização política e econômica sobre o Paraguai.</p></article><article class="card"><h3>Crise espanhola</h3><p>A prisão de Fernando VII e a ocupação francesa abriram espaço para juntas e movimentos de autonomia na América.</p></article></div>
+      <article class="article"><span class="label">Correspondência de Assunción — 1810</span><h3>Tensões nas colônias espanholas crescem</h3><p>Após a invasão napoleônica da Espanha, a autoridade das metrópoles nas colônias americanas foi desafiada. No Paraguai, a rejeição ao controle de Buenos Aires alimentou um sentimento de emancipação.</p></article>
+      <div class="facts"><article class="card"><h3>Povos guaranis</h3><p>O território possuía uma forte cultura guarani, marcada pela agricultura, pelas comunidades locais e pela preservação da língua nativa.</p></article>
+        <article class="card"><h3>Isolamento político</h3><p>O Paraguai frequentemente se vinha isolado politicamente das demais colônias americanas, o que reforçou sua identidade singular.</p></article>
+        <article class="card"><h3>Economia fluvial</h3><p>O Rio Paraguai era vital para o comércio, defesa e desenvolvimento econômico da região.</p></article>
+      </div>
     </section>
 
     <section id="linha-do-tempo">
       <h2 class="title">Caminho para a liberdade</h2>
-      <div class="timeline"><article class="event"><strong>1776</strong><h3>Nasce o Vice-Reino do Rio da Prata</h3><p>O Paraguai passa a ficar subordinado administrativamente a Buenos Aires.</p></article><article class="event"><strong>1808</strong><h3>Napoleão invade a Península Ibérica</h3><p>A crise da monarquia espanhola enfraquece o controle sobre as colônias.</p></article><article class="event"><strong>1810</strong><h3>Revolução de Maio em Buenos Aires</h3><p>A formação de uma junta bonaerense aumenta a tensão com as autoridades paraguaias.</p></article><article class="event"><strong>14–15 de maio de 1811</strong><h3>A revolução paraguaia</h3><p>Militares e civis tomam o controle de Assunción. O Paraguai inicia sua trajetória como nação autônoma.</p></article></div>
+      <div class="timeline"><article class="event"><strong>1776</strong><h3>Nasce o Vice-Reino do Rio da Prata</h3><p>O Paraguai passa a ficar subordinado administrativamente a Buenos Aires.</p></article>
+        <article class="event"><strong>1807</strong><h3>Invasões inglesas repelidas</h3><p>Milícias locais, sob comando de figuras como José Gaspar Rodríguez de Francia, defendem o território contra invasores.</p></article>
+        <article class="event"><strong>1810</strong><h3>Maio no Rio: revolução em Buenos Aires</h3><p>A capital do Vice-Reino rompe com a Espanha; Assunción recusa o novo governo rival.</p></article>
+        <article class="event"><strong>14-15 de maio de 1811</strong><h3>Independência do Paraguai</h3><p>O Congresso de Assunción vota pela emancipação, estabelecendo a República do Paraguai sob o lema "República o muerte".</p></article>
+      </div>
     </section>
 
     <section id="noticias">
       <h2 class="title">Notícias da época</h2>
-      <article class="article"><span class="label">15 de maio de 1811 · Edição extraordinária</span><h3>Assunción celebra: o Paraguai é livre!</h3><p>As ruas da capital recebem a notícia da queda do governo colonial. A população comemora e novas autoridades assumem a direção dos negócios públicos.</p></article>
-      <article class="article"><span class="label">Junho de 1811</span><h3>Congresso debate o futuro da jovem nação</h3><p>Representantes discutem a defesa do território, o comércio pelos rios e a necessidade de preservar a soberania paraguaia diante das pressões externas.</p></article>
+      <article class="article"><span class="label">15 de maio de 1811 · Edição extraordinária</span><h3>Assunción celebra: o Paraguai é livre!</h3><p>As ruas da capital recebem a notícia da que o Congresso ratificou a independência. Sinos tocam nas igrejas, e o povo de Assunción celebra a libertação das garras espanholas e da hegemonia portenha.</p></article>
+      <article class="article"><span class="label">Junho de 1811</span><h3>Congresso debate o futuro da jovem nação</h3><p>Representantes discutem a defesa do território, o comércio pelos rios e a organização administrativa. Destaca-se a importância de manter a unidade e a soberania.</p></article>
       <div class="gallery">
-        <figure>
-          <img src="https://images.unsplash.com/photo-1583381694863-6d3c5b4ae4b9?w=640&h=480&fit=crop" alt="Rio Paraguai - Via fluvial histórica">
-          <figcaption>Rio Paraguai — Via fluvial crucial para a economia e defesa.</figcaption>
+        <figure class="clickable">
+          <a href="https://pt.wikipedia.org/wiki/Rio_Paran%C3%A1" target="_blank" rel="noopener">
+            <img src="https://images.unsplash.com/photo-1583381694863-6d3c5b4ae4b9?w=640&h=480&fit=crop" alt="Rio Paraguai - Via fluvial histórica">
+            <div class="wiki-overlay">→ Rio Paraguai na Wikipedia</div>
+            <figcaption>Rio Paraguai — Via fluvial crucial para a economia e defesa.</figcaption>
+          </a>
         </figure>
-        <figure>
-          <img src="https://images.unsplash.com/photo-1569163139394-de4798aa62b3?w=640&h=480&fit=crop" alt="Bandeira tricolor do Paraguai">
-          <figcaption>A bandeira tricolor — Símbolo da soberania national.</figcaption>
+        <figure class="clickable">
+          <a href="https://pt.wikipedia.org/wiki/Bandeira_do_Paraguai" target="_blank" rel="noopener">
+            <img src="https://images.unsplash.com/photo-1569163139394-de4798aa62b3?w=640&h=480&fit=crop" alt="Bandeira tricolor do Paraguai">
+            <div class="wiki-overlay">→ Bandeira na Wikipedia</div>
+            <figcaption>A bandeira tricolor — Símbolo da soberania nacional.</figcaption>
+          </a>
         </figure>
-        <figure>
-          <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=640&h=480&fit=crop" alt="Arquitetura colonial do período">
-          <figcaption>Assunción — Centro político da revolução.</figcaption>
+        <figure class="clickable">
+          <a href="https://pt.wikipedia.org/wiki/Assun%C3%A7%C3%A3o" target="_blank" rel="noopener">
+            <img src="https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=640&h=480&fit=crop" alt="Arquitetura colonial do período">
+            <div class="wiki-overlay">→ Assunción na Wikipedia</div>
+            <figcaption>Assunción — Centro político da revolução.</figcaption>
+          </a>
         </figure>
-        <figure>
-          <img src="https://images.unsplash.com/photo-1605986549893-5f1aa6f93d07?w=640&h=480&fit=crop" alt="Floresta subtropical do Paraguai">
-          <figcaption>Floresta subtropical — Geografia que marcou a identidade.</figcaption>
+        <figure class="clickable">
+          <a href="https://pt.wikipedia.org/wiki/Geografia_do_Paraguai" target="_blank" rel="noopener">
+            <img src="https://images.unsplash.com/photo-1605986549893-5f1aa6f93d07?w=640&h=480&fit=crop" alt="Floresta subtropical do Paraguai">
+            <div class="wiki-overlay">→ Geografia na Wikipedia</div>
+            <figcaption>Floresta subtropical — Geografia que marcou a identidade.</figcaption>
+          </a>
         </figure>
       </div>
     </section>
@@ -106,16 +129,16 @@ onde a união e igualdade reinam.
 
 União e igualdade.
 União e igualdade.</div>
-        <a class="listen" href="https://www.youtube.com/results?search_query=Himno+Nacional+Paraguayo" target="_blank" rel="noopener">▶ Ouvir o hino</a>
+        <a class="listen" href="https://pt.wikipedia.org/wiki/H%C3%ADnino_nacional_do_Paraguai" target="_blank" rel="noopener">🔗 Hino na Wikipedia</a>
       </div>
     </section>
 
     <section id="legado">
       <h2 class="title">Legado</h2>
       <div class="facts">
-        <article class="card"><h3>Soberania</h3><p>A revolução de 1811 iniciou a construção de um Estado paraguaio independente.</p></article>
-        <article class="card"><h3>Identidade</h3><p>A cultura e a língua guarani permaneceram centrais na formação da identidade nacional.</p></article>
-        <article class="card"><h3>Memória</h3><p>As datas de maio são lembradas como marco da emancipação do Paraguai.</p></article>
+        <article class="card"><h3>Soberania</h3><p>A revolução de 1811 iniciou a construção de um <a href="https://pt.wikipedia.org/wiki/Hist%C3%B3ria_do_Paraguai" target="_blank" rel="noopener" style="color:var(--red)">Estado paraguaio independente</a>.</p></article>
+        <article class="card"><h3>Identidade</h3><p>A cultura e a <a href="https://pt.wikipedia.org/wiki/L%C3%ADngua_guarani" target="_blank" rel="noopener" style="color:var(--red)">língua guarani</a> permaneceram centrais na formação da identidade nacional.</p></article>
+        <article class="card"><h3>Memória</h3><p>As <a href="https://pt.wikipedia.org/wiki/Independ%C3%AAncia_do_Paraguai" target="_blank" rel="noopener" style="color:var(--red)">datas de maio</a> são lembradas como marco da emancipação do Paraguai.</p></article>
       </div>
     </section>
     <footer>GAZETA DA INDEPENDÊNCIA · PARAGUAI · 1811<br><small>Trabalho histórico educativo — consulte fontes acadêmicas para aprofundamento.</small></footer>
