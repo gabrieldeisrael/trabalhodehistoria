@@ -20,13 +20,13 @@
     .article,.card,.hymn{background:var(--paper2);border:2px solid var(--line);padding:22px;margin:22px 0;box-shadow:var(--shadow)}.article h3,.card h3{color:var(--red);margin-top:0}.label{color:#765f47;font-size:0.9rem;font-weight:bold}
     .timeline{border-left:4px solid var(--red);padding-left:24px}.event{position:relative;margin:26px 0;background:var(--paper2);padding:18px;border-left:3px solid var(--gold);box-shadow:var(--shadow)}.event strong{color:var(--red);font-size:1.3rem}
     .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}.gallery figure{margin:0;background:#3a281b;color:white;box-shadow:var(--shadow);overflow:hidden;position:relative}.gallery img{display:block;width:100%;height:240px;object-fit:cover;transition:transform 0.4s ease,filter 0.4s ease;filter:brightness(0.85)}
-    .gallery a{text-decoration:none;display:block;height:100%}.gallery figure:hover img{transform:scale(1.08);filter:brightness(1.1)}.gallery figcaption{padding:14px;font-size:0.95rem;background:rgba(0,0,0,0.7);position:absolute;bottom:0;left:0;right:0}.wiki-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s ease;color:white;font-weight:bold;text-align:center;padding:16px}
+    .gallery a{text-decoration:none;display:block;height:100%}.gallery figure:hover img{transform:scale(1.08);filter:brightness(1.1)}.gallery figcaption{padding:14px;font-size:0.95rem;background:rgba(0,0,0,0.7);position:absolute;bottom:0;left:0;right:0}.wiki-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s ease;color:white;font-weight:bold;text-align:center;padding:16px;font-size:0.95rem}
     .gallery figure:hover .wiki-overlay{opacity:1}.gallery figure.clickable{cursor:pointer}
     .hymn{text-align:center;background:linear-gradient(135deg,#fffaf0,#eadbb9);border:3px double var(--red)}.hymn h3{font-size:2rem;color:var(--red);margin:0}.hymn .motto{font-style:italic;color:#765f47;margin:8px 0}.hymn .lyrics{font-size:1.1rem;color:var(--ink);white-space:pre-line;margin:20px 0;line-height:1.8}.listen{display:inline-block;margin-top:16px;padding:10px 20px;background:var(--red);color:white;text-decoration:none;border-radius:4px;font-weight:bold;transition:background 0.3s}
     .listen:hover{background:var(--gold)}
     .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
     footer{text-align:center;background:var(--ink);color:var(--paper);padding:28px;border-top:5px solid var(--gold)}.top{position:fixed;right:22px;bottom:22px;border:0;border-radius:50%;background:var(--red);color:white;width:50px;height:50px;font-size:20px;cursor:pointer;box-shadow:var(--shadow);display:none;z-index:2;transition:background 0.3s}.top.show{display:block}.top:hover{background:var(--gold)}
-    @media(max-width:600px){body{font-size:17px}.page{border-width:4px}nav a{padding:7px 9px;font-size:.9rem}.lyrics{font-size:1rem}.wiki-overlay{font-size:0.85rem}}
+    @media(max-width:600px){body{font-size:17px}.page{border-width:4px}nav a{padding:7px 9px;font-size:.9rem}.lyrics{font-size:1rem}.wiki-overlay{font-size:0.75rem}}
     @media print{body{background:white}.top,nav{display:none}.page{border:0;box-shadow:none}.wiki-overlay{display:none}}
   </style>
 </head>
@@ -69,31 +69,31 @@
       <article class="article"><span class="label">Junho de 1811</span><h3>Congresso debate o futuro da jovem nação</h3><p>Representantes discutem a defesa do território, o comércio pelos rios e a organização administrativa. Destaca-se a importância de manter a unidade e a soberania.</p></article>
       <div class="gallery">
         <figure class="clickable">
-          <a href="https://pt.wikipedia.org/wiki/Rio_Paran%C3%A1" target="_blank" rel="noopener">
-            <img src="https://images.wikimedia.org/api/rest_v1/media/math/render/svg/9a1e7b81a7a3e8b7a0b4c3e0c8c8b8a8" alt="Rio Paraguai - Via fluvial histórica" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22640%22 height=%22480%22%3E%3Crect fill=%22%234a90a4%22 width=%22640%22 height=%22480%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2224%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22%3ERio Paraguai%3C/text%3E%3C/svg%3E'">
-            <div class="wiki-overlay">→ Rio Paraguai na Wikipedia</div>
-            <figcaption>Rio Paraguai — Via fluvial crucial para a economia e defesa.</figcaption>
-          </a>
-        </figure>
-        <figure class="clickable">
           <a href="https://pt.wikipedia.org/wiki/Bandeira_do_Paraguai" target="_blank" rel="noopener">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Flag_of_Paraguay.svg/1200px-Flag_of_Paraguay.svg.png" alt="Bandeira tricolor do Paraguai">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/27/Flag_of_Paraguay.svg" alt="Bandeira tricolor do Paraguai" loading="lazy">
             <div class="wiki-overlay">→ Bandeira na Wikipedia</div>
             <figcaption>A bandeira tricolor — Símbolo da soberania nacional.</figcaption>
           </a>
         </figure>
         <figure class="clickable">
           <a href="https://pt.wikipedia.org/wiki/Assun%C3%A7%C3%A3o" target="_blank" rel="noopener">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Assuncion_from_the_Chaco.jpg/1280px-Assuncion_from_the_Chaco.jpg" alt="Arquitetura colonial do período">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Pano%CC%81ramica_Centro_Histo%CC%81rico_de_Asunci%C3%B3n_-_2017.jpg" alt="Assunción - Centro histórico" loading="lazy">
             <div class="wiki-overlay">→ Assunción na Wikipedia</div>
             <figcaption>Assunción — Centro político da revolução.</figcaption>
           </a>
         </figure>
         <figure class="clickable">
-          <a href="https://pt.wikipedia.org/wiki/Geografia_do_Paraguai" target="_blank" rel="noopener">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Salto_del_Monday%2C_Alto_Paran%C3%A1%2C_Paraguay%2C_2013-12-08%2C_DD_08.JPG/1280px-Salto_del_Monday%2C_Alto_Paran%C3%A1%2C_Paraguay%2C_2013-12-08%2C_DD_08.JPG" alt="Floresta subtropical do Paraguai">
-            <div class="wiki-overlay">→ Geografia na Wikipedia</div>
-            <figcaption>Floresta subtropical — Geografia que marcou a identidade.</figcaption>
+          <a href="https://pt.wikipedia.org/wiki/Salto_del_Monday" target="_blank" rel="noopener">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/Salto_Monday_Paraguay.jpg" alt="Salto del Monday - Quedas de água" loading="lazy">
+            <div class="wiki-overlay">→ Salto del Monday na Wikipedia</div>
+            <figcaption>Salto del Monday — Beleza natural do Paraguai.</figcaption>
+          </a>
+        </figure>
+        <figure class="clickable">
+          <a href="https://pt.wikipedia.org/wiki/Rio_Parana" target="_blank" rel="noopener">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Saltos_del_Monday.jpg" alt="Rio Paraná" loading="lazy">
+            <div class="wiki-overlay">→ Rio Paraná na Wikipedia</div>
+            <figcaption>Rio Paraná — Via fluvial crucial para a economia e defesa.</figcaption>
           </a>
         </figure>
       </div>
