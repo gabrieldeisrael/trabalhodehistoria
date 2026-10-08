@@ -22,6 +22,15 @@
     .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;align-items:stretch}.gallery figure{margin:0;background:#3a281b;color:white;box-shadow:var(--shadow);overflow:hidden;position:relative;min-height:320px;border:1px solid rgba(0,0,0,.2)}.gallery a{text-decoration:none;display:block;width:100%;height:100%}.gallery img{display:block;width:100%;height:240px;object-fit:cover;transition:transform .35s ease,filter .35s ease}.gallery figcaption{position:absolute;left:0;right:0;bottom:0;padding:14px;font-size:0.95rem;line-height:1.45;background:rgba(0,0,0,.72);z-index:2}.wiki-overlay{position:absolute;top:12px;left:12px;z-index:2;background:rgba(0,0,0,.45);color:#fff;padding:6px 10px;border-radius:4px;font-size:.8rem;opacity:0;transition:opacity .25s ease}.gallery figure:hover img{transform:scale(1.08);filter:brightness(1.1)}.gallery figure:hover .wiki-overlay{opacity:1}.gallery figure.clickable{cursor:pointer}
     .hymn{text-align:center;background:linear-gradient(135deg,#fffaf0,#eadbb9);border:3px double var(--red)}.hymn h3{font-size:2rem;color:var(--red);margin:0}.hymn .motto{font-style:italic;color:#765f47;margin:12px 0}.hymn .note{font-size:.9rem;color:#5d4738;margin-bottom:16px}.lyrics{white-space:pre-line;font-size:1.05rem;line-height:1.8;background:rgba(255,255,255,.25);padding:18px;border:1px solid rgba(139,58,58,.2);border-radius:8px}.listen{display:inline-block;margin-top:18px;padding:10px 18px;text-decoration:none;color:var(--ink);background:var(--gold);border-radius:999px;font-weight:700}.listen:hover{background:var(--gold)}
     .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+    .chat-container{background:var(--paper2);border:2px solid var(--line);padding:22px;margin:22px 0;box-shadow:var(--shadow)}
+    .chat-messages{height:300px;overflow-y:auto;border:1px solid var(--line);padding:14px;margin-bottom:14px;background:#fff;display:flex;flex-direction:column;gap:12px}
+    .chat-message{padding:10px 14px;border-radius:6px;max-width:85%;line-height:1.5}
+    .chat-message.user{background:#e8dcc0;align-self:flex-end;color:var(--ink)}
+    .chat-message.ai{background:#f4e8d0;border:1px solid var(--line);align-self:flex-start;color:var(--ink)}
+    .chat-input-area{display:flex;gap:10px}
+    .chat-input-area input{flex:1;padding:10px;border:1px solid var(--line);background:#fffaf0;font-family:inherit;font-size:1rem;color:var(--ink)}
+    .chat-input-area button{padding:10px 20px;background:var(--red);color:#fff;border:none;font-weight:700;cursor:pointer;font-family:inherit}
+    .chat-input-area button:hover{background:#6d2c2c}
     footer{text-align:center;background:var(--ink);color:var(--paper);padding:28px;border-top:5px solid var(--gold)}.top{position:fixed;right:22px;bottom:22px;border:0;border-radius:50%;background:var(--gold);color:var(--ink);width:52px;height:52px;font-size:1.6rem;box-shadow:var(--shadow);cursor:pointer;opacity:0;transform:translateY(12px);transition:.25s ease}.top.show{opacity:1;transform:translateY(0)}
     @media(max-width:600px){body{font-size:17px}.page{border-width:4px}nav a{padding:7px 9px;font-size:.9rem}.lyrics{font-size:1rem}.wiki-overlay{font-size:0.75rem}.gallery{grid-template-columns:1fr}}@media print{body{background:white}.top,nav{display:none}.page{border:0;box-shadow:none}.wiki-overlay{display:none}}
   </style>
@@ -34,7 +43,7 @@
       <p class="date">14 e 15 de maio de 1811 · Notícias de Assunción</p>
     </header>
     <nav aria-label="Navegação principal">
-      <a href="#contexto">Contexto</a><a href="#linha-do-tempo">Linha do tempo</a><a href="#noticias">Notícias</a><a href="#hino">Hino</a><a href="#legado">Legado</a>
+      <a href="#contexto">Contexto</a><a href="#linha-do-tempo">Linha do tempo</a><a href="#noticias">Notícias</a><a href="#hino">Hino</a><a href="#legado">Legado</a><a href="#chat">IA</a>
     </nav>
 
     <section>
@@ -131,6 +140,20 @@ União e igualdade.</div>
         <article class="card"><h3>Memória</h3><p>As <a href="https://pt.wikipedia.org/wiki/Independ%C3%AAncia_do_Paraguai" target="_blank" rel="noopener" style="color:var(--red)">datas de maio</a> seguem como símbolo de resistência, liberdade e continuidade histórica.</p></article>
       </div>
     </section>
+
+    <section id="chat">
+      <h2 class="title">Converse com a IA</h2>
+      <div class="chat-container">
+        <p style="margin-top:0;font-style:italic;color:#765f4a;text-align:center;">Tire dúvidas sobre a Independência do Paraguai com nossa assistente virtual.</p>
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-message ai">Olá! Sou a assistente virtual deste trabalho sobre a Independência do Paraguai. O que gostaria de saber?</div>
+        </div>
+        <div class="chat-input-area">
+          <input type="text" id="chatInput" placeholder="Digite sua pergunta..." autocomplete="off">
+          <button id="chatSend">Enviar</button>
+        </div>
+      </div>
+    </section>
     <footer>GAZETA DA INDEPENDÊNCIA · PARAGUAI · 1811<br><small>Trabalho histórico educativo — consulte fontes acadêmicas para aprofundamento.</small></footer>
   </main>
   <button class="top" aria-label="Voltar ao topo">↑</button>
@@ -138,6 +161,46 @@ União e igualdade.</div>
     const topButton=document.querySelector('.top');
     addEventListener('scroll',()=>topButton.classList.toggle('show',scrollY>350));
     topButton.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const chatSend = document.getElementById('chatSend');
+
+    async function enviarMensagem() {
+      const texto = chatInput.value.trim();
+      if (!texto) return;
+
+      const userDiv = document.createElement('div');
+      userDiv.className = 'chat-message user';
+      userDiv.textContent = texto;
+      chatMessages.appendChild(userDiv);
+      chatInput.value = '';
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      const aiDiv = document.createElement('div');
+      aiDiv.className = 'chat-message ai';
+      aiDiv.textContent = 'Pensando...';
+      chatMessages.appendChild(aiDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      try {
+        const res = await fetch('/perguntar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pergunta: texto })
+        });
+        const data = await res.json();
+        aiDiv.textContent = data.resposta || 'Desculpe, ocorreu um erro.';
+      } catch (err) {
+        aiDiv.textContent = 'Erro ao se comunicar com o servidor.';
+      }
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    chatSend.addEventListener('click', enviarMensagem);
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') enviarMensagem();
+    });
   </script>
 </body>
 </html>
