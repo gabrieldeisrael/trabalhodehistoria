@@ -5,16 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Gazeta histórica e trabalho interativo sobre a Independência do Paraguai.">
   <title>Gazeta da Independência — Paraguai 1811</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
   <style>
     :root{--paper:#f4e8d0;--paper2:#fffaf0;--ink:#2a1810;--red:#8b3a3a;--gold:#c9a961;--line:#a89968;--shadow:0 8px 18px #2a18104d}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font:18px/1.75 'Crimson Text',Georgia,serif;background:linear-gradient(135deg,#2a1810,#4a321d,#2a1810)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font:500 18px/1.75 "Helvetica Neue",Helvetica,Arial,sans-serif;background:linear-gradient(135deg,#2a1810,#4a321d,#2a1810)}
     body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.13;background:repeating-linear-gradient(0deg,transparent 0 3px,#000 4px),repeating-linear-gradient(90deg,transparent 0 3px,#000 4px)}
     .page{position:relative;z-index:1;max-width:940px;margin:auto;background:var(--paper);border:8px solid #4a3728;box-shadow:0 0 60px #000b}
     header{text-align:center;padding:42px 24px 30px;border-bottom:3px solid var(--ink);background:linear-gradient(var(--paper),#e8dcc0)}
-    h1,h2,h3{font-family:'Playfair Display',Georgia,serif}h1{font-size:clamp(2.2rem,7vw,4.2rem);line-height:1.05;color:var(--red);margin:0 0 8px;text-transform:uppercase;letter-spacing:2px}header p{margin:0}.date{font-style:italic;color:#5f4936}.lead{font-size:1.18rem;font-weight:600;text-align:center;padding:12px 24px 0}
+    h1,h2,h3{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:700}h1{font-size:clamp(2.2rem,7vw,4.2rem);line-height:1.05;color:var(--red);margin:0 0 8px;text-transform:uppercase;letter-spacing:2px}header p{margin:0}.date{font-style:italic;color:#5f4936}.lead{font-size:1.18rem;font-weight:600;text-align:center;padding:12px 24px 0}
     nav{position:sticky;top:0;z-index:3;display:flex;justify-content:center;flex-wrap:wrap;background:#e8dcc0;border-bottom:2px solid #8b7355;box-shadow:var(--shadow)}nav a{color:var(--ink);text-decoration:none;padding:12px 14px;font-weight:700;border-radius:0 0 10px 10px;transition:.2s ease}nav a:hover{background:#d8c6a1}
     section{padding:42px clamp(20px,6vw,55px);border-bottom:2px dashed var(--line)}.title{text-align:center;color:var(--red);font-size:2.2rem;border-bottom:3px solid var(--gold);padding-bottom:12px;margin:0 0 24px}
     .article,.card,.hymn{background:var(--paper2);border:2px solid var(--line);padding:22px;margin:22px 0;box-shadow:var(--shadow)}.article h3,.card h3{color:var(--red);margin-top:0}.label{color:#765f47;font-weight:700;display:block;margin-bottom:8px;letter-spacing:.04em;text-transform:uppercase;font-size:.78rem}
@@ -197,7 +194,15 @@ União e igualdade.</div>
           body: JSON.stringify({ pergunta: texto })
         });
         const data = await res.json();
-        aiDiv.textContent = data.resposta || 'Desculpe, ocorreu um erro.';
+        const resposta = data.resposta || 'Desculpe, ocorreu um erro.';
+        const partes = resposta.split(/(\*\*.+?\*\*)/gs);
+        aiDiv.replaceChildren(...partes.map((parte) => {
+          const negrito = parte.match(/^\*\*(.+)\*\*$/s);
+          if (!negrito) return document.createTextNode(parte);
+          const forte = document.createElement('strong');
+          forte.textContent = negrito[1];
+          return forte;
+        }));
       } catch (err) {
         aiDiv.textContent = 'Erro ao se comunicar com o servidor.';
       }
