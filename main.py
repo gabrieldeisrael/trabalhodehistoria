@@ -1,4 +1,5 @@
 import os
+import re
 import glob
 import pickle
 import requests
@@ -135,34 +136,74 @@ PROMPT_DEBUG = (
 )
 
 
-def perguntar_groq(pergunta: str, contexto: str, modo_debug: bool = False) -> str:
+# ---------- Busca na internet (Groq browser_search) ----------
+# Desligue sem mexer no código: no Render, crie RITA_BUSCA_WEB=0
+BUSCA_WEB = os.environ.get("RITA_BUSCA_WEB", "1") == "1"
+MAX_TOKENS_COM_BUSCA = 1500  # com busca o modelo gasta mais tokens "pensando" e navegando
+
+FONTES_WEB = [
+    "https://www.britannica.com/place/Paraguay/History",
+    "https://www.britannica.com/event/War-of-the-Triple-Alliance",
+    "https://www.britannica.com/event/Chaco-War",
+    "https://www.portalguarani.com/",
+]
+
+PROMPT_WEB = (
+    " Exceção importante: se a resposta não estiver nas informações abaixo, em vez de dizer "
+    "que não sabe, pesquise na internet, dando preferência a estas fontes: "
+    + ", ".join(FONTES_WEB)
+    + ". Só afirme o que encontrar de forma clara. Ao usar a internet, você pode citar em uma "
+    "frase o nome da fonte pública (por exemplo, a Enciclopédia Britannica), mas continue sem "
+    "mencionar documentos ou arquivos. Só diga que não sabe se também não encontrar nada "
+    "confiável. Pesquise apenas sobre o Paraguai; outros assuntos você recusa com gentileza."
+)
+
+
+def _limpar_resposta(texto: str) -> str:
+    """Tira as marcas de citação que a busca às vezes deixa no texto, tipo 【2†L55-L60】."""
+    return re.sub(r"【[^】]*】", "", texto or "").strip()
+
+
+def _chamar_groq(pergunta: str, contexto: str, modo_debug: bool, com_busca: bool):
     prompt_sistema = (
         (PROMPT_DEBUG if modo_debug else PROMPT_BASE)
+        + (PROMPT_WEB if com_busca else "")
         + f"\n\nINFORMAÇÕES:\n{contexto}"
     )
-
-    resposta = requests.post(
+    corpo = {
+        "model": MODEL,
+        "max_tokens": MAX_TOKENS_RESPOSTA,
+        "reasoning_effort": "low",
+        "messages": [
+            {"role": "system", "content": prompt_sistema},
+            {"role": "user", "content": pergunta},
+        ],
+    }
+    if com_busca:
+        corpo["tools"] = [{"type": "browser_search"}]
+        corpo["max_tokens"] = MAX_TOKENS_COM_BUSCA
+    return requests.post(
         GROQ_URL,
         headers={
             "Authorization": f"Bearer {GROQ_API_KEY}",
             "Content-Type": "application/json",
         },
-        json={
-            "model": MODEL,
-            "max_tokens": MAX_TOKENS_RESPOSTA,
-            "reasoning_effort": "low",
-            "messages": [
-                {"role": "system", "content": prompt_sistema},
-                {"role": "user", "content": pergunta},
-            ],
-        },
-        timeout=60,
+        json=corpo,
+        timeout=90,
     )
+
+
+def perguntar_groq(pergunta: str, contexto: str, modo_debug: bool = False) -> str:
+    resposta = _chamar_groq(pergunta, contexto, modo_debug, BUSCA_WEB)
+    if not resposta.ok and BUSCA_WEB:
+        # se a busca falhar (limite, erro do Groq...), responde só com o texto do site
+        print(f"[ERRO Groq com busca] Status {resposta.status_code}: {resposta.text}")
+        resposta = _chamar_groq(pergunta, contexto, modo_debug, False)
     if not resposta.ok:
         print(f"[ERRO Groq] Status {resposta.status_code}: {resposta.text}")
     resposta.raise_for_status()
     data = resposta.json()
-    return data["choices"][0]["message"]["content"] or ""
+    return _limpar_resposta(data["choices"][0]["message"]["content"])
 
 
 # ---------- Rotas ----------
