@@ -20,7 +20,7 @@ TOP_K = 3  # quantos trechos relevantes buscar por pergunta
 MAX_TOKENS_RESPOSTA = 300  # limite de tamanho da resposta gerada
 INDEX_FILE = "indice.pkl"
 
-# cache simples em memória: pergunta normalizada -> resposta
+# cache simples em memória: (modo_debug, pergunta normalizada) -> resposta
 cache_respostas = {}
 
 # ---------- App ----------
@@ -109,21 +109,32 @@ def buscar_contexto(pergunta: str) -> str:
     return "\n\n---\n\n".join(trechos)
 
 
-def perguntar_groq(pergunta: str, contexto: str) -> str:
+PALAVRA_DEBUG = "debug"
+
+PROMPT_BASE = (
+    "Você é a Rita, assistente virtual sobre o Paraguai. "
+    "Seu tom é leve, simpático e um pouco descontraído, sem exagero: "
+    "pouco ou nenhum emoji e nenhuma piada fora de hora. "
+    "Responda como alguém que conhece bem o Paraguai, usando apenas as "
+    "informações fornecidas abaixo. Fale como se o conhecimento fosse seu: "
+    "não mencione documentos, arquivos, textos, trabalho escolar nem de onde "
+    "veio a informação, e considere que o usuário não vê nada disso. "
+    "Se a resposta não estiver nas informações, diga com gentileza que não "
+    "sabe e sugira outra pergunta sobre o Paraguai. "
+    "Seja direta e breve."
+)
+
+PROMPT_DEBUG = (
+    "Você é a Rita e está falando com o desenvolvedor do projeto. "
+    "Pode mencionar o contexto, os documentos e como montou a resposta. "
+    "Use apenas as informações fornecidas abaixo. Seja direta e breve."
+)
+
+
+def perguntar_groq(pergunta: str, contexto: str, modo_debug: bool = False) -> str:
     prompt_sistema = (
-        "Você é a Rita, assistente virtual de um trabalho escolar sobre o "
-        "Paraguai. Tenha um tom leve, simpático e um pouco descontraído, "
-        "mas sem exagerar — nada de emoji em excesso ou piadas fora de hora. "
-        "Nunca comente explicitamente sobre o fato de ser um trabalho escolar, mas você pode usar o contexto fornecido para responder. "
-        "Se precisar, apenas diga que sabe muito sobre o Paraguai e que pode ajudar com informações. " \
-        "Nunca mencione que pegue as informações de um ou mais documentos, mas use o contexto fornecido para responder. "
-        "Nunca sequer diga que existe um documento. E sempre considere que o usuário não tem acesso a nenhum documento, então você não deve usar 'seu documento' ou 'seu arquivo' ou 'seu texto'. "
-        "Quando for eu, desenvolvedor, que estiver falando com você, eu irei terminar as frases com 'debug'. Se isso ocorrer, poderá ignorar as instruçoes de não mencionar documentos e poderá falar sobre eles, mas apenas comigo. "
-        "Responda com base apenas nos documentos abaixo. "
-        "Se não houver 'debug' no final da frase, assuma que é um usuário comum."
-        "Se não souber, diga que não sabe (pode ser de um jeito gentil, "
-        "tipo sugerindo que a pessoa pergunte outra coisa). Seja direto e breve.\n\n"
-        f"DOCUMENTOS:\n{contexto}"
+        (PROMPT_DEBUG if modo_debug else PROMPT_BASE)
+        + f"\n\nINFORMAÇÕES:\n{contexto}"
     )
 
     resposta = requests.post(
@@ -135,6 +146,7 @@ def perguntar_groq(pergunta: str, contexto: str) -> str:
         json={
             "model": MODEL,
             "max_tokens": MAX_TOKENS_RESPOSTA,
+            "reasoning_effort": "low",
             "messages": [
                 {"role": "system", "content": prompt_sistema},
                 {"role": "user", "content": pergunta},
@@ -146,7 +158,7 @@ def perguntar_groq(pergunta: str, contexto: str) -> str:
         print(f"[ERRO Groq] Status {resposta.status_code}: {resposta.text}")
     resposta.raise_for_status()
     data = resposta.json()
-    return data["choices"][0]["message"]["content"]
+    return data["choices"][0]["message"]["content"] or ""
 
 
 # ---------- Rotas ----------
@@ -161,12 +173,17 @@ def startup_event():
 
 @app.post("/perguntar")
 def perguntar(req: PerguntaRequest):
-    chave_cache = req.pergunta.strip().lower()
+    pergunta = req.pergunta.strip()
+    modo_debug = pergunta.lower().endswith(PALAVRA_DEBUG)
+    if modo_debug:
+        pergunta = pergunta[: -len(PALAVRA_DEBUG)].strip()
+
+    chave_cache = (modo_debug, pergunta.lower())
     if chave_cache in cache_respostas:
         return {"resposta": cache_respostas[chave_cache], "cache": True}
 
-    contexto = buscar_contexto(req.pergunta)
-    resposta = perguntar_groq(req.pergunta, contexto)
+    contexto = buscar_contexto(pergunta)
+    resposta = perguntar_groq(pergunta, contexto, modo_debug)
     cache_respostas[chave_cache] = resposta
     return {"resposta": resposta, "cache": False}
 
