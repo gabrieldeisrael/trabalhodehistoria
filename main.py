@@ -21,7 +21,7 @@ MODEL = "openai/gpt-oss-120b"
 DOCS_FOLDER = "docs"
 CHUNK_SIZE = 400  # palavras por chunk
 CHUNK_OVERLAP = 30
-TOP_K = 4  # quantos trechos relevantes buscar por pergunta
+TOP_K = 3  # quantos trechos relevantes buscar por pergunta
 MAX_TOKENS_RESPOSTA = 600  # limite de tamanho da resposta gerada
 INDEX_FILE = "indice.pkl"
 
@@ -126,6 +126,10 @@ PROMPT_BASE = (
     "veio a informação, e considere que o usuário não vê nada disso. "
     "Se a resposta não estiver nas informações, diga com gentileza que não "
     "sabe e sugira outra pergunta sobre o Paraguai. "
+    "Não invente nada: só afirme o que está nas informações fornecidas. "
+    "Evite palavras como primeiro, maior, único ou um dos primeiros, a menos que as "
+    "informações digam isso exatamente. Em pedidos abertos, como fatos curiosos, "
+    "escolha de três a cinco fatos e responda de forma curta. "
     "Seja direta e breve."
 )
 
