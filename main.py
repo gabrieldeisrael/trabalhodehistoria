@@ -128,7 +128,8 @@ PROMPT_BASE = (
     "Se a resposta não estiver nas informações, diga com gentileza que não "
     "sabe e sugira outra pergunta sobre o Paraguai. "
     "Não invente nada: só afirme o que está nas informações fornecidas. "
-    "Evite palavras como primeiro, maior, único ou um dos primeiros, a menos que as "
+    "Evite palavras como primeiro, segundo, maior, único ou um dos primeiros, e não "
+    "deduza rankings, comparações nem apelidos, a menos que as "
     "informações digam isso exatamente. Em pedidos abertos, como fatos curiosos, "
     "escolha de três a cinco fatos e responda de forma curta. "
     "Seja direta e breve."
@@ -137,7 +138,8 @@ PROMPT_BASE = (
 PROMPT_DEBUG = (
     "Você é a Rita e está falando com o desenvolvedor do projeto. "
     "Pode mencionar o contexto, os documentos e como montou a resposta. "
-    "Use apenas as informações fornecidas abaixo. Seja direta e breve."
+    "Use apenas as informações fornecidas abaixo e não invente nada: nada de "
+    "apelidos, rankings ou comparações que não estejam escritos. Seja direta e breve."
 )
 
 
