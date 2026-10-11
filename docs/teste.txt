@@ -16,11 +16,11 @@ Em 1811, a Junta de Buenos Aires enviou uma expedição militar comandada por Ma
 
 MOVIMENTO DE MAIO DE 1811
 
-Na madrugada de 14 para 15 de maio de 1811, oficiais e outros participantes do movimento em Assunção exigiram mudanças no governo. O governador espanhol Bernardo de Velasco foi afastado do poder, e iniciou-se a formação de um governo próprio. Pedro Juan Caballero é lembrado entre os principais líderes da ação; Fulgencio Yegros e José Gaspar Rodríguez de Francia também tiveram papéis importantes no processo político.
+Na madrugada de 14 para 15 de maio de 1811, oficiais e outros participantes do movimento em Assunção exigiram mudanças no governo. O governador espanhol Bernardo de Velasco cedeu diante da intimação e iniciou-se a formação de um governo próprio; em junho, o congresso o separou definitivamente do governo. Velasco negociava com representantes portugueses a possibilidade de apoio militar, o que apressou a ação dos revoltosos. Pedro Juan Caballero é lembrado entre os principais líderes da ação; Fulgencio Yegros e José Gaspar Rodríguez de Francia também tiveram papéis importantes no processo político.
 
 As datas de 14 e 15 de maio são celebradas como a independência do Paraguai. É útil, porém, distinguir o início do governo autônomo da criação formal da República: a independência foi um processo de vários anos, e não uma única votação de congresso ocorrida na noite de maio. Em junho de 1811, um congresso reuniu representantes da província e organizou uma junta governativa. Entre seus integrantes estavam Fulgencio Yegros, José Gaspar Rodríguez de Francia, Pedro Juan Caballero, Fernando de la Mora e Francisco Xavier Bogarín.
 
-Em 1813, outro congresso adotou o nome República do Paraguai e estabeleceu um consulado, inicialmente compartilhado por Fulgencio Yegros e José Gaspar Rodríguez de Francia. Em 1814, Francia passou a exercer o cargo de cônsul sozinho; em 1816, o congresso o nomeou ditador perpétuo. Assim, o movimento de 1811 iniciou a ruptura política, enquanto as instituições e a forma republicana foram definidas gradualmente.
+Em 1813, outro congresso adotou o nome República do Paraguai e estabeleceu um consulado, inicialmente compartilhado por Fulgencio Yegros e José Gaspar Rodríguez de Francia. Em 1814, o congresso nomeou Francia ditador por tempo determinado; em 1816, outro congresso o nomeou ditador perpétuo. Assim, o movimento de 1811 iniciou a ruptura política, enquanto as instituições e a forma republicana foram definidas gradualmente.
 
 FIGURAS IMPORTANTES
 
@@ -28,7 +28,7 @@ Pedro Juan Caballero: militar e um dos líderes do movimento de maio de 1811.
 
 Fulgencio Yegros: militar, participante do processo de independência e cônsul do Paraguai junto com Francia em 1813.
 
-José Gaspar Rodríguez de Francia: político central na consolidação do Estado paraguaio. Foi cônsul e depois governou como ditador. Seu governo buscou preservar a autonomia do país diante das pressões externas, mas concentrou o poder e restringiu a oposição política.
+José Gaspar Rodríguez de Francia: doutor em Teologia e advogado, foi um político central na consolidação do Estado paraguaio. Foi cônsul e depois governou como ditador. Seu governo buscou preservar a autonomia do país diante das pressões externas, mas concentrou o poder e restringiu a oposição política.
 
 Bernardo de Velasco: governador espanhol deposto durante o movimento de maio de 1811.
 
@@ -69,7 +69,7 @@ Janeiro e março de 1811: batalhas de Paraguarí e Tacuarí contra a expedição
 14 e 15 de maio de 1811: movimento em Assunção afasta Bernardo de Velasco e inicia um governo próprio.
 Junho de 1811: congresso organiza uma junta governativa paraguaia.
 1813: adoção do nome República do Paraguai e criação do consulado.
-1814 e 1816: Francia assume primeiro o consulado sozinho e depois é nomeado ditador perpétuo.
+1814 e 1816: Francia é nomeado ditador por tempo determinado (1814) e depois ditador perpétuo (1816).
 1840: morte de Francia.
 1844: Carlos Antonio López assume a presidência.
 1861: início da operação da ferrovia paraguaia.
