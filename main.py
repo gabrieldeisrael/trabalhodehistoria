@@ -2,8 +2,12 @@ import os
 import glob
 import pickle
 import requests
-from fastapi import FastAPI
+import edge_tts
+from datetime import datetime, timedelta, timezone
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -14,10 +18,10 @@ GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "openai/gpt-oss-120b"
 DOCS_FOLDER = "docs"
-CHUNK_SIZE = 400  # palavras por chunk
+CHUNK_SIZE = 200  # palavras por chunk
 CHUNK_OVERLAP = 30
 TOP_K = 3  # quantos trechos relevantes buscar por pergunta
-MAX_TOKENS_RESPOSTA = 600  # limite de tamanho da resposta gerada
+MAX_TOKENS_RESPOSTA = 300  # limite de tamanho da resposta gerada
 INDEX_FILE = "indice.pkl"
 
 # cache simples em memória: (modo_debug, pergunta normalizada) -> resposta
@@ -174,9 +178,11 @@ def startup_event():
 @app.post("/perguntar")
 def perguntar(req: PerguntaRequest):
     pergunta = req.pergunta.strip()
-    modo_debug = pergunta.lower().endswith(PALAVRA_DEBUG)
+    # aceita pontuação depois do "debug" (a transcrição de voz costuma colocar ponto final)
+    limpa = pergunta.rstrip(" .!?,;:")
+    modo_debug = limpa.lower().endswith(PALAVRA_DEBUG)
     if modo_debug:
-        pergunta = pergunta[: -len(PALAVRA_DEBUG)].strip()
+        pergunta = limpa[: -len(PALAVRA_DEBUG)].strip()
 
     chave_cache = (modo_debug, pergunta.lower())
     if chave_cache in cache_respostas:
@@ -186,6 +192,147 @@ def perguntar(req: PerguntaRequest):
     resposta = perguntar_groq(pergunta, contexto, modo_debug)
     cache_respostas[chave_cache] = resposta
     return {"resposta": resposta, "cache": False}
+
+
+VOZ_TTS = "pt-BR-FranciscaNeural"
+
+
+class TTSRequest(BaseModel):
+    texto: str
+
+
+@app.post("/tts")
+async def tts(req: TTSRequest):
+    """Gera o áudio da fala da Rita. Se falhar, o site continua só com texto."""
+    texto = req.texto.replace("*", "").replace("#", "").replace("_", " ").strip()[:3000]
+    if not texto:
+        return Response(status_code=204)
+    try:
+        audio = b""
+        async for parte in edge_tts.Communicate(texto, VOZ_TTS).stream():
+            if parte["type"] == "audio":
+                audio += parte["data"]
+    except Exception as e:
+        print(f"[ERRO TTS] {e}")
+        return Response(status_code=503)
+    return Response(content=audio, media_type="audio/mpeg")
+
+
+STT_URL = "https://api.groq.com/openai/v1/audio/transcriptions"
+STT_MODEL = "whisper-large-v3-turbo"
+STT_DICA = "Conversa sobre a história do Paraguai: Assunção, Francia, Yegros, Caballero, Belgrano, Chaco."
+
+
+def _transcrever(audio: bytes, extensao: str) -> str:
+    r = requests.post(
+        STT_URL,
+        headers={"Authorization": f"Bearer {GROQ_API_KEY}"},
+        files={"file": (f"fala.{extensao}", audio)},
+        data={
+            "model": STT_MODEL,
+            "language": "pt",
+            "response_format": "json",
+            "temperature": 0,
+            "prompt": STT_DICA,
+        },
+        timeout=60,
+    )
+    if not r.ok:
+        print(f"[ERRO STT] Status {r.status_code}: {r.text}")
+    r.raise_for_status()
+    return r.json().get("text", "")
+
+
+@app.post("/stt")
+async def stt(request: Request):
+    """Recebe o áudio gravado no navegador e devolve o texto falado."""
+    audio = await request.body()
+    if len(audio) < 1000:
+        return {"texto": ""}
+    tipo = request.headers.get("content-type", "")
+    extensao = "ogg" if "ogg" in tipo else "mp4" if "mp4" in tipo else "webm"
+    try:
+        texto = await run_in_threadpool(_transcrever, audio, extensao)
+    except Exception as e:
+        print(f"[ERRO STT] {e}")
+        return {"texto": ""}
+    return {"texto": texto.strip()}
+
+
+# ---------- Rita ao vivo com Gemini Live ----------
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+LIVE_MODEL = "gemini-3.8-live"
+LIVE_TOKEN_URL = "https://generativelanguage.googleapis.com/v1beta/auth_tokens"
+
+PROMPT_LIVE = (
+    PROMPT_BASE
+    + " Você está conversando por voz. Responda sempre em português do Brasil, "
+    "em frases curtas e naturais, sem listas, sem símbolos e sem formatação. "
+    "Dê respostas de até três ou quatro frases, a menos que peçam mais detalhes."
+)
+
+
+def _texto_completo_docs() -> str:
+    """Junta os .txt de docs/ inteiros (o Gemini Live aguenta bem o texto todo)."""
+    partes = []
+    for caminho in sorted(glob.glob(f"{DOCS_FOLDER}/*.txt")):
+        with open(caminho, "r", encoding="utf-8", errors="ignore") as f:
+            partes.append(f.read())
+    return "\n\n".join(partes)[:60000]
+
+
+@app.post("/live-token")
+def live_token():
+    """Cria um token temporário (1 uso) para o navegador falar direto com o Gemini Live.
+    A chave real e as instruções da Rita ficam só aqui no servidor."""
+    if not GEMINI_API_KEY:
+        raise HTTPException(status_code=503, detail="GEMINI_API_KEY não configurada")
+
+    instrucao = {"parts": [{"text": PROMPT_LIVE + "\n\nINFORMAÇÕES:\n" + _texto_completo_docs()}]}
+    agora = datetime.now(timezone.utc)
+    formato = lambda dt: dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+    base = {
+        "uses": 1,
+        "expireTime": formato(agora + timedelta(minutes=30)),
+        "newSessionExpireTime": formato(agora + timedelta(minutes=2)),
+    }
+    modelo = f"models/{LIVE_MODEL}"
+
+    # Duas formas de descrever a mesma configuração (a documentação do Google mostra as duas);
+    # tenta a primeira e, se o Google recusar, tenta a segunda.
+    tentativas = [
+        {**base, "bidiGenerateContentSetup": {
+            "model": modelo,
+            "generationConfig": {"responseModalities": ["AUDIO"]},
+            "systemInstruction": instrucao,
+            "inputAudioTranscription": {},
+            "outputAudioTranscription": {},
+        }},
+        {**base, "liveConnectConstraints": {
+            "model": modelo,
+            "config": {
+                "responseModalities": ["AUDIO"],
+                "systemInstruction": instrucao,
+                "inputAudioTranscription": {},
+                "outputAudioTranscription": {},
+            },
+        }},
+    ]
+    for corpo in tentativas:
+        try:
+            r = requests.post(
+                LIVE_TOKEN_URL,
+                headers={"x-goog-api-key": GEMINI_API_KEY, "Content-Type": "application/json"},
+                json=corpo,
+                timeout=30,
+            )
+        except requests.RequestException as e:
+            print(f"[ERRO live-token] {e}")
+            continue
+        if r.ok:
+            return {"token": r.json()["name"], "model": LIVE_MODEL}
+        print(f"[ERRO live-token] Status {r.status_code}: {r.text}")
+    raise HTTPException(status_code=502, detail="Não foi possível criar o token do Gemini Live")
 
 
 @app.get("/health")

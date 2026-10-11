@@ -28,6 +28,24 @@
     .chat-input-area input{flex:1;padding:10px;border:1px solid var(--line);background:#fffaf0;font-family:inherit;font-size:1rem;color:var(--ink)}
     .chat-input-area button{padding:10px 20px;background:var(--red);color:#fff;border:none;font-weight:700;cursor:pointer;font-family:inherit}
     .chat-input-area button:hover{background:#6d2c2c}
+    .chat-tools{display:flex;justify-content:flex-end;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+    .live-status{margin-right:auto;font-style:italic;color:#765f47;font-size:.9rem}
+    .voz-toggle{margin:0;padding:6px 14px;background:var(--gold);color:var(--ink);border:none;border-radius:999px;font-weight:700;font-family:inherit;font-size:.9rem;cursor:pointer}
+    .voz-toggle:hover{filter:brightness(1.08)}
+    .check-interromper{display:flex;align-items:center;gap:6px;font-size:.8rem;color:#765f47;cursor:pointer}
+    .orb-overlay{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:24px;background:rgba(14,8,4,.88);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#f4e8d0;text-align:center;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s}
+    .orb-overlay.aberto{opacity:1;visibility:visible}
+    .orb-wrap{position:relative;width:min(46vmin,320px);height:min(46vmin,320px);display:flex;align-items:center;justify-content:center;transform:translateY(45vh);opacity:0;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s ease}
+    .orb-overlay.aberto .orb-wrap{transform:none;opacity:1}
+    .orb-wrap:before{content:"";position:absolute;inset:-6%;border-radius:50%;border:2px solid rgba(201,169,97,.35);animation:respirar 2.6s ease-in-out infinite}
+    .orb{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fffaf0,#c9a961 42%,#8b3a3a 100%);transform:scale(.55);will-change:transform,box-shadow;transition:background .4s ease}
+    .orb-overlay.estado-falando .orb{background:radial-gradient(circle at 35% 30%,#fff1e0,#e29a86 40%,#8b3a3a 100%)}
+    .orb-status{margin:0;font-size:1.1rem;letter-spacing:.04em;opacity:.9;min-height:1.6em}
+    .orb-legenda{margin:0;max-width:640px;min-height:3.2em;font-size:1.05rem;line-height:1.5;opacity:.8}
+    .orb-stop{padding:10px 24px;border:1px solid var(--gold);background:transparent;color:#f4e8d0;border-radius:999px;font:inherit;font-weight:700;cursor:pointer}
+    .orb-stop:hover{background:rgba(201,169,97,.2)}
+    @keyframes respirar{0%,100%{transform:scale(.92);opacity:.7}50%{transform:scale(1.1);opacity:.15}}
+    @media (prefers-reduced-motion:reduce){.orb-wrap:before{animation:none}.orb-wrap{transition:none}}
     footer{text-align:center;background:var(--ink);color:var(--paper);padding:28px;border-top:5px solid var(--gold)}.top{position:fixed;right:22px;bottom:22px;border:0;border-radius:50%;background:var(--gold);color:var(--ink);width:52px;height:52px;font-size:1.6rem;box-shadow:var(--shadow);cursor:pointer;opacity:0;transform:translateY(12px);transition:.25s ease}.top.show{opacity:1;transform:translateY(0)}
     @media(max-width:600px){body{font-size:17px}.page{border-width:4px}nav a{padding:7px 9px;font-size:.9rem}.lyrics{font-size:1rem}.wiki-overlay{font-size:0.75rem}.gallery{grid-template-columns:1fr}}@media print{body{background:white}.top,nav{display:none}.page{border:0;box-shadow:none}.wiki-overlay{display:none}}
   </style>
@@ -150,6 +168,13 @@ União e igualdade.</div>
       <h2 class="title">Converse com a IA</h2>
       <div class="chat-container">
         <p style="margin-top:0;font-style:italic;color:#765f4a;text-align:center;">Tire dúvidas sobre a Independência do Paraguai com nossa assistente virtual.</p>
+        <div class="chat-tools">
+          <span id="liveStatus" class="live-status" aria-live="polite"></span>
+          <label class="check-interromper"><input type="checkbox" id="permitirInterrupcao"> Permitir interromper (use fone)</label>
+          <button id="geminiToggle" class="voz-toggle" type="button">✨ Rita ao vivo (Gemini)</button>
+          <button id="liveToggle" class="voz-toggle" type="button">🎙️ Conversar ao vivo</button>
+          <button id="vozToggle" class="voz-toggle" type="button" aria-pressed="true">🔊 Voz da Rita: ligada</button>
+        </div>
         <div class="chat-messages" id="chatMessages">
           <div class="chat-message ai">Olá! Sou a Rita, assistente virtual criada para este trabalho. O que gostaria de saber?</div>
         </div>
@@ -162,6 +187,12 @@ União e igualdade.</div>
     <footer>GAZETA DA INDEPENDÊNCIA · PARAGUAI · 1811<br><small>Trabalho histórico educativo — consulte fontes acadêmicas para aprofundamento.</small></footer>
   </main>
   <button class="top" aria-label="Voltar ao topo">↑</button>
+  <div id="orbOverlay" class="orb-overlay" role="dialog" aria-modal="true" aria-label="Conversa por voz com a Rita" aria-hidden="true">
+    <div class="orb-wrap"><div id="orb" class="orb"></div></div>
+    <p id="orbStatus" class="orb-status" aria-live="polite"></p>
+    <p id="orbLegenda" class="orb-legenda"></p>
+    <button id="orbStop" class="orb-stop" type="button">Encerrar conversa</button>
+  </div>
   <script>
     const topButton=document.querySelector('.top');
     addEventListener('scroll',()=>topButton.classList.toggle('show',scrollY>350));
@@ -171,13 +202,62 @@ União e igualdade.</div>
     const chatInput = document.getElementById('chatInput');
     const chatSend = document.getElementById('chatSend');
 
-    async function enviarMensagem() {
-      const texto = chatInput.value.trim();
+    // ---------- Voz da Rita (TTS gerado no servidor) ----------
+    const vozToggle = document.getElementById('vozToggle');
+    let vozLigada = true;
+    let audioAtual = null;
+    let falaId = 0;
+    const cacheAudio = new Map();
+
+    vozToggle.addEventListener('click', () => {
+      vozLigada = !vozLigada;
+      vozToggle.textContent = vozLigada ? '🔊 Voz da Rita: ligada' : '🔇 Voz da Rita: desligada';
+      vozToggle.setAttribute('aria-pressed', String(vozLigada));
+      if (!vozLigada) {
+        falaId++;
+        if (audioAtual) audioAtual.pause();
+      }
+    });
+
+    async function falar(texto) {
+      const meuId = ++falaId;
+      if (audioAtual) audioAtual.pause();
+      try {
+        let url = cacheAudio.get(texto);
+        if (!url) {
+          const r = await fetch('/tts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ texto })
+          });
+          if (!r.ok) return;
+          url = URL.createObjectURL(await r.blob());
+          cacheAudio.set(texto, url);
+        }
+        if (meuId !== falaId || !vozLigada) return;
+        const audio = new Audio(url);
+        audioAtual = audio;
+        await audio.play();
+        if (liveAtivo) { status('Rita falando...'); falandoSintetico = true; }
+        await new Promise((fim) => {
+          audio.addEventListener('ended', fim);
+          audio.addEventListener('pause', fim);
+          audio.addEventListener('error', fim);
+        });
+        falandoSintetico = false;
+      } catch (err) {
+        console.warn('Sem áudio:', err);
+      }
+    }
+
+    async function enviarMensagem(textoForcado) {
+      const texto = (textoForcado ?? chatInput.value).trim();
       if (!texto) return;
 
       const userDiv = document.createElement('div');
       userDiv.className = 'chat-message user';
       userDiv.textContent = texto;
+      mostrarLegenda(texto);
       chatMessages.appendChild(userDiv);
       chatInput.value = '';
       chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -188,6 +268,7 @@ União e igualdade.</div>
       chatMessages.appendChild(aiDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
+      let pFala = Promise.resolve();
       try {
         const res = await fetch('/perguntar', {
           method: 'POST',
@@ -196,6 +277,7 @@ União e igualdade.</div>
         });
         const data = await res.json();
         const resposta = data.resposta || 'Desculpe, ocorreu um erro.';
+        mostrarLegenda(resposta);
         const partes = resposta.split(/(\*\*.+?\*\*)/gs);
         aiDiv.replaceChildren(...partes.map((parte) => {
           const negrito = parte.match(/^\*\*(.+)\*\*$/s);
@@ -204,13 +286,429 @@ União e igualdade.</div>
           forte.textContent = negrito[1];
           return forte;
         }));
+        if (vozLigada && data.resposta) pFala = falar(data.resposta);
       } catch (err) {
         aiDiv.textContent = 'Erro ao se comunicar com o servidor.';
       }
       chatMessages.scrollTop = chatMessages.scrollHeight;
+      return pFala;
     }
 
-    chatSend.addEventListener('click', enviarMensagem);
+    // ---------- Orbe de voz: escurece a tela e pulsa conforme a fala ----------
+    const orbOverlay = document.getElementById('orbOverlay');
+    const orb = document.getElementById('orb');
+    const orbLegenda = document.getElementById('orbLegenda');
+    const orbStop = document.getElementById('orbStop');
+    let orbAberto = false;
+    let orbFrame = 0;
+    let nivelEntrada = 0;      // volume do microfone (0 a 1)
+    let nivelSuave = 0;
+    let falandoSintetico = false;  // modo antigo: pulsa enquanto a Rita fala
+    let medirSaida = null;         // modo Gemini: mede o volume real da voz da Rita
+
+    function quadroOrb(t) {
+      if (!orbAberto) return;
+      let saida = medirSaida ? medirSaida() : 0;
+      if (falandoSintetico) saida = Math.max(saida, 0.3 + 0.15 * Math.sin(t / 120));
+      nivelEntrada *= 0.86;
+      const falando = saida > 0.04;
+      const alvo = falando ? saida : nivelEntrada;
+      nivelSuave += (alvo - nivelSuave) * (alvo > nivelSuave ? 0.35 : 0.12);
+      orb.style.transform = 'scale(' + (0.55 + nivelSuave * 0.6).toFixed(3) + ')';
+      orb.style.boxShadow = '0 0 ' + (40 + nivelSuave * 120).toFixed(0) + 'px ' + (nivelSuave * 30).toFixed(0) + 'px ' +
+        (falando ? 'rgba(139,58,58,.7)' : 'rgba(201,169,97,.55)');
+      orbOverlay.classList.toggle('estado-falando', falando);
+      orbFrame = requestAnimationFrame(quadroOrb);
+    }
+
+    function abrirOrb() {
+      orbAberto = true;
+      nivelEntrada = 0;
+      nivelSuave = 0;
+      orbLegenda.textContent = '';
+      orbOverlay.classList.add('aberto');
+      orbOverlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      cancelAnimationFrame(orbFrame);
+      orbFrame = requestAnimationFrame(quadroOrb);
+      orbStop.focus();
+    }
+
+    function fecharOrb() {
+      orbAberto = false;
+      falandoSintetico = false;
+      medirSaida = null;
+      cancelAnimationFrame(orbFrame);
+      orbOverlay.classList.remove('aberto', 'estado-falando');
+      orbOverlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function mostrarLegenda(texto) {
+      if (!orbAberto) return;
+      const limpo = String(texto).replace(/[*#_]/g, '').trim();
+      orbLegenda.textContent = limpo.length > 220 ? '…' + limpo.slice(-220) : limpo;
+    }
+
+    orbStop.addEventListener('click', () => {
+      if (geminiAtivo) pararGemini();
+      else if (liveAtivo) pararLive();
+      else fecharOrb();
+    });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape' && orbAberto) orbStop.click(); });
+
+    // ---------- Conversa ao vivo: microfone -> /stt (Whisper) -> Rita -> voz ----------
+    const liveToggle = document.getElementById('liveToggle');
+    const liveStatus = document.getElementById('liveStatus');
+    let liveAtivo = false;
+    let liveStream = null;
+    let liveCtx = null;
+    let liveRec = null;
+
+    function status(texto) {
+      liveStatus.textContent = texto;
+      const o = document.getElementById('orbStatus');
+      if (o) o.textContent = texto;
+    }
+    const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    async function iniciarLive() {
+      if (geminiAtivo) pararGemini();
+      liveCtx = new AudioContext();
+      try {
+        liveStream = await navigator.mediaDevices.getUserMedia({
+          audio: { echoCancellation: true, noiseSuppression: true }
+        });
+      } catch (err) {
+        status('Não consegui acessar o microfone.');
+        liveCtx.close();
+        return;
+      }
+      try { await liveCtx.resume(); } catch (err) {}
+      if (!vozLigada) vozToggle.click();
+      liveAtivo = true;
+      liveToggle.textContent = '⏹ Parar conversa';
+      abrirOrb();
+
+      const analisador = liveCtx.createAnalyser();
+      analisador.fftSize = 1024;
+      liveCtx.createMediaStreamSource(liveStream).connect(analisador);
+      const dados = new Float32Array(analisador.fftSize);
+      const nivel = () => {
+        analisador.getFloatTimeDomainData(dados);
+        let soma = 0;
+        for (const v of dados) soma += v * v;
+        return Math.sqrt(soma / dados.length);
+      };
+
+      status('Calibrando o ruído...');
+      let ruido = 0, n = 0;
+      const t0 = performance.now();
+      while (performance.now() - t0 < 600) {
+        await esperar(50);
+        ruido += nivel();
+        n++;
+      }
+      const limite = Math.max(0.02, (ruido / Math.max(n, 1)) * 3);
+
+      while (liveAtivo) {
+        const texto = await ouvirUmaFala(nivel, limite);
+        if (!liveAtivo) break;
+        if (texto.length < 2) continue;
+        status('Pensando...');
+        await enviarMensagem(texto);
+        if (!liveAtivo) break;
+        await esperar(400);
+      }
+    }
+
+    function ouvirUmaFala(nivel, limite) {
+      return new Promise((resolve) => {
+        status('Ouvindo... pode falar');
+        const pedacos = [];
+        const rec = new MediaRecorder(liveStream);
+        liveRec = rec;
+        let falou = false, curto = false, inicioFala = 0, ultimoSom = 0;
+        const inicioRec = performance.now();
+
+        rec.ondataavailable = (e) => { if (e.data.size) pedacos.push(e.data); };
+        rec.onstop = async () => {
+          clearInterval(timer);
+          if (!liveAtivo || !falou || curto) return resolve('');
+          status('Transcrevendo...');
+          try {
+            const tipo = rec.mimeType || 'audio/webm';
+            const r = await fetch('/stt', {
+              method: 'POST',
+              headers: { 'Content-Type': tipo },
+              body: new Blob(pedacos, { type: tipo })
+            });
+            const d = await r.json();
+            resolve((d.texto || '').trim());
+          } catch (err) {
+            resolve('');
+          }
+        };
+
+        const timer = setInterval(() => {
+          if (rec.state === 'inactive') return;
+          const agora = performance.now();
+          if (!liveAtivo) return rec.stop();
+          nivelEntrada = Math.max(nivelEntrada, Math.min(1, nivel() * 6));
+          if (nivel() > limite) {
+            if (!falou) { falou = true; inicioFala = agora; status('Ouvindo você...'); }
+            ultimoSom = agora;
+          }
+          if (falou && agora - ultimoSom > 1300) {
+            curto = ultimoSom - inicioFala < 400;
+            rec.stop();
+          } else if (!falou && agora - inicioRec > 15000) {
+            rec.stop();
+          }
+        }, 50);
+
+        rec.start();
+      });
+    }
+
+    function pararLive() {
+      liveAtivo = false;
+      falaId++;
+      if (audioAtual) audioAtual.pause();
+      if (liveRec && liveRec.state !== 'inactive') liveRec.stop();
+      if (liveStream) liveStream.getTracks().forEach((t) => t.stop());
+      if (liveCtx) liveCtx.close();
+      liveToggle.textContent = '🎙️ Conversar ao vivo';
+      fecharOrb();
+      status('');
+    }
+
+    liveToggle.addEventListener('click', () => (liveAtivo ? pararLive() : iniciarLive()));
+
+    // ---------- Rita ao vivo com Gemini Live (áudio direto, dá para interromper) ----------
+    const geminiToggle = document.getElementById('geminiToggle');
+    const checkInterromper = document.getElementById('permitirInterrupcao');
+    const GEMINI_WS = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained';
+
+    // Captura o microfone, reduz para 16 kHz e entrega blocos de 100 ms em PCM de 16 bits
+    const WORKLET = `
+class Captura extends AudioWorkletProcessor {
+  constructor() { super(); this.passo = sampleRate / 16000; this.pos = 0; this.soma = 0; this.n = 0; this.saida = []; }
+  process(inputs) {
+    const c = inputs[0] && inputs[0][0];
+    if (!c) return true;
+    for (let i = 0; i < c.length; i++) {
+      this.soma += c[i]; this.n++; this.pos += 1;
+      if (this.pos >= this.passo) {
+        this.pos -= this.passo;
+        const m = Math.max(-1, Math.min(1, this.soma / this.n));
+        this.saida.push(m < 0 ? m * 0x8000 : m * 0x7FFF);
+        this.soma = 0; this.n = 0;
+        if (this.saida.length >= 1600) {
+          const arr = new Int16Array(this.saida);
+          this.saida = [];
+          this.port.postMessage(arr.buffer, [arr.buffer]);
+        }
+      }
+    }
+    return true;
+  }
+}
+registerProcessor('captura', Captura);`;
+
+    let geminiAtivo = false;
+    let geminiPronto = false;
+    let geminiWs = null;
+    let geminiStream = null;
+    let geminiCtx = null;
+    let geminiSaida = null;
+    let fontesTocando = [];
+    let proximoInicio = 0;
+    let bolhaUser = null;
+    let bolhaIA = null;
+    let filaMsg = Promise.resolve();
+
+    function paraBase64(buffer) {
+      const bytes = new Uint8Array(buffer);
+      let s = '';
+      for (let i = 0; i < bytes.length; i += 0x8000) {
+        s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+      }
+      return btoa(s);
+    }
+
+    function tocarPcm(b64) {
+      const bin = atob(b64);
+      const n = bin.length >> 1;
+      const f32 = new Float32Array(n);
+      for (let i = 0; i < n; i++) {
+        let v = bin.charCodeAt(2 * i) | (bin.charCodeAt(2 * i + 1) << 8);
+        if (v & 0x8000) v -= 0x10000;
+        f32[i] = v / 32768;
+      }
+      const buf = geminiCtx.createBuffer(1, n, 24000);
+      buf.copyToChannel(f32, 0);
+      const src = geminiCtx.createBufferSource();
+      src.buffer = buf;
+      src.connect(geminiSaida || geminiCtx.destination);
+      const agora = geminiCtx.currentTime;
+      if (proximoInicio < agora) proximoInicio = agora + 0.05;
+      src.start(proximoInicio);
+      proximoInicio += buf.duration;
+      fontesTocando.push(src);
+      src.onended = () => { fontesTocando = fontesTocando.filter((x) => x !== src); };
+    }
+
+    function pararSomGemini() {
+      fontesTocando.forEach((x) => { try { x.stop(); } catch (err) {} });
+      fontesTocando = [];
+      proximoInicio = 0;
+    }
+
+    function adicionarTexto(quem, texto) {
+      let bolha = quem === 'user' ? bolhaUser : bolhaIA;
+      if (!bolha) {
+        bolha = document.createElement('div');
+        bolha.className = 'chat-message ' + (quem === 'user' ? 'user' : 'ai');
+        chatMessages.appendChild(bolha);
+        if (quem === 'user') bolhaUser = bolha; else bolhaIA = bolha;
+      }
+      bolha.textContent += texto;
+      mostrarLegenda(bolha.textContent);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function tratarMensagemGemini(msg) {
+      if (msg.setupComplete) {
+        geminiPronto = true;
+        status('Ouvindo... pode falar');
+        return;
+      }
+      if (msg.goAway) status('A sessão vai encerrar em breve. Depois clique de novo para reconectar.');
+      const sc = msg.serverContent;
+      if (!sc) return;
+      if (sc.interrupted) { pararSomGemini(); bolhaIA = null; }
+      if (sc.inputTranscription && sc.inputTranscription.text) {
+        bolhaIA = null;
+        adicionarTexto('user', sc.inputTranscription.text);
+      }
+      if (sc.outputTranscription && sc.outputTranscription.text) {
+        bolhaUser = null;
+        adicionarTexto('ai', sc.outputTranscription.text);
+      }
+      const partes = (sc.modelTurn && sc.modelTurn.parts) || [];
+      for (const p of partes) {
+        if (p.inlineData && p.inlineData.data) {
+          tocarPcm(p.inlineData.data);
+          status('Rita falando...');
+        }
+      }
+      if (sc.turnComplete) {
+        bolhaUser = null;
+        bolhaIA = null;
+        status('Ouvindo... pode falar');
+      }
+    }
+
+    async function iniciarGemini() {
+      if (liveAtivo) pararLive();
+      falaId++;
+      if (audioAtual) audioAtual.pause();
+      geminiCtx = new AudioContext();
+      geminiAtivo = true;
+      geminiToggle.textContent = '⏹ Parar Rita (Gemini)';
+      abrirOrb();
+      try {
+        status('Pedindo o microfone...');
+        geminiStream = await navigator.mediaDevices.getUserMedia({
+          audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 }
+        });
+        await geminiCtx.resume();
+        const analisador = geminiCtx.createAnalyser();
+        analisador.fftSize = 512;
+        analisador.connect(geminiCtx.destination);
+        geminiSaida = analisador;
+        const amostras = new Uint8Array(analisador.fftSize);
+        medirSaida = () => {
+          analisador.getByteTimeDomainData(amostras);
+          let soma = 0;
+          for (let i = 0; i < amostras.length; i++) { const x = (amostras[i] - 128) / 128; soma += x * x; }
+          return Math.min(1, Math.sqrt(soma / amostras.length) * 4);
+        };
+        const urlModulo = URL.createObjectURL(new Blob([WORKLET], { type: 'text/javascript' }));
+        await geminiCtx.audioWorklet.addModule(urlModulo);
+        const fonte = geminiCtx.createMediaStreamSource(geminiStream);
+        const no = new AudioWorkletNode(geminiCtx, 'captura');
+        const mudo = geminiCtx.createGain();
+        mudo.gain.value = 0;
+        fonte.connect(no);
+        no.connect(mudo);
+        mudo.connect(geminiCtx.destination);
+        no.port.onmessage = (e) => {
+          const pcm = new Int16Array(e.data);
+          let quad = 0;
+          for (let i = 0; i < pcm.length; i++) { const v = pcm[i] / 32768; quad += v * v; }
+          nivelEntrada = Math.max(nivelEntrada, Math.min(1, Math.sqrt(quad / pcm.length) * 6));
+          if (!geminiPronto || !geminiWs || geminiWs.readyState !== WebSocket.OPEN) return;
+          // sem fone, a Rita escutaria a própria voz: só envia quando ela não está falando
+          if (!checkInterromper.checked && geminiCtx.currentTime < proximoInicio + 0.4) return;
+          geminiWs.send(JSON.stringify({
+            realtimeInput: { audio: { data: paraBase64(e.data), mimeType: 'audio/pcm;rate=16000' } }
+          }));
+        };
+
+        status('Conectando ao Gemini...');
+        const r = await fetch('/live-token', { method: 'POST' });
+        if (!r.ok) throw new Error('token');
+        const { token, model } = await r.json();
+
+        geminiWs = new WebSocket(GEMINI_WS + '?access_token=' + token);
+        geminiWs.onopen = () => {
+          geminiWs.send(JSON.stringify({
+            setup: {
+              model: 'models/' + model,
+              generationConfig: { responseModalities: ['AUDIO'] },
+              inputAudioTranscription: {},
+              outputAudioTranscription: {}
+            }
+          }));
+        };
+        geminiWs.onmessage = (ev) => {
+          // as mensagens podem chegar como Blob; a fila garante a ordem do áudio
+          filaMsg = filaMsg.then(async () => {
+            const txt = typeof ev.data === 'string' ? ev.data : await ev.data.text();
+            try { tratarMensagemGemini(JSON.parse(txt)); } catch (err) { console.warn(err); }
+          });
+        };
+        geminiWs.onerror = (err) => console.warn('Gemini WebSocket:', err);
+        geminiWs.onclose = (ev) => {
+          console.warn('Gemini fechou:', ev.code, ev.reason);
+          if (geminiAtivo) pararGemini('A conexão com o Gemini caiu. Use o outro botão ou tente de novo.');
+        };
+      } catch (err) {
+        console.warn(err);
+        pararGemini('Gemini indisponível agora. Use o botão "Conversar ao vivo".');
+      }
+    }
+
+    function pararGemini(mensagem) {
+      geminiAtivo = false;
+      geminiPronto = false;
+      pararSomGemini();
+      bolhaUser = null;
+      bolhaIA = null;
+      if (geminiWs) { geminiWs.onclose = null; try { geminiWs.close(); } catch (err) {} geminiWs = null; }
+      if (geminiStream) { geminiStream.getTracks().forEach((t) => t.stop()); geminiStream = null; }
+      if (geminiCtx) { geminiCtx.close(); geminiCtx = null; }
+      geminiSaida = null;
+      geminiToggle.textContent = '✨ Rita ao vivo (Gemini)';
+      fecharOrb();
+      status(mensagem || '');
+    }
+
+    geminiToggle.addEventListener('click', () => (geminiAtivo ? pararGemini() : iniciarGemini()));
+
+    chatSend.addEventListener('click', () => enviarMensagem());
     chatInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') enviarMensagem();
     });
