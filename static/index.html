@@ -55,7 +55,7 @@
     <header id="inicio">
       <h1>Gazeta da Independência</h1>
       <p><strong>Edição extraordinária — República do Paraguai</strong></p>
-      <p class="date">Notícias de Assunção</p>
+      <p class="date">14 e 15 de maio de 1811 · Notícias de Assunção</p>
     </header>
     <nav aria-label="Navegação principal">
       <a href="#contexto">Contexto</a><a href="#linha-do-tempo">Linha do tempo</a><a href="#noticias">Notícias</a><a href="#hino">Hino</a><a href="#legado">Legado</a><a href="#chat">IA</a>
@@ -418,7 +418,7 @@ União e igualdade.</div>
         status('Pensando...');
         await enviarMensagem(texto);
         if (!liveAtivo) break;
-        await esperar(400);
+        await esperar(1200);
       }
     }
 
@@ -489,6 +489,10 @@ União e igualdade.</div>
     const geminiToggle = document.getElementById('geminiToggle');
     const checkInterromper = document.getElementById('permitirInterrupcao');
     const GEMINI_WS = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained';
+
+    // Segundos que o microfone continua mudo depois que a Rita termina de falar (sem fone).
+    // Aumente se ainda houver eco (TV/HDMI costuma atrasar o som); diminua se a resposta demorar a te ouvir.
+    const CAUDA_ECO_S = 1.2;
 
     // Captura o microfone, reduz para 16 kHz e entrega blocos de 100 ms em PCM de 16 bits
     const WORKLET = `
@@ -635,27 +639,80 @@ registerProcessor('captura', Captura);`;
           for (let i = 0; i < amostras.length; i++) { const x = (amostras[i] - 128) / 128; soma += x * x; }
           return Math.min(1, Math.sqrt(soma / amostras.length) * 4);
         };
-        const urlModulo = URL.createObjectURL(new Blob([WORKLET], { type: 'text/javascript' }));
-        await geminiCtx.audioWorklet.addModule(urlModulo);
+        console.log('AudioContext:', geminiCtx.state, geminiCtx.sampleRate + ' Hz');
+        if (geminiCtx.state !== 'running') {
+          await geminiCtx.resume();
+          if (geminiCtx.state !== 'running') status('O navegador bloqueou o áudio. Clique no botão de novo.');
+        }
         const fonte = geminiCtx.createMediaStreamSource(geminiStream);
-        const no = new AudioWorkletNode(geminiCtx, 'captura');
         const mudo = geminiCtx.createGain();
         mudo.gain.value = 0;
-        fonte.connect(no);
-        no.connect(mudo);
         mudo.connect(geminiCtx.destination);
-        no.port.onmessage = (e) => {
-          const pcm = new Int16Array(e.data);
+
+        let modo = 'worklet';
+        let recebeuAudio = false;
+
+        // recebe blocos de 100 ms (16 kHz, PCM de 16 bits) vindos do worklet ou do plano B
+        const aoReceber = (buffer) => {
+          recebeuAudio = true;
+          const pcm = new Int16Array(buffer);
           let quad = 0;
           for (let i = 0; i < pcm.length; i++) { const v = pcm[i] / 32768; quad += v * v; }
           nivelEntrada = Math.max(nivelEntrada, Math.min(1, Math.sqrt(quad / pcm.length) * 6));
           if (!geminiPronto || !geminiWs || geminiWs.readyState !== WebSocket.OPEN) return;
           // sem fone, a Rita escutaria a própria voz: só envia quando ela não está falando
-          if (!checkInterromper.checked && geminiCtx.currentTime < proximoInicio + 0.4) return;
+          if (!checkInterromper.checked && proximoInicio > 0 &&
+              geminiCtx.currentTime < proximoInicio + CAUDA_ECO_S + (geminiCtx.outputLatency || 0)) return;
           geminiWs.send(JSON.stringify({
-            realtimeInput: { audio: { data: paraBase64(e.data), mimeType: 'audio/pcm;rate=16000' } }
+            realtimeInput: { audio: { data: paraBase64(buffer), mimeType: 'audio/pcm;rate=16000' } }
           }));
         };
+
+        // plano B: ScriptProcessor (antigo, mas funciona em qualquer navegador)
+        const usarProcessador = () => {
+          if (modo === 'proc') return;
+          modo = 'proc';
+          const proc = geminiCtx.createScriptProcessor(4096, 1, 1);
+          const passo = geminiCtx.sampleRate / 16000;
+          let pos = 0, soma = 0, n = 0, saida = [];
+          proc.onaudioprocess = (ev) => {
+            const c = ev.inputBuffer.getChannelData(0);
+            for (let i = 0; i < c.length; i++) {
+              soma += c[i]; n++; pos += 1;
+              if (pos >= passo) {
+                pos -= passo;
+                const m = Math.max(-1, Math.min(1, soma / n));
+                saida.push(m < 0 ? m * 0x8000 : m * 0x7FFF);
+                soma = 0; n = 0;
+                if (saida.length >= 1600) {
+                  const arr = new Int16Array(saida);
+                  saida = [];
+                  aoReceber(arr.buffer);
+                }
+              }
+            }
+          };
+          fonte.connect(proc);
+          proc.connect(mudo);
+        };
+
+        try {
+          const urlModulo = URL.createObjectURL(new Blob([WORKLET], { type: 'text/javascript' }));
+          await geminiCtx.audioWorklet.addModule(urlModulo);
+          const no = new AudioWorkletNode(geminiCtx, 'captura');
+          no.port.onmessage = (e) => { if (modo === 'worklet') aoReceber(e.data); };
+          fonte.connect(no);
+          no.connect(mudo);
+        } catch (err) {
+          console.warn('AudioWorklet falhou, usando o plano B:', err);
+          usarProcessador();
+        }
+        setTimeout(() => {
+          if (geminiAtivo && !recebeuAudio) { console.warn('Worklet sem áudio, trocando para o plano B'); usarProcessador(); }
+        }, 2000);
+        setTimeout(() => {
+          if (geminiAtivo && !recebeuAudio) status('Não estou ouvindo nada do microfone. Confira qual microfone está selecionado no sistema.');
+        }, 5000);
 
         status('Conectando ao Gemini...');
         const r = await fetch('/live-token', { method: 'POST' });
