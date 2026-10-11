@@ -23,6 +23,7 @@ CHUNK_SIZE = 400  # palavras por chunk
 CHUNK_OVERLAP = 30
 TOP_K = 3  # quantos trechos relevantes buscar por pergunta
 MAX_TOKENS_RESPOSTA = 600  # limite de tamanho da resposta gerada
+TEMPERATURA = 0.3  # 0 = mais fiel e previsível; 1 = mais criativo (e mais propenso a inventar)
 INDEX_FILE = "indice.pkl"
 
 # cache simples em memória: (modo_debug, pergunta normalizada) -> resposta
@@ -178,6 +179,7 @@ def _chamar_groq(pergunta: str, contexto: str, modo_debug: bool, com_busca: bool
         "model": MODEL,
         "max_tokens": MAX_TOKENS_RESPOSTA,
         "reasoning_effort": "low",
+        "temperature": TEMPERATURA,
         "messages": [
             {"role": "system", "content": prompt_sistema},
             {"role": "user", "content": pergunta},
