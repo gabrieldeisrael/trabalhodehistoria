@@ -19,10 +19,10 @@ GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL = "openai/gpt-oss-120b"
 DOCS_FOLDER = "docs"
-CHUNK_SIZE = 200  # palavras por chunk
+CHUNK_SIZE = 400  # palavras por chunk
 CHUNK_OVERLAP = 30
-TOP_K = 3  # quantos trechos relevantes buscar por pergunta
-MAX_TOKENS_RESPOSTA = 300  # limite de tamanho da resposta gerada
+TOP_K = 4  # quantos trechos relevantes buscar por pergunta
+MAX_TOKENS_RESPOSTA = 600  # limite de tamanho da resposta gerada
 INDEX_FILE = "indice.pkl"
 
 # cache simples em memória: (modo_debug, pergunta normalizada) -> resposta
