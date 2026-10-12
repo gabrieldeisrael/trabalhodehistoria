@@ -331,39 +331,60 @@ PROMPT_LIVE = (
     + " Você está conversando por voz. Responda sempre em português do Brasil, "
     "em frases curtas e naturais, sem listas, sem símbolos e sem formatação. "
     "Dê respostas de até três ou quatro frases, a menos que peçam mais detalhes. "
-    "Você pode e deve usar a função 'mostrar_imagens' para exibir até 4 imagens históricas relevantes de docs/assets (como retratos de Pedro Juan Caballero, Fulgencio Yegros, Dr. Francia, Bernardo de Velasco ou a Casa da Independência) quando for oportuno para ilustrar a história."
+    "Cartas de imagens: você tem as funções mostrar_imagens e destacar_imagem. "
+    "Quando for falar de pessoas ou lugares que aparecem nas imagens disponíveis, chame mostrar_imagens uma vez, "
+    "com de 1 a 4 imagens, antes de começar a falar sobre elas. "
+    "Depois, a cada pessoa ou lugar que você mencionar, chame destacar_imagem logo antes de dizer o nome "
+    "e apresente em voz alta, de forma natural, como 'este aqui é o...' ou 'repare neste...'. "
+    "Não leia legendas, não mostre imagens que não combinem com o assunto e não repita imagens que já estão na tela. "
+    "Se nenhuma imagem combinar, não chame nenhuma função. "
+    "Para o usuário, são só imagens que você mostra: nunca fale em função, catálogo ou cartas técnicas."
 )
+
+IMAGENS_LIVE = [
+    "Bernardo_de_Velasco_retrato.jpg",
+    "Bernardo_de_Velasco_corpo_inteiro.jpg",
+    "Pedro-juan-caballero_retrato.jpg",
+    "Pedro-juan-caballero_corpo_inteiro.jpg",
+    "Fulgencio_Yegros_retrato.jpg",
+    "José_Gaspar_de_Francia_sentado_em_uma_cadeira.jpg",
+    "José_Gaspar_de_Francia_assinando_papeis_como_ditador.jpg",
+    "Casa_de_la_independencia_hoje_em_dia.jpg",
+]
 
 FERRAMENTAS_LIVE = [
     {
         "functionDeclarations": [
             {
                 "name": "mostrar_imagens",
-                "description": "Mostra até 4 imagens históricas relevantes na tela para o usuário (retratos de líderes, Casa da Independência). Use quando for pertinente à conversa.",
+                "description": "Distribui na tela, como cartas, de 1 a 4 imagens relacionadas ao assunto. Chame uma vez, antes de falar sobre elas.",
                 "parameters": {
                     "type": "OBJECT",
                     "properties": {
                         "imagens": {
                             "type": "ARRAY",
-                            "items": {
-                                "type": "STRING",
-                                "enum": [
-                                    "Bernardo_de_Velasco_retrato.jpg",
-                                    "Bernardo_de_Velasco_corpo_inteiro.jpg",
-                                    "Pedro-juan-caballero_retrato.jpg",
-                                    "Pedro-juan-caballero_corpo_inteiro.jpg",
-                                    "Fulgencio_Yegros_retrato.jpg",
-                                    "José_Gaspar_de_Francia_sentado_em_uma_cadeira.jpg",
-                                    "José_Gaspar_de_Francia_assinando_papeis_como_ditador.jpg",
-                                    "Casa_de_la_independencia_hoje_em_dia.jpg"
-                                ]
-                            },
-                            "description": "Lista com 1 a 4 nomes de arquivos de imagem de docs/assets."
+                            "items": {"type": "STRING", "enum": IMAGENS_LIVE},
+                            "description": "De 1 a 4 nomes de arquivo de imagem.",
                         }
                     },
-                    "required": ["imagens"]
-                }
-            }
+                    "required": ["imagens"],
+                },
+            },
+            {
+                "name": "destacar_imagem",
+                "description": "Destaca uma das cartas que já estão na tela (borda brilhante e seta) enquanto você fala dela. Chame logo antes de mencionar a pessoa ou o lugar.",
+                "parameters": {
+                    "type": "OBJECT",
+                    "properties": {
+                        "imagem": {
+                            "type": "STRING",
+                            "enum": IMAGENS_LIVE,
+                            "description": "Nome do arquivo da carta a destacar.",
+                        }
+                    },
+                    "required": ["imagem"],
+                },
+            },
         ]
     }
 ]
