@@ -400,8 +400,10 @@ União e igualdade.</div>
     let timersCartas = [];
 
     // o áudio chega adiantado: espera o que já foi recebido terminar de tocar antes de mexer nas cartas
-    function agendarSincronizado(fn) {
-      const espera = geminiCtx ? Math.max(0, (proximoInicio - geminiCtx.currentTime) * 1000) : 0;
+    // (antecipacaoS: começa um pouco antes; extraS: atraso extra, para espaçar vários destaques)
+    function agendarSincronizado(fn, antecipacaoS = 0, extraS = 0) {
+      const fila = geminiCtx ? (proximoInicio - geminiCtx.currentTime) : 0;
+      const espera = Math.max(0, (fila - antecipacaoS) * 1000) + extraS * 1000;
       timersCartas.push(setTimeout(fn, espera));
     }
 
@@ -467,16 +469,50 @@ União e igualdade.</div>
       }, 800);
     }
 
-    function destacarCarta(arquivo, tentativas = 0) {
+    function destacarGrupo(arquivos, tentativas = 0) {
       const cartas = [...document.getElementById('orbImagesContainer').children];
-      const alvo = cartas.find((c) => c.dataset.arquivo === arquivo && !c.classList.contains('saindo'));
-      if (!alvo) {  // a carta pode ainda estar chegando
-        if (tentativas < 5) timersCartas.push(setTimeout(() => destacarCarta(arquivo, tentativas + 1), 400));
+      const alvos = cartas.filter((c) => arquivos.includes(c.dataset.arquivo) && !c.classList.contains('saindo'));
+      if (!alvos.length) {  // a carta pode ainda estar chegando
+        if (tentativas < 3) timersCartas.push(setTimeout(() => destacarGrupo(arquivos, tentativas + 1), 400));
         return;
       }
       cartas.forEach((c) => {
-        c.classList.toggle('destaque', c === alvo);
-        c.classList.toggle('apagada', c !== alvo);
+        c.classList.toggle('destaque', alvos.includes(c));
+        c.classList.toggle('apagada', !alvos.includes(c));
+      });
+    }
+
+    function destacarCarta(arquivo) { destacarGrupo([arquivo]); }
+
+    // O destaque é automático: quando a Rita diz o nome de alguém, a carta dessa pessoa brilha.
+    // (Pelo texto da fala, que chega junto com o áudio; assim não depende de o modelo chamar uma função.)
+    const NOMES_CARTAS = [
+      { re: /velasco/gi, arquivos: ['Bernardo_de_Velasco_retrato.jpg', 'Bernardo_de_Velasco_corpo_inteiro.jpg'] },
+      { re: /caballero/gi, arquivos: ['Pedro-juan-caballero_retrato.jpg', 'Pedro-juan-caballero_corpo_inteiro.jpg'] },
+      { re: /yegros/gi, arquivos: ['Fulgencio_Yegros_retrato.jpg'] },
+      { re: /francia/gi, arquivos: ['José_Gaspar_de_Francia_sentado_em_uma_cadeira.jpg', 'José_Gaspar_de_Francia_assinando_papeis_como_ditador.jpg'] },
+      { re: /casa\s+da\s+independ[eê]ncia/gi, arquivos: ['Casa_de_la_independencia_hoje_em_dia.jpg'] }
+    ];
+    const ANTECIPACAO_S = 0.5;  // o destaque começa meio segundo antes do nome, para parecer natural
+    let bufferNomes = '';
+    let cartasDoTurno = false;
+
+    function destacarPorNome(texto) {
+      bufferNomes = (bufferNomes + texto).slice(-80);  // o nome pode vir cortado entre dois pedaços
+      const achados = [];
+      for (const n of NOMES_CARTAS) {
+        n.re.lastIndex = 0;
+        let m;
+        while ((m = n.re.exec(bufferNomes)) !== null) {
+          achados.push({ pos: m.index, fim: m.index + m[0].length, arquivos: n.arquivos });
+        }
+      }
+      if (!achados.length) return;
+      achados.sort((a, b) => a.pos - b.pos);
+      bufferNomes = bufferNomes.slice(achados[achados.length - 1].fim);
+      achados.forEach((a, k) => {
+        console.log('[cartas] destaque pelo nome:', a.arquivos[0]);
+        agendarSincronizado(() => destacarGrupo(a.arquivos), ANTECIPACAO_S, k * 0.7);
       });
     }
 
@@ -743,12 +779,16 @@ registerProcessor('captura', Captura);`;
         const respostas = [];
         for (const fc of msg.toolCall.functionCalls) {
           const args = fc.args || {};
+          console.log('[cartas] o Gemini chamou', fc.name, JSON.stringify(args));
           if (fc.name === 'mostrar_imagens') {
+            cartasDoTurno = true;
             agendarSincronizado(() => distribuirCartas(args.imagens));
           } else if (fc.name === 'destacar_imagem') {
             agendarSincronizado(() => destacarCarta(args.imagem));
           }
-          respostas.push({ id: fc.id, name: fc.name, response: { output: { success: true } } });
+          // SILENT: a Rita não comenta nem se interrompe por causa da resposta da função (a documentação mostra o campo em dois lugares, então vai nos dois)
+          respostas.push({ id: fc.id, name: fc.name, scheduling: 'SILENT',
+            response: { output: { success: true }, scheduling: 'SILENT' } });
         }
         if (respostas.length && geminiWs && geminiWs.readyState === WebSocket.OPEN) {
           geminiWs.send(JSON.stringify({ toolResponse: { functionResponses: respostas } }));
@@ -758,13 +798,13 @@ registerProcessor('captura', Captura);`;
       if (!sc) return;
       if (sc.interrupted) { pararSomGemini(); bolhaIA = null; timersCartas.forEach(clearTimeout); timersCartas = []; }
       if (sc.inputTranscription && sc.inputTranscription.text) {
-        if (!bolhaUser) recolherCartas();  // nova pergunta: as cartas anteriores saem
         bolhaIA = null;
         adicionarTexto('user', sc.inputTranscription.text);
       }
       if (sc.outputTranscription && sc.outputTranscription.text) {
         bolhaUser = null;
         adicionarTexto('ai', sc.outputTranscription.text);
+        destacarPorNome(sc.outputTranscription.text);
       }
       const partes = (sc.modelTurn && sc.modelTurn.parts) || [];
       for (const p of partes) {
@@ -774,7 +814,14 @@ registerProcessor('captura', Captura);`;
         }
       }
       if (sc.turnComplete) {
+        const tinhaCartas = cartasDoTurno;
+        cartasDoTurno = false;
+        bufferNomes = '';
         agendarSincronizado(() => setTimeout(limparDestaque, 1500));
+        if (!tinhaCartas) {
+          const g = geracaoCartas;
+          agendarSincronizado(() => setTimeout(() => { if (g === geracaoCartas) recolherCartas(); }, 3000));
+        }
         bolhaUser = null;
         bolhaIA = null;
         status('Ouvindo... pode falar');

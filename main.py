@@ -331,13 +331,13 @@ PROMPT_LIVE = (
     + " Você está conversando por voz. Responda sempre em português do Brasil, "
     "em frases curtas e naturais, sem listas, sem símbolos e sem formatação. "
     "Dê respostas de até três ou quatro frases, a menos que peçam mais detalhes. "
-    "Cartas de imagens: você tem as funções mostrar_imagens e destacar_imagem. "
-    "Quando for falar de pessoas ou lugares que aparecem nas imagens disponíveis, chame mostrar_imagens uma vez, "
-    "com de 1 a 4 imagens, antes de começar a falar sobre elas. "
-    "Depois, a cada pessoa ou lugar que você mencionar, chame destacar_imagem logo antes de dizer o nome "
-    "e apresente em voz alta, de forma natural, como 'este aqui é o...' ou 'repare neste...'. "
-    "Não leia legendas, não mostre imagens que não combinem com o assunto e não repita imagens que já estão na tela. "
-    "Se nenhuma imagem combinar, não chame nenhuma função. "
+    "Imagens: você tem a função mostrar_imagens. Sempre que for falar de pessoas ou lugares que aparecem nas "
+    "imagens disponíveis, chame mostrar_imagens no começo da resposta, antes de falar, com de 1 a 4 imagens daquele assunto. "
+    "Faça isso a cada nova pergunta sobre uma pessoa ou lugar com imagem, mesmo que a imagem já tenha aparecido antes: "
+    "as cartas antigas saem da tela sozinhas. "
+    "Ao falar, apresente cada pessoa ou lugar em voz alta, de forma natural, como 'este aqui é o...' ou 'repare neste...'; "
+    "o site destaca a carta sozinho quando você diz o nome. "
+    "Não leia legendas e não mostre imagens que não combinem com o assunto. Se nenhuma combinar, não chame a função. "
     "Para o usuário, são só imagens que você mostra: nunca fale em função, catálogo ou cartas técnicas."
 )
 
@@ -357,7 +357,7 @@ FERRAMENTAS_LIVE = [
         "functionDeclarations": [
             {
                 "name": "mostrar_imagens",
-                "description": "Distribui na tela, como cartas, de 1 a 4 imagens relacionadas ao assunto. Chame uma vez, antes de falar sobre elas.",
+                "description": "Distribui na tela, como cartas, de 1 a 4 imagens relacionadas ao assunto. Chame no começo da resposta, antes de falar sobre elas, a cada nova pergunta sobre uma pessoa ou lugar com imagem.",
                 "parameters": {
                     "type": "OBJECT",
                     "properties": {
@@ -369,22 +369,7 @@ FERRAMENTAS_LIVE = [
                     },
                     "required": ["imagens"],
                 },
-            },
-            {
-                "name": "destacar_imagem",
-                "description": "Destaca uma das cartas que já estão na tela (borda brilhante e seta) enquanto você fala dela. Chame logo antes de mencionar a pessoa ou o lugar.",
-                "parameters": {
-                    "type": "OBJECT",
-                    "properties": {
-                        "imagem": {
-                            "type": "STRING",
-                            "enum": IMAGENS_LIVE,
-                            "description": "Nome do arquivo da carta a destacar.",
-                        }
-                    },
-                    "required": ["imagem"],
-                },
-            },
+            }
         ]
     }
 ]
