@@ -61,17 +61,19 @@ def index_documents():
     """Lê os .txt de docs/, quebra em chunks e monta o índice TF-IDF."""
     global chunks_texto, chunks_fonte, vectorizer, matriz_tfidf
 
-    if os.path.exists(INDEX_FILE):
-        with open(INDEX_FILE, "rb") as f:
-            dados = pickle.load(f)
-        chunks_texto = dados["chunks_texto"]
-        chunks_fonte = dados["chunks_fonte"]
-        vectorizer = dados["vectorizer"]
-        matriz_tfidf = dados["matriz_tfidf"]
-        print(f"[OK] Índice carregado do disco ({len(chunks_texto)} chunks).")
-        return
-
     txt_files = glob.glob(f"{DOCS_FOLDER}/*.txt")
+    if os.path.exists(INDEX_FILE):
+        index_mtime = os.path.getmtime(INDEX_FILE)
+        if txt_files and all(os.path.getmtime(f) <= index_mtime for f in txt_files):
+            with open(INDEX_FILE, "rb") as f:
+                dados = pickle.load(f)
+            chunks_texto = dados["chunks_texto"]
+            chunks_fonte = dados["chunks_fonte"]
+            vectorizer = dados["vectorizer"]
+            matriz_tfidf = dados["matriz_tfidf"]
+            print(f"[OK] Índice carregado do disco ({len(chunks_texto)} chunks).")
+            return
+
     print(f"Encontrados {len(txt_files)} arquivos .txt")
 
     chunks_texto, chunks_fonte = [], []
@@ -118,21 +120,15 @@ def buscar_contexto(pergunta: str) -> str:
 PALAVRA_DEBUG = "debug"
 
 PROMPT_BASE = (
-    "Você é a Rita, assistente virtual sobre o Paraguai. "
-    "Seu tom é leve, simpático e um pouco descontraído, sem exagero: "
-    "pouco ou nenhum emoji e nenhuma piada fora de hora. "
-    "Responda como alguém que conhece bem o Paraguai, usando apenas as "
-    "informações fornecidas abaixo. Fale como se o conhecimento fosse seu: "
-    "não mencione documentos, arquivos, textos, trabalho escolar nem de onde "
-    "veio a informação, e considere que o usuário não vê nada disso. "
-    "Se a resposta não estiver nas informações, diga com gentileza que não "
-    "sabe e sugira outra pergunta sobre o Paraguai. "
-    "Não invente nada: só afirme o que está nas informações fornecidas. "
-    "Evite palavras como primeiro, segundo, maior, único ou um dos primeiros, e não "
-    "deduza rankings, comparações nem apelidos, a menos que as "
-    "informações digam isso exatamente. Em pedidos abertos, como fatos curiosos, "
-    "escolha de três a cinco fatos e responda de forma curta. "
-    "Seja direta e breve."
+    "Você é a Rita, assistente virtual especialista na história da independência e formação do Paraguai. "
+    "Diretrizes de comportamento e persona: "
+    "1. Precisão factual absoluta e tolerância zero a alucinações; baseie-se estritamente nas informações fornecidas e fontes oficiais. "
+    "2. Hipérbole épica/histórica permitida para dar vida aos feitos heroicos e momentos dramáticos da independência, sem desvirtuar os fatos. "
+    "3. Piadinhas brancas, leves e raríssimas permitidas, desde que nunca comprometam a absoluta confiabilidade e seriedade histórica. "
+    "4. Eficiência máxima: seja direta, sem rodeios, sem enrolação e sem boilerplate verbal. "
+    "5. Fale como se o conhecimento fosse seu: não mencione documentos, arquivos, textos ou de onde veio a informação. "
+    "6. Se a resposta não estiver nas informações ou na busca, diga com gentileza que não sabe e sugira outra pergunta. "
+    "7. Não invente rankings, comparações, apelidos ou superlativos que não constem explicitamente nas fontes."
 )
 
 PROMPT_DEBUG = (
@@ -210,8 +206,16 @@ def perguntar_groq(pergunta: str, contexto: str, modo_debug: bool = False) -> st
     if not resposta.ok:
         print(f"[ERRO Groq] Status {resposta.status_code}: {resposta.text}")
     resposta.raise_for_status()
-    data = resposta.json()
-    return _limpar_resposta(data["choices"][0]["message"]["content"])
+    try:
+        data = resposta.json()
+        choices = data.get("choices", [])
+        if not choices:
+            return "Desculpe, não consegui gerar uma resposta no momento."
+        content = choices[0].get("message", {}).get("content", "")
+        return _limpar_resposta(content)
+    except Exception as e:
+        print(f"[ERRO Parse Groq] {e}")
+        return "Desculpe, ocorreu um erro ao processar a resposta."
 
 
 # ---------- Rotas ----------
@@ -237,8 +241,15 @@ def perguntar(req: PerguntaRequest):
     if chave_cache in cache_respostas:
         return {"resposta": cache_respostas[chave_cache], "cache": True}
 
-    contexto = buscar_contexto(pergunta)
-    resposta = perguntar_groq(pergunta, contexto, modo_debug)
+    try:
+        contexto = buscar_contexto(pergunta)
+        resposta = perguntar_groq(pergunta, contexto, modo_debug)
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"[ERRO /perguntar] {e}")
+        raise HTTPException(status_code=500, detail="Erro interno ao processar a pergunta.")
+
     cache_respostas[chave_cache] = resposta
     return {"resposta": resposta, "cache": False}
 
