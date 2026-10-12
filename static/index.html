@@ -786,9 +786,8 @@ registerProcessor('captura', Captura);`;
           } else if (fc.name === 'destacar_imagem') {
             agendarSincronizado(() => destacarCarta(args.imagem));
           }
-          // SILENT: a Rita não comenta nem se interrompe por causa da resposta da função (a documentação mostra o campo em dois lugares, então vai nos dois)
-          respostas.push({ id: fc.id, name: fc.name, scheduling: 'SILENT',
-            response: { output: { success: true }, scheduling: 'SILENT' } });
+          respostas.push({ id: fc.id, name: fc.name,
+            response: { output: { success: true } } });
         }
         if (respostas.length && geminiWs && geminiWs.readyState === WebSocket.OPEN) {
           geminiWs.send(JSON.stringify({ toolResponse: { functionResponses: respostas } }));
