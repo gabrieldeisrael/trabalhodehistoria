@@ -43,8 +43,16 @@
     .check-interromper{display:flex;align-items:center;gap:6px;font-size:.8rem;color:#765f47;cursor:pointer}
     .orb-overlay{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:24px;background:rgba(14,8,4,.93);color:#f4e8d0;text-align:center;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s}
     .orb-overlay.aberto{opacity:1;visibility:visible}
+    .orb-overlay.tem-imagens { justify-content: space-between; padding: 16px; }
+    .orb-images-container { display: none; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; width: 100%; max-width: 820px; max-height: 52vh; overflow-y: auto; margin: auto; padding: 4px; }
+    .orb-overlay.tem-imagens .orb-images-container { display: grid; }
+    .orb-images-container figure { margin: 0; background: #3a281b; border: 2px solid var(--gold); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); text-align: left; }
+    .orb-images-container img { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .orb-images-container figcaption { padding: 8px; font-size: 0.82rem; color: #f4e8d0; background: rgba(0,0,0,0.85); line-height: 1.35; }
     .orb-wrap{position:relative;width:min(46vmin,320px);height:min(46vmin,320px);display:flex;align-items:center;justify-content:center;transform:translateY(45vh);opacity:0;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s ease}
     .orb-overlay.aberto .orb-wrap{transform:none;opacity:1}
+    .orb-overlay.tem-imagens .orb-wrap { position: fixed; bottom: 20px; right: 20px; width: 85px; height: 85px; transform: none !important; z-index: 10000; }
+    .orb-overlay.tem-imagens .orb-status, .orb-overlay.tem-imagens .orb-stop { font-size: 0.85rem; padding: 6px 14px; }
     .orb-wrap:before{content:"";position:absolute;inset:-6%;border-radius:50%;border:2px solid rgba(201,169,97,.35);animation:respirar 2.6s ease-in-out infinite}
     .orb{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fffaf0,#c9a961 42%,#8b3a3a 100%);transform:scale(.55);will-change:transform;transition:background .4s ease}
     .orb-overlay.estado-falando .orb{background:radial-gradient(circle at 35% 30%,#fff1e0,#e29a86 40%,#8b3a3a 100%)}
@@ -197,6 +205,7 @@ União e igualdade.</div>
   </main>
   <button class="top" aria-label="Voltar ao topo">↑</button>
   <div id="orbOverlay" class="orb-overlay" role="dialog" aria-modal="true" aria-label="Conversa por voz com a Rita" aria-hidden="true">
+    <div id="orbImagesContainer" class="orb-images-container"></div>
     <div class="orb-wrap"><div id="orbGlow" class="orb-glow"></div><div id="orb" class="orb"></div></div>
     <p id="orbStatus" class="orb-status" aria-live="polite"></p>
     <p id="orbLegenda" class="orb-legenda"></p>
@@ -349,9 +358,42 @@ União e igualdade.</div>
       falandoSintetico = false;
       medirSaida = null;
       cancelAnimationFrame(orbFrame);
-      orbOverlay.classList.remove('aberto', 'estado-falando');
+      orbOverlay.classList.remove('aberto', 'estado-falando', 'tem-imagens');
+      document.getElementById('orbImagesContainer').innerHTML = '';
       orbOverlay.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
+    }
+
+    function mostrarImagensOrb(imagens) {
+      const container = document.getElementById('orbImagesContainer');
+      container.innerHTML = '';
+      if (!imagens || imagens.length === 0) {
+        orbOverlay.classList.remove('tem-imagens');
+        return;
+      }
+      const legendasMap = {
+        "Bernardo_de_Velasco_retrato.jpg": "Bernardo de Velasco — Governador espanhol deposto em maio de 1811.",
+        "Bernardo_de_Velasco_corpo_inteiro.jpg": "Bernardo de Velasco (corpo inteiro).",
+        "Pedro-juan-caballero_retrato.jpg": "Pedro Juan Caballero — Militar e um dos principais líderes da independência.",
+        "Pedro-juan-caballero_corpo_inteiro.jpg": "Pedro Juan Caballero (corpo inteiro).",
+        "Fulgencio_Yegros_retrato.jpg": "Fulgencio Yegros — Militar e líder da independência, primeiro cônsul.",
+        "José_Gaspar_de_Francia_sentado_em_uma_cadeira.jpg": "José Gaspar Rodríguez de Francia — Doutor, advogado e ditador paraguaio.",
+        "José_Gaspar_de_Francia_assinando_papeis_como_ditador.jpg": "Dr. Francia assinando documentos como ditador.",
+        "Casa_de_la_independencia_hoje_em_dia.jpg": "Casa da Independência (Assunção) — Onde o movimento foi articulado em 1811."
+      };
+      for (const imgNome of imagens.slice(0, 4)) {
+        const fig = document.createElement('figure');
+        const img = document.createElement('img');
+        img.src = '/assets/' + imgNome;
+        img.alt = imgNome;
+        img.loading = 'lazy';
+        const figcap = document.createElement('figcaption');
+        figcap.textContent = legendasMap[imgNome] || imgNome;
+        fig.appendChild(img);
+        fig.appendChild(figcap);
+        container.appendChild(fig);
+      }
+      orbOverlay.classList.add('tem-imagens');
     }
 
     function mostrarLegenda(texto) {
@@ -609,6 +651,25 @@ registerProcessor('captura', Captura);`;
         return;
       }
       if (msg.goAway) status('A sessão vai encerrar em breve. Depois clique de novo para reconectar.');
+      if (msg.toolCall && msg.toolCall.functionCalls) {
+        for (const fc of msg.toolCall.functionCalls) {
+          if (fc.name === 'mostrar_imagens') {
+            const imagens = (fc.args && fc.args.imagens) || [];
+            mostrarImagensOrb(imagens);
+            if (geminiWs && geminiWs.readyState === WebSocket.OPEN) {
+              geminiWs.send(JSON.stringify({
+                toolResponse: {
+                  functionResponses: [{
+                    response: { output: { success: true } },
+                    id: fc.id,
+                    name: fc.name
+                  }]
+                }
+              }));
+            }
+          }
+        }
+      }
       const sc = msg.serverContent;
       if (!sc) return;
       if (sc.interrupted) { pararSomGemini(); bolhaIA = null; }

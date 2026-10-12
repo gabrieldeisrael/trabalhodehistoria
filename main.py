@@ -330,8 +330,43 @@ PROMPT_LIVE = (
     PROMPT_BASE
     + " Você está conversando por voz. Responda sempre em português do Brasil, "
     "em frases curtas e naturais, sem listas, sem símbolos e sem formatação. "
-    "Dê respostas de até três ou quatro frases, a menos que peçam mais detalhes."
+    "Dê respostas de até três ou quatro frases, a menos que peçam mais detalhes. "
+    "Você pode e deve usar a função 'mostrar_imagens' para exibir até 4 imagens históricas relevantes de docs/assets (como retratos de Pedro Juan Caballero, Fulgencio Yegros, Dr. Francia, Bernardo de Velasco ou a Casa da Independência) quando for oportuno para ilustrar a história."
 )
+
+FERRAMENTAS_LIVE = [
+    {
+        "functionDeclarations": [
+            {
+                "name": "mostrar_imagens",
+                "description": "Mostra até 4 imagens históricas relevantes na tela para o usuário (retratos de líderes, Casa da Independência). Use quando for pertinente à conversa.",
+                "parameters": {
+                    "type": "OBJECT",
+                    "properties": {
+                        "imagens": {
+                            "type": "ARRAY",
+                            "items": {
+                                "type": "STRING",
+                                "enum": [
+                                    "Bernardo_de_Velasco_retrato.jpg",
+                                    "Bernardo_de_Velasco_corpo_inteiro.jpg",
+                                    "Pedro-juan-caballero_retrato.jpg",
+                                    "Pedro-juan-caballero_corpo_inteiro.jpg",
+                                    "Fulgencio_Yegros_retrato.jpg",
+                                    "José_Gaspar_de_Francia_sentado_em_uma_cadeira.jpg",
+                                    "José_Gaspar_de_Francia_assinando_papeis_como_ditador.jpg",
+                                    "Casa_de_la_independencia_hoje_em_dia.jpg"
+                                ]
+                            },
+                            "description": "Lista com 1 a 4 nomes de arquivos de imagem de docs/assets."
+                        }
+                    },
+                    "required": ["imagens"]
+                }
+            }
+        ]
+    }
+]
 
 
 def _texto_completo_docs() -> str:
@@ -367,6 +402,7 @@ def live_token():
             "model": modelo,
             "generationConfig": {"responseModalities": ["AUDIO"]},
             "systemInstruction": instrucao,
+            "tools": FERRAMENTAS_LIVE,
             "inputAudioTranscription": {},
             "outputAudioTranscription": {},
         }},
@@ -375,6 +411,7 @@ def live_token():
             "config": {
                 "responseModalities": ["AUDIO"],
                 "systemInstruction": instrucao,
+                "tools": FERRAMENTAS_LIVE,
                 "inputAudioTranscription": {},
                 "outputAudioTranscription": {},
             },
@@ -402,4 +439,5 @@ def health():
     return {"status": "ok", "chunks_indexados": len(chunks_texto)}
 
 
+app.mount("/assets", StaticFiles(directory="docs/assets"), name="assets")
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
