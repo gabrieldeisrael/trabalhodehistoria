@@ -32,14 +32,24 @@
     .live-status{margin-right:auto;font-style:italic;color:#765f47;font-size:.9rem}
     .voz-toggle{margin:0;padding:6px 14px;background:var(--gold);color:var(--ink);border:none;border-radius:999px;font-weight:700;font-family:inherit;font-size:.9rem;cursor:pointer}
     .voz-toggle:hover{filter:brightness(1.08)}
+    .chave-reserva{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:.72rem;opacity:.55;cursor:pointer}
+    .chave-reserva:hover{opacity:1}
+    .chave-reserva input{position:absolute;opacity:0;pointer-events:none}
+    .chave{position:relative;width:30px;height:16px;border-radius:999px;background:#4a3a2a;transition:background .2s}
+    .chave:after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:var(--paper);transition:transform .2s}
+    .chave-reserva input:checked + .chave{background:var(--gold)}
+    .chave-reserva input:checked + .chave:after{transform:translateX(14px)}
+    .chave-reserva input:focus-visible + .chave{outline:2px solid var(--gold);outline-offset:2px}
     .check-interromper{display:flex;align-items:center;gap:6px;font-size:.8rem;color:#765f47;cursor:pointer}
-    .orb-overlay{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:24px;background:rgba(14,8,4,.88);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#f4e8d0;text-align:center;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s}
+    .orb-overlay{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:24px;background:rgba(14,8,4,.93);color:#f4e8d0;text-align:center;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s}
     .orb-overlay.aberto{opacity:1;visibility:visible}
     .orb-wrap{position:relative;width:min(46vmin,320px);height:min(46vmin,320px);display:flex;align-items:center;justify-content:center;transform:translateY(45vh);opacity:0;transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s ease}
     .orb-overlay.aberto .orb-wrap{transform:none;opacity:1}
     .orb-wrap:before{content:"";position:absolute;inset:-6%;border-radius:50%;border:2px solid rgba(201,169,97,.35);animation:respirar 2.6s ease-in-out infinite}
-    .orb{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fffaf0,#c9a961 42%,#8b3a3a 100%);transform:scale(.55);will-change:transform,box-shadow;transition:background .4s ease}
+    .orb{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fffaf0,#c9a961 42%,#8b3a3a 100%);transform:scale(.55);will-change:transform;transition:background .4s ease}
     .orb-overlay.estado-falando .orb{background:radial-gradient(circle at 35% 30%,#fff1e0,#e29a86 40%,#8b3a3a 100%)}
+    .orb-glow{position:absolute;inset:-25%;border-radius:50%;background:radial-gradient(circle,rgba(201,169,97,.6) 0%,rgba(201,169,97,0) 65%);transform:scale(.8);opacity:.35;will-change:transform,opacity;transition:background .4s ease}
+    .orb-overlay.estado-falando .orb-glow{background:radial-gradient(circle,rgba(160,60,60,.75) 0%,rgba(160,60,60,0) 65%)}
     .orb-status{margin:0;font-size:1.1rem;letter-spacing:.04em;opacity:.9;min-height:1.6em}
     .orb-legenda{margin:0;max-width:640px;min-height:3.2em;font-size:1.05rem;line-height:1.5;opacity:.8}
     .orb-stop{padding:10px 24px;border:1px solid var(--gold);background:transparent;color:#f4e8d0;border-radius:999px;font:inherit;font-weight:700;cursor:pointer}
@@ -171,8 +181,7 @@ União e igualdade.</div>
         <div class="chat-tools">
           <span id="liveStatus" class="live-status" aria-live="polite"></span>
           <label class="check-interromper"><input type="checkbox" id="permitirInterrupcao"> Permitir interromper (use fone)</label>
-          <button id="geminiToggle" class="voz-toggle" type="button">✨ Rita ao vivo (Gemini)</button>
-          <button id="liveToggle" class="voz-toggle" type="button">🎙️ Conversar ao vivo</button>
+          <button id="liveToggle" class="voz-toggle" type="button">✨ Rita ao vivo</button>
           <button id="vozToggle" class="voz-toggle" type="button" aria-pressed="true">🔊 Voz da Rita: ligada</button>
         </div>
         <div class="chat-messages" id="chatMessages">
@@ -184,11 +193,11 @@ União e igualdade.</div>
         </div>
       </div>
     </section>
-    <footer>GAZETA DA INDEPENDÊNCIA · PARAGUAI · 1811<br><small>Trabalho histórico educativo — consulte fontes acadêmicas para aprofundamento.</small></footer>
+    <footer>GAZETA DA INDEPENDÊNCIA · PARAGUAI · 1811<br><small>Trabalho histórico educativo — consulte fontes acadêmicas para aprofundamento.</small><br><label class="chave-reserva" title="Usa Groq, Whisper e a voz do edge-tts no lugar do Gemini"><input type="checkbox" id="modoReserva"><span class="chave"></span><span>modo reserva</span></label></footer>
   </main>
   <button class="top" aria-label="Voltar ao topo">↑</button>
   <div id="orbOverlay" class="orb-overlay" role="dialog" aria-modal="true" aria-label="Conversa por voz com a Rita" aria-hidden="true">
-    <div class="orb-wrap"><div id="orb" class="orb"></div></div>
+    <div class="orb-wrap"><div id="orbGlow" class="orb-glow"></div><div id="orb" class="orb"></div></div>
     <p id="orbStatus" class="orb-status" aria-live="polite"></p>
     <p id="orbLegenda" class="orb-legenda"></p>
     <button id="orbStop" class="orb-stop" type="button">Encerrar conversa</button>
@@ -297,6 +306,7 @@ União e igualdade.</div>
     // ---------- Orbe de voz: escurece a tela e pulsa conforme a fala ----------
     const orbOverlay = document.getElementById('orbOverlay');
     const orb = document.getElementById('orb');
+    const orbGlow = document.getElementById('orbGlow');
     const orbLegenda = document.getElementById('orbLegenda');
     const orbStop = document.getElementById('orbStop');
     let orbAberto = false;
@@ -315,8 +325,8 @@ União e igualdade.</div>
       const alvo = falando ? saida : nivelEntrada;
       nivelSuave += (alvo - nivelSuave) * (alvo > nivelSuave ? 0.35 : 0.12);
       orb.style.transform = 'scale(' + (0.55 + nivelSuave * 0.6).toFixed(3) + ')';
-      orb.style.boxShadow = '0 0 ' + (40 + nivelSuave * 120).toFixed(0) + 'px ' + (nivelSuave * 30).toFixed(0) + 'px ' +
-        (falando ? 'rgba(139,58,58,.7)' : 'rgba(201,169,97,.55)');
+      orbGlow.style.transform = 'scale(' + (0.8 + nivelSuave * 0.9).toFixed(3) + ')';
+      orbGlow.style.opacity = (0.35 + nivelSuave * 0.65).toFixed(2);
       orbOverlay.classList.toggle('estado-falando', falando);
       orbFrame = requestAnimationFrame(quadroOrb);
     }
@@ -387,7 +397,7 @@ União e igualdade.</div>
       try { await liveCtx.resume(); } catch (err) {}
       if (!vozLigada) vozToggle.click();
       liveAtivo = true;
-      liveToggle.textContent = '⏹ Parar conversa';
+      liveToggle.textContent = '⏹ Parar Rita';
       abrirOrb();
 
       const analisador = liveCtx.createAnalyser();
@@ -478,15 +488,25 @@ União e igualdade.</div>
       if (liveRec && liveRec.state !== 'inactive') liveRec.stop();
       if (liveStream) liveStream.getTracks().forEach((t) => t.stop());
       if (liveCtx) liveCtx.close();
-      liveToggle.textContent = '🎙️ Conversar ao vivo';
+      liveToggle.textContent = '✨ Rita ao vivo';
       fecharOrb();
       status('');
     }
 
-    liveToggle.addEventListener('click', () => (liveAtivo ? pararLive() : iniciarLive()));
+    const modoReserva = document.getElementById('modoReserva');
+    try { modoReserva.checked = localStorage.getItem('ritaReserva') === '1'; } catch (err) {}
+    modoReserva.addEventListener('change', () => {
+      try { localStorage.setItem('ritaReserva', modoReserva.checked ? '1' : '0'); } catch (err) {}
+    });
+    liveToggle.addEventListener('click', () => {
+      if (geminiAtivo) pararGemini();
+      else if (liveAtivo) pararLive();
+      else if (modoReserva.checked) iniciarLive();
+      else iniciarGemini();
+    });
 
     // ---------- Rita ao vivo com Gemini Live (áudio direto, dá para interromper) ----------
-    const geminiToggle = document.getElementById('geminiToggle');
+    const geminiToggle = liveToggle;  // é o mesmo botão: o modo reserva decide qual caminho usar
     const checkInterromper = document.getElementById('permitirInterrupcao');
     const GEMINI_WS = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContentConstrained';
 
@@ -556,7 +576,7 @@ registerProcessor('captura', Captura);`;
       src.buffer = buf;
       src.connect(geminiSaida || geminiCtx.destination);
       const agora = geminiCtx.currentTime;
-      if (proximoInicio < agora) proximoInicio = agora + 0.05;
+      if (proximoInicio < agora) proximoInicio = agora + 0.15;  // colchão de 150 ms contra atrasos da rede
       src.start(proximoInicio);
       proximoInicio += buf.duration;
       fontesTocando.push(src);
@@ -620,7 +640,7 @@ registerProcessor('captura', Captura);`;
       if (audioAtual) audioAtual.pause();
       geminiCtx = new AudioContext();
       geminiAtivo = true;
-      geminiToggle.textContent = '⏹ Parar Rita (Gemini)';
+      geminiToggle.textContent = '⏹ Parar Rita';
       abrirOrb();
       try {
         status('Pedindo o microfone...');
@@ -744,7 +764,7 @@ registerProcessor('captura', Captura);`;
         };
       } catch (err) {
         console.warn(err);
-        pararGemini('Gemini indisponível agora. Use o botão "Conversar ao vivo".');
+        pararGemini('Gemini indisponível agora. Ative o "modo reserva" no final da página e tente de novo.');
       }
     }
 
@@ -758,12 +778,11 @@ registerProcessor('captura', Captura);`;
       if (geminiStream) { geminiStream.getTracks().forEach((t) => t.stop()); geminiStream = null; }
       if (geminiCtx) { geminiCtx.close(); geminiCtx = null; }
       geminiSaida = null;
-      geminiToggle.textContent = '✨ Rita ao vivo (Gemini)';
+      geminiToggle.textContent = '✨ Rita ao vivo';
       fecharOrb();
       status(mensagem || '');
     }
 
-    geminiToggle.addEventListener('click', () => (geminiAtivo ? pararGemini() : iniciarGemini()));
 
     chatSend.addEventListener('click', () => enviarMensagem());
     chatInput.addEventListener('keypress', (e) => {
